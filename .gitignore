@@ -1,0 +1,9 @@
+build/
+.settings/
+.gradle/
+bin/
+*~
+.cache
+*.log
+
+
