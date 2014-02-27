@@ -1,0 +1,12 @@
+subprojects {
+  apply plugin: 'eclipse'
+  group = 'com.cisco.vss.lunar'
+
+  eclipse.classpath.downloadJavadoc = true // defaults to 'false'
+
+  repositories {
+    mavenCentral()
+  }
+}
+
+
