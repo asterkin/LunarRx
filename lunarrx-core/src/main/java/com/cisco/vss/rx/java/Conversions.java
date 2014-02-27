@@ -6,9 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.google.gson.Gson;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.*;
@@ -45,8 +43,8 @@ public class Conversions {
 	
 	public static <R> Converter<String,R> jsonString2Object(final Class<R> clazz) {
 		return new Converter<String, R>() {
+			final Gson gson = new Gson();
 			protected R convert(String message) throws Throwable {
-				Gson gson = new Gson();
 				return gson.fromJson(message, clazz);
 			}
 		};
