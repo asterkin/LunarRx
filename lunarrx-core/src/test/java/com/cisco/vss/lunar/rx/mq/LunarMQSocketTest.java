@@ -67,7 +67,7 @@ public class LunarMQSocketTest {
 	}
 
 	private void addExpected(List<byte[]> expected, byte[] buf) {
-		expected.add(String.format("%d %d", expected.size()/2, buf.length).getBytes());
+		expected.add(String.format("%d %d", buf.length, expected.size()/2).getBytes());
 		expected.add(buf);
 	}
 

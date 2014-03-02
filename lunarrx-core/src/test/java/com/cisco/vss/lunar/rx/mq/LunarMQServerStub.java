@@ -23,10 +23,10 @@ public class LunarMQServerStub extends TcpServerStub {
 	
 		if(null == header) throw new EOFException();
 		logRequest(header);
-		return Integer.parseInt(header.split(" ")[1]);
+		return Integer.parseInt(header.split(" ")[0]);
 	}
 	@Override
 	protected String formatResponseHeader(byte[] response) {
-		return String.format("%d %d\n",  outMsgSeq++, response.length);
+		return String.format("%d %d\n", response.length,  outMsgSeq++);
 	}
 }

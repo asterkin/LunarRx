@@ -14,7 +14,7 @@ public class MessageHeaderTest {
 
 	@Test
 	public void testRead_Normal() throws IOException, LunarMQException {
-		final byte[]              buf        = "10 128\nABC".getBytes();
+		final byte[]              buf        = "128 10\nABC".getBytes();
 		final InputStream         in         = new ByteArrayInputStream(buf);
 		final BufferedInputStream stream     = new BufferedInputStream(in);
 		final MessageHeader       header     = MessageHeader.read(stream);
@@ -26,7 +26,7 @@ public class MessageHeaderTest {
 		assertArrayEquals(new byte[]{'A','B', 'C', 0}, tail);
 	}
 
-	@Test(expected=LunarEndOfStreamException.class)
+	@Test(expected=LunarEndOfStreamWhileReadingHeaderException.class)
 	public void testRead_EOS() throws IOException, LunarMQException {
 		final byte[]              buf        = "".getBytes();
 		final InputStream         in         = new ByteArrayInputStream(buf);
@@ -37,14 +37,14 @@ public class MessageHeaderTest {
 	
 	@Test(expected=LunarEndOfStreamException.class)
 	public void testRead_ZeroLength() throws IOException, LunarMQException {
-		final byte[]              buf        = "10 0\n".getBytes();
+		final byte[]              buf        = "0 10\n".getBytes();
 		final InputStream         in         = new ByteArrayInputStream(buf);
 		final BufferedInputStream stream     = new BufferedInputStream(in);
 		
 		MessageHeader.read(stream);
 	}
 	
-	@Test(expected=LunarPrematureEndOfStreamException.class)
+	@Test(expected=LunarEndOfStreamWhileReadingHeaderException.class)
 	public void testRead_PrematureEndOfStream() throws IOException, LunarMQException {
 		final byte[]              buf        = "12 ".getBytes();
 		final InputStream         in         = new ByteArrayInputStream(buf);
@@ -64,7 +64,7 @@ public class MessageHeaderTest {
 	
 	@Test
 	public void testCheckSequence_OK() throws LunarMessagesLostException {
-		final MessageHeader header      = new MessageHeader(123, 1024);
+		final MessageHeader header      = new MessageHeader(1024, 123);
 		final int           newSequence = header.checkSequence(122);
 		
 		assertEquals(123, newSequence);
@@ -72,7 +72,7 @@ public class MessageHeaderTest {
 	
 	@Test
 	public void testCheckSequence_MessageLost() {
-		final MessageHeader header      = new MessageHeader(123, 1024);
+		final MessageHeader header      = new MessageHeader(1024, 123);
 		try {
 			header.checkSequence(120);
 			fail("Should not get there");
@@ -83,7 +83,7 @@ public class MessageHeaderTest {
 	
 	@Test
 	public void testReadBody_OK() throws IOException, LunarPrematureEndOfStreamException {
-		final MessageHeader       header = new MessageHeader(123, 5);
+		final MessageHeader       header = new MessageHeader(5, 123);
 		final byte[]              buf    = "ABCDEF".getBytes();
 		final InputStream         in     = new ByteArrayInputStream(buf);
 		final BufferedInputStream stream = new BufferedInputStream(in);

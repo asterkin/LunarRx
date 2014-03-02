@@ -8,7 +8,7 @@ class LunarMQSocket
 {        
     private final Socket               socket;
     private final BufferedInputStream  inputStream;
-    private final BufferedOutputStream outputStream;
+    private final OutputStream outputStream;
     private int                        incomingMessageNum;
     private int                        outgoingMessageNum;
     
@@ -25,7 +25,7 @@ class LunarMQSocket
     {        
         socket             = s;
         inputStream        = new BufferedInputStream(socket.getInputStream());
-        outputStream       = new BufferedOutputStream(socket.getOutputStream());
+        outputStream       = socket.getOutputStream();
         outgoingMessageNum = 0;
         incomingMessageNum = -1;
     }
@@ -51,7 +51,7 @@ class LunarMQSocket
 				} catch (InterruptedException e) {
 				}
 	        }
-        throw new LunarPrematureEndOfStreamException();
+        throw new LunarCannotReadHandshakeResponseException();
     }
     
     //TODO: why not to use some more efficient binary protocol?
@@ -72,11 +72,10 @@ class LunarMQSocket
     public void write(byte[] buffer) throws IOException, LunarMQException
     {   
         /* @todo async write can only be done with NIO - not for now */
-    	final MessageHeader header = new MessageHeader(outgoingMessageNum++, buffer.length);
+    	final MessageHeader header = new MessageHeader(buffer.length, outgoingMessageNum++);
     	try {
     		header.write(outputStream);
     		outputStream.write(buffer);
-    		outputStream.flush();
     	} catch (IOException exp) {
     		final String responseMsg = readResponse();
             LunarMQException.StreamingError lmqe = LunarMQException.StreamingError.FromMessage(responseMsg);
