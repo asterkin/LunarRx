@@ -35,20 +35,9 @@ public class TrackInfoTest {
 	@Test
 	public void testHttpRequestArgs() {
 		final TrackInfo trackInfo = new TrackInfo("1234", "plugin1", "track1");
-		final String[]  args      = trackInfo.httpGetRequestArguments("localhost", 8080);
-		final String[]  EXPECTED  = {
-			"http",
-			"localhost",
-			"8080",
-			"/tracks",
-			"sourceID",
-			"1234",
-			"pluginName",
-			"plugin1",
-			"trackName",
-			"track1"
-		};
-		
-		assertArrayEquals(EXPECTED, args);
+		final String    path      = trackInfo.httpGetRequestPath();
+		final String    EXPECTED  = "/tracks?sourceID=1234&pluginName=plugin1&trackName=track1";
+
+		assertEquals(EXPECTED, path);
 	}
 }

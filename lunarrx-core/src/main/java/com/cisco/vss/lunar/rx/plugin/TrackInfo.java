@@ -19,16 +19,8 @@ public class TrackInfo {
 		this.trackName  = trackName;
 	}
 	
-	public String[] httpGetRequestArguments(final String IP, final Integer port) {
-		return new String[] {
-			"http",
-			IP,
-			port.toString(),
-			"/tracks",
-			"sourceID",	 this.sourceID,
-			"pluginName",this.pluginName,
-			"trackName", this.trackName
-		};
+	public String httpGetRequestPath() {
+		return String.format("/tracks?sourceID=%s&pluginName=%s&trackName=%s",sourceID,pluginName,trackName);
 	}
 }
 

@@ -161,31 +161,4 @@ public class ConverterTest {
     	);
     	server.join();
     }
-    
-    @Test
-    public void testMakeURL() {
-    	final String urlArgs[] = {
-    		"http",
-    		"localhost",
-    		"12345",
-    		"tracks",
-    		"sourceID",
-    		"ABCDEFG",
-    		"pluginName",
-    		"myPlugin",
-    		"trackName",
-    		"TRACK-1"
-    	};
-    	makeURL.call(urlArgs).subscribe(
-    		new Action1<URL>() {
-				@Override
-				public void call(URL url) {
-					assertEquals("http",     url.getProtocol());
-					assertEquals("localhost",url.getHost());
-					assertEquals(12345,     url.getPort());
-					assertEquals("/tracks?sourceID=ABCDEFG&pluginName=myPlugin&trackName=TRACK-1",url.getFile());
-				}    			
-    		}
-    	);
-    }
 }

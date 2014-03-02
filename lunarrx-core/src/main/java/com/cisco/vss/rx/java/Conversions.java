@@ -88,31 +88,4 @@ public class Conversions {
 			return result;
 		}
 	};
-	
-	public static Converter<String[], URL> makeURL = new Converter<String[], URL>() {
-		@Override
-		protected URL convert(String[] args) throws Throwable {
-			final String file = "/"+args[3] + formatUrlArgs(args);
-			return new URL(args[0],args[1],Integer.parseInt(args[2]),file);
-		}
-
-		private String formatUrlArgs(String[] args) {
-		    String argsString = "";
-	        boolean isFirstParam = true;
-	        for (int i=4; i < args.length-1; i += 2)
-	        {
-	            if (isFirstParam)
-	            {
-	                argsString += "?";
-	                isFirstParam = false;
-	            }
-	            else
-	            {
-	                argsString += "&";
-	            }
-	            argsString += args[i] + "=" + args[i+1];
-	        }
-	        return argsString;
-		}		
-	};
 };

@@ -5,7 +5,7 @@
 package com.cisco.vss.lunar.rx.mq;
 
 
-class LunarMQException extends Exception
+public class LunarMQException extends Exception
 {
 
     /**
