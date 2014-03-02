@@ -4,11 +4,8 @@
 
   dependencies {
     testCompile 'junit:junit:4.+'
-	testCompile 'org.mockito:mockito-core:1.+'
-	testCompile 'org.powermock:powermock-module-junit4:1.+'
-	testCompile 'org.powermock:powermock-api-mockito:1.+'
-    compile     'com.netflix.rxjava:rxjava-core:0.+'
-	compile     'com.google.code.gson:gson:2.+'
+    runtime     'com.netflix.rxjava:rxjava-core:0.+'
+    compile     'com.google.code.gson:gson:2.+'
   }
 
 
