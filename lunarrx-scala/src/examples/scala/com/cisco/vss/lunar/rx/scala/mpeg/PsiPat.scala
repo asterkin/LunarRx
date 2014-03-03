@@ -1,12 +1,19 @@
 package com.cisco.vss.lunar.rx.scala.mpeg
 import rx.lang.scala._
+import scala.collection.mutable.WrappedArray
 
 abstract class PsiPat {
-	sealed class Entry(val programNumber: Short, val pid: Short)
-	val table: Array[Entry]
+	sealed class Entry(val programNumber: Short, val pid: Short) {
+    override def equals(other: Any) = other match {
+	    case that: PsiPat#Entry => (that.programNumber == this.programNumber) && (that.pid == this.pid)
+	    case _                  => false
+	}  
+	  
+	}
+	val table: WrappedArray[Entry]
 	
 	def byProgramNumber(programNumber: Short): Option[Entry] = table.find(e => e.programNumber == programNumber) 
-	def byPid(pid: Short): Option[Entry] = table.find(e => e.pid == pid) 
+	def byPid(pid: Short): Option[Entry]                     = table.find(e => e.pid == pid) 
 	
 	def getNitPid: Short = byProgramNumber(0) match {
 	  case Some(entry) => entry.pid
@@ -25,12 +32,18 @@ abstract class PsiPat {
 	
 	def asObservable: Observable[Entry] = Observable.from(table)
 
-    private def generatePat(payload: Array[Byte]): Array[Entry] = {
+    override def equals(other: Any) = other match {
+	    case that: PsiPat => (that.table == this.table)
+	    case _            => false
+	}  
+	
+    private def generatePat(payload: WrappedArray[Byte]): WrappedArray[Entry] = {
 	  generatePat(payload, new Array[Entry](0))
 	}
 	
 	private def makeInt(b1: Byte, b2: Byte): Short = ((b1<<8) | b2).asInstanceOf[Short]
-    private def generatePat(payload: Array[Byte], result: Array[Entry]): Array[Entry] = {
+	
+    private def generatePat(payload: WrappedArray[Byte], result: WrappedArray[Entry]): WrappedArray[Entry] = {
 	  if(0 == payload.length) return result
 	  val programNumber = makeInt(payload(0),payload(1))
 	  if(-1 == programNumber) return result

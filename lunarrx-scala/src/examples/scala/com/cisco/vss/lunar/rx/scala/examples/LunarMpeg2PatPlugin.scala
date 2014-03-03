@@ -19,12 +19,19 @@ object LunarMpeg2PatPlugin {
     
     tps
     .map(p => TsPacket(p))
+    .filter(tsp => !tsp.hasError)
+    .filter(tsp => tsp.hasPayloadStart)
     .filter(tsp => 0 == tsp.pid)
-    .distinctUntilChanged
     .map(tsp => PsiPat(tsp))
-    .flatMap(pat => pat.asObservable)
+    .distinctUntilChanged
+    //TODO: write Pat back to Lunar?
     .subscribe(
-        entry => println("0x%04X -> 0x%04X".format(entry.programNumber, entry.pid))
+        pat => {
+          println("New version of PAT")
+          pat.asObservable.subscribe(
+              entry => println("0x%04X -> 0x%04X".format(entry.programNumber, entry.pid)) 
+          )
+        }
         ,err => println(err.getMessage())
        ,() => println("Unexpected EOF")        
     )    
