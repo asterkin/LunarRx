@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.cisco.vss.lunar.rx.plugin.core.TrackInfo;
 import com.google.gson.Gson;
 
 public class TrackInfoTest {

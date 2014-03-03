@@ -1,4 +1,4 @@
-package com.cisco.vss.lunar.rx.plugin;
+package com.cisco.vss.lunar.rx.plugin.core;
 
 /**
  * The track item image holds the metadata and data of an image that is passed on a track item.

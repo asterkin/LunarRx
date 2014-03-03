@@ -1,4 +1,4 @@
-package com.cisco.vss.lunar.rx.plugin;
+package com.cisco.vss.lunar.rx.plugin.core;
 
 public class LunarTractItemWriter<T extends TrackItem> {
 

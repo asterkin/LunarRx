@@ -1,7 +1,11 @@
 package com.cisco.vss.lunar.rx.plugin;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
+
+import com.cisco.vss.lunar.rx.plugin.core.TrackStatus;
+import com.cisco.vss.lunar.rx.plugin.core.TracksStatusUpdate;
 import com.google.gson.Gson;
 
 public class TrackStatusUpdateTest {

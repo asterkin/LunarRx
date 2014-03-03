@@ -1,4 +1,4 @@
-package com.cisco.vss.lunar.rx.plugin;
+package com.cisco.vss.lunar.rx.plugin.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,7 +6,7 @@ import java.net.URL;
 import rx.Observable;
 import rx.functions.Func1;
 import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.*;
-import static com.cisco.vss.lunar.rx.plugin.LunarResponseResult.*;
+import static com.cisco.vss.lunar.rx.plugin.core.LunarResponseResult.*;
 
 public class Lunar {
 	private final String hostName;

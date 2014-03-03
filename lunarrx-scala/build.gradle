@@ -10,3 +10,21 @@ dependencies {
   runtime project(':lunarrx-core')
 }
 
+sourceSets {
+  main {
+      scala {
+          srcDir 'src/main/scala'
+      }
+  }
+  test {
+      scala {
+          srcDir 'src/test/scala'
+      }
+  }
+  examples {
+      scala {
+          srcDir 'src/examples/scala'
+      }
+  }
+}
+

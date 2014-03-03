@@ -2,11 +2,17 @@ package com.cisco.vss.lunar.rx.plugin;
 
 import static com.cisco.vss.lunar.rx.mq.LunarMQException.StreamingError.LMQ_OK;
 import static org.junit.Assert.*;
+
 import java.io.IOException;
+
 import org.junit.Test;
+
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
+import com.cisco.vss.lunar.rx.plugin.core.Lunar;
+import com.cisco.vss.lunar.rx.plugin.core.TrackInfo;
 import com.cisco.vss.rx.java.HttpServerStub;
 import com.google.gson.Gson;
+
 import rx.functions.Action1;
 
 public class LunarTest {
