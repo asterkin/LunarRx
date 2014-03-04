@@ -26,7 +26,7 @@ public class MessageHeaderTest {
 		assertArrayEquals(new byte[]{'A','B', 'C', 0}, tail);
 	}
 
-	@Test(expected=LunarEndOfStreamWhileReadingHeaderException.class)
+	@Test(expected=LunarEndOfStreamException.class)
 	public void testRead_EOS() throws IOException, LunarMQException {
 		final byte[]              buf        = "".getBytes();
 		final InputStream         in         = new ByteArrayInputStream(buf);
@@ -44,8 +44,8 @@ public class MessageHeaderTest {
 		MessageHeader.read(stream);
 	}
 	
-	@Test(expected=LunarEndOfStreamWhileReadingHeaderException.class)
-	public void testRead_PrematureEndOfStream() throws IOException, LunarMQException {
+	@Test(expected=LunarEndOfStreamException.class)
+	public void testRead_EndOfStreamWhileReadingHeader() throws IOException, LunarMQException {
 		final byte[]              buf        = "12 ".getBytes();
 		final InputStream         in         = new ByteArrayInputStream(buf);
 		final BufferedInputStream stream     = new BufferedInputStream(in);

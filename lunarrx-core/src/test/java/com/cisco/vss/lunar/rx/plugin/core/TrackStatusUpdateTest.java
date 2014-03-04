@@ -1,4 +1,4 @@
-package com.cisco.vss.lunar.rx.plugin;
+package com.cisco.vss.lunar.rx.plugin.core;
 
 import static org.junit.Assert.*;
 

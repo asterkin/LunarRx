@@ -47,10 +47,12 @@ public class Lunar {
 				.flatMap(readStream);
 	}
 	
-	public <T extends TrackItem> Observable<T> getInputTrackItemStream(final Class<T> clazz, final String sourceID, final String pluginName, final String trackName) {
-		return null;
+	public <T> Observable<T> getInputItemTrackStream(final Class<T> clazz, final String sourceID, final String pluginName, final String trackName) throws MalformedURLException {
+		return getInputTrackStream(sourceID, pluginName, trackName)
+		   .map(byte2String)
+		   .flatMap(jsonString2Object(clazz));
 	}
-	
+
 	public LunarMQWriter getOutputTrackStream(final String sourceID, final String pluginName, final String trackName) {
 		return null;
 	}
@@ -58,5 +60,4 @@ public class Lunar {
 	public <T extends TrackItem> LunarTractItemWriter<T> getOutputTractItemStream(final Class<T> clazz, final String sourceID, final String pluginName, final String trackName) {
 		return null;
 	}
-	
 }

@@ -26,7 +26,7 @@ public class MessageHeader {
 		int value = 0;
 		int b     = -1;
 		
-		while(delim != (b  = stream.read())) {
+		while(delim != (b = stream.read())) {
 			validate(b);
 			value = value*10 + (b - (int)'0');
 		}
@@ -35,7 +35,7 @@ public class MessageHeader {
 
 	private static void validate(int code) throws LunarMQException {
 		if(-1 == code)
-			throw new LunarEndOfStreamWhileReadingHeaderException();
+			throw new LunarEndOfStreamException();
 		if(!Character.isDigit(code))
 			throw new LunarInvalidInputHeaderFormatException(code);
 	}
