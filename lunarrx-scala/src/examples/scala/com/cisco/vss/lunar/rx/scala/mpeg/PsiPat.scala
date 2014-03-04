@@ -41,13 +41,13 @@ abstract class PsiPat {
 	  generatePat(payload, new Array[Entry](0))
 	}
 	
-	private def makeInt(b1: Byte, b2: Byte): Short = ((b1<<8) | b2).asInstanceOf[Short]
+	private def makeShort(b1: Byte, b2: Byte): Short = ((b1<<8) | b2).asInstanceOf[Short]
 	
     private def generatePat(payload: WrappedArray[Byte], result: WrappedArray[Entry]): WrappedArray[Entry] = {
 	  if(0 == payload.length) return result
-	  val programNumber = makeInt(payload(0),payload(1))
+	  val programNumber = makeShort(payload(0),payload(1))
 	  if(-1 == programNumber) return result
-	  val pid = makeInt(payload(2), payload(3))
+	  val pid = makeShort(payload(2), payload(3))
 	  generatePat(payload.slice(4,payload.length), result :+ new Entry(programNumber, pid))	    		    
 	}
 }

@@ -3,7 +3,15 @@
 	<name>lunarrx-groovy</name>
 	<comment/>
 	<projects/>
-	<natures/>
-	<buildSpec/>
+	<natures>
+		<nature>org.eclipse.jdt.groovy.core.groovyNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments/>
+		</buildCommand>
+	</buildSpec>
 	<linkedResources/>
 </projectDescription>

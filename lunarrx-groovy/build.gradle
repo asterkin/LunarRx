@@ -1,0 +1,29 @@
+apply plugin: 'groovy'
+
+version = '0.1.0'
+
+dependencies {
+  runtime     'com.netflix.rxjava:rxjava-core:0.+'
+  runtime 'com.netflix.rxjava:rxjava-groovy:0.+'
+  testCompile 'junit:junit:4.+'
+  runtime project(':lunarrx-core')
+}
+
+sourceSets {
+  main {
+      groovy {
+          srcDir 'src/main/groovy'
+      }
+  }
+  test {
+      groovy {
+          srcDir 'src/test/groovy'
+      }
+  }
+  examples {
+      groovy {
+          srcDir 'src/examples/groovy'
+      }
+  }
+}
+
