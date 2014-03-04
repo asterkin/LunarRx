@@ -8,6 +8,9 @@ abstract class Lunar {
 	
 	def getInputTrackStream(sourceID: String, pluginName: String, trackName: String): Observable[Array[Byte]] =
 	  toScalaObservable(asJavaLunar.getInputTrackStream(sourceID,pluginName, trackName))
+
+	def getInputTrackItemStream[T](clazz: Class[T], sourceID: String, pluginName: String, trackName: String): Observable[T] =
+	  toScalaObservable(asJavaLunar.getInputTrackItemStream(clazz, sourceID,pluginName, trackName))
 }
 
 object Lunar {

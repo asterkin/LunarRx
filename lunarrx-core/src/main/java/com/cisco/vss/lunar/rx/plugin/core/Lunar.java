@@ -47,7 +47,7 @@ public class Lunar {
 				.flatMap(readStream);
 	}
 	
-	public <T> Observable<T> getInputItemTrackStream(final Class<T> clazz, final String sourceID, final String pluginName, final String trackName) throws MalformedURLException {
+	public <T> Observable<T> getInputTrackItemStream(final Class<T> clazz, final String sourceID, final String pluginName, final String trackName) throws MalformedURLException {
 		return getInputTrackStream(sourceID, pluginName, trackName)
 		   .map(byte2String)
 		   .flatMap(jsonString2Object(clazz));

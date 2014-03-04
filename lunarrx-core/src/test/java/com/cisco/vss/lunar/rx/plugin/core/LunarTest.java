@@ -106,7 +106,7 @@ public class LunarTest {
 		final Lunar          lunar          = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
 		final ObjectHolder<Throwable> error = new ObjectHolder<Throwable>();
 
-		lunar.getInputItemTrackStream(SampleTrackItem.class, SOURCE_ID, PLUGIN_NAME, TRACK_NAME)
+		lunar.getInputTrackItemStream(SampleTrackItem.class, SOURCE_ID, PLUGIN_NAME, TRACK_NAME)
 		.subscribe(
 			new Action1<SampleTrackItem>() {
 				@Override
