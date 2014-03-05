@@ -2,11 +2,23 @@ package com.cisco.vss.rx.java;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.*;
@@ -40,16 +52,46 @@ public class Conversions {
 	    protected abstract T2 convert(T1 message) throws Throwable;	    
 	    
 	};
+
+	static private final JsonSerializer<Date> ser = new JsonSerializer<Date>() {
+
+		@Override
+		public JsonElement serialize(Date src, Type typeOfSrc,
+				JsonSerializationContext context) {
+		    return src == null ? null : new JsonPrimitive(src.getTime());
+		}
+	};
+	
+	static private final JsonDeserializer<Date> deser = new JsonDeserializer<Date>() {
+
+		@Override
+		public Date deserialize(JsonElement json, Type typeOfT,
+				JsonDeserializationContext context)
+				throws JsonParseException {
+			return json == null ? null : new Date(json.getAsLong());			}
+	};
+
+	static private final Gson gson = new GsonBuilder()
+	   .registerTypeAdapter(Date.class, ser)
+	   .registerTypeAdapter(Date.class, deser).create();
 	
 	public static <R> Converter<String,R> jsonString2Object(final Class<R> clazz) {
 		return new Converter<String, R>() {
-			final Gson gson = new Gson();
 			protected R convert(String message) throws Throwable {
 				return gson.fromJson(message, clazz);
 			}
 		};
 	}
 
+	public static <T> Func1<T, String> object2JsonString(final Class<T> clazz) {
+		return new Func1<T, String>() {
+			@Override
+			public String call(T src) {
+				return gson.toJson(src);
+			}
+		};
+	}
+	
 	public static Converter<String, Matcher> parseString(final String type, final String sPattern) {
 		final Pattern pattern = Pattern.compile(sPattern);
 		

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/main/scala"/>
 	<classpathentry kind="src" path="src/test/scala"/>
-	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/examples/scala"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER" exported="true"/>
 	<classpathentry kind="src" path="/lunarrx-core" exported="true"/>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.0-RC6/6b18d7b6dfe8d4f05aec51e9e19edb1e7f877b0c/rxjava-core-0.17.0-RC6-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.0-RC6/456fb4cd278d41abb5947d70b88a893a70a0a503/rxjava-core-0.17.0-RC6.jar" exported="true">

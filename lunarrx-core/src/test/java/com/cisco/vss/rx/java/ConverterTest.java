@@ -4,12 +4,9 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.regex.Matcher;
-
 import org.junit.Test;
-
-import com.google.gson.Gson;
-
 import rx.functions.Action1;
 import static com.cisco.vss.rx.java.Conversions.*;
 
@@ -69,9 +66,11 @@ public class ConverterTest {
     }
     
     private class TestData {
+    	private Date    d;
     	private Integer x;
     	private String  y;
     	public TestData(final Integer x, final String y) {
+    		this.d = new Date();
     		this.x = x;
     		this.y = y;
     	}
@@ -81,18 +80,21 @@ public class ConverterTest {
     	public String getY() {
     		return this.y;
     	}
+    	public Date getD() {
+    		return d;
+    	}
     }
     @Test
-    public void testJsonString2Object() {
+    public void testJsonConversion() {
     	final TestData data   = new TestData(123,"abcdefg");
-    	final Gson     gson   = new Gson();
-    	final String   json   = gson.toJson(data);
+    	final String   json   = object2JsonString(TestData.class).call(data);
     	jsonString2Object(TestData.class).call(json).subscribe(
     		new Action1<TestData>(){
     			@Override
     			public void call(TestData t1) {
     				assertEquals(new Integer(123), t1.getX());
     				assertEquals("abcdefg", t1.getY());
+    				assertTrue(new Date().after(t1.getD()));
     			}	
     		}
     	);   

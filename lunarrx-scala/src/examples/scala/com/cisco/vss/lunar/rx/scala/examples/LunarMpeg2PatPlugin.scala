@@ -32,7 +32,7 @@ object LunarMpeg2PatPlugin {
               entry => println("0x%04X -> 0x%04X".format(entry.programNumber, entry.pid)) 
           )
         }
-        ,err => println(err.getMessage())
+        ,err => println(err)
        ,() => println("Unexpected EOF")        
     )    
   }
