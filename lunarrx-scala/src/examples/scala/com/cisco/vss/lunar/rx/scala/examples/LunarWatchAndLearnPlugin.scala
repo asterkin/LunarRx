@@ -1,6 +1,7 @@
 package com.cisco.vss.lunar.rx.scala.examples
 
 import com.cisco.vss.lunar.rx.plugin.scala.Lunar
+import com.cisco.vss.lunar.rx.plugin.schema.SubtitlesTrackItem
 
 object LunarWatchAndLearnPlugin {
   def main(args: Array[String]): Unit = {
@@ -11,7 +12,7 @@ object LunarWatchAndLearnPlugin {
     val SOURCE_ID    = "1"
     val INPUT_PLUGIN = "subtitletext"
     val INPUT_TRACK  = "subtitles"
-    val ts           = lunar.getInputTrackItemStream[SubtitlesTrackItem](SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)
+    val ts           = lunar.getInputTrackItemStream(classOf[SubtitlesTrackItem], SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)
     
     ts
 //    .map(p => TsPacket(p))
@@ -23,10 +24,12 @@ object LunarWatchAndLearnPlugin {
 //    //TODO: write Pat back to Lunar?
     .subscribe(
         sub => {
-          println("New subtitles record")
-          println(sub)
+          println(sub.getTime(), sub.getPts())
+          println(sub.getText())
         }
-        ,err => println(err)
+        ,err => {
+          println("Error!",err)
+        }
        ,() => println("Unexpected EOF")        
     )    
   }

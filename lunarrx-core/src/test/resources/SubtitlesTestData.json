@@ -1,0 +1,29 @@
+{
+ 'time' : 1394018331791,
+ 'source' : 1,
+ 'vendor' : 'subtitletext',
+ 'data' : 
+ {
+  'lines' : [     
+    {
+        'text' : 'dictate you not arrive'
+    },
+    
+    {
+        'text' : '
+'
+    },
+    
+    {
+        'text' : 'empty--handed.'
+    },
+    
+    {
+        'text' : '
+'
+    } ],
+  'pts' : '290202171'
+ },
+ 'track' : 'subtitles',
+ 'version' : 1
+}
