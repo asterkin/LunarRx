@@ -8,10 +8,10 @@ import com.cisco.vss.rx.java._
 abstract class Lunar {
 	private [scala] val asJavaLunar: core.Lunar
 	
-	def getInputTrackStream(sourceID: String, pluginName: String, trackName: String): Observable[Array[Byte]] =
+	def getInputTrackStream(sourceID: Integer, pluginName: String, trackName: String): Observable[Array[Byte]] =
 		toScalaObservable(asJavaLunar.getInputTrackStream(sourceID,pluginName, trackName))
 
-	def getInputTrackItemStream[T](clazz: Class[T], sourceID: String, pluginName: String, trackName: String): Observable[T] = {
+	def getInputTrackItemStream[T](clazz: Class[T], sourceID: Integer, pluginName: String, trackName: String): Observable[T] = {
 		toScalaObservable(asJavaLunar.getInputTrackItemStream(clazz, sourceID,pluginName, trackName))
 	}
 	

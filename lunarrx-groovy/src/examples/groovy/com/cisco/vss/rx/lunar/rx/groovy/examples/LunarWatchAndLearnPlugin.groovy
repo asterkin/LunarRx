@@ -10,7 +10,7 @@ class LunarWatchAndLearnPlugin {
 		final PORT         = Integer.parseInt(args[1])
 		final DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441"
 		final lunar        = new Lunar(HOST, PORT, DEVELOPER_ID)
-		final SOURCE_ID    = "1"
+		final SOURCE_ID    = 1
 		final INPUT_PLUGIN = "subtitletext"
 		final INPUT_TRACK  = "subtitles"
 		final ts           = lunar.getInputTrackItemStream(SubtitlesTrackItem.class, SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)

@@ -12,7 +12,7 @@ object LunarMpeg2PatPlugin {
     val PORT         = Integer.parseInt(args(1))
     val DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441"
     val lunar        = Lunar(HOST, PORT, DEVELOPER_ID)
-    val SOURCE_ID    = "1"
+    val SOURCE_ID    = 1
     val INPUT_PLUGIN = "source_stream"
     val INPUT_TRACK  = "stream"
     val ts           = lunar.getInputTrackStream(SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)

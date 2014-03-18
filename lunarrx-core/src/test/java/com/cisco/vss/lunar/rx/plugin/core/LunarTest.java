@@ -16,9 +16,9 @@ import static com.cisco.vss.rx.java.Conversions.*;
 import rx.functions.Action1;
 
 public class LunarTest {
-	private static final String LUNAR_HOST   = "localhost";
-	private static final String DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
-	private static final String SOURCE_ID    = "1";
+	private static final String  LUNAR_HOST   = "localhost";
+	private static final String  DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
+	private static final Integer SOURCE_ID    = 1;
 	
 	@Test
 	public void testInputTrackStream() throws IOException, InterruptedException {

@@ -34,7 +34,7 @@ public class Lunar {
 		}
 	};
 	
-	public Observable<byte[]> getInputTrackStream(final String sourceID, final String pluginName, final String trackName) throws MalformedURLException {
+	public Observable<byte[]> getInputTrackStream(final Integer sourceID, final String pluginName, final String trackName) throws MalformedURLException {
 		final TrackInfo template = new TrackInfo(sourceID,pluginName,trackName);
 		final URL       url      = new URL("http",hostName,port,template.httpGetRequestPath());
 		return Observable.from(url)
@@ -47,7 +47,7 @@ public class Lunar {
 				.flatMap(readStream);
 	}
 	
-	public <T> Observable<T> getInputTrackItemStream(final Class<T> clazz, final String sourceID, final String pluginName, final String trackName) throws MalformedURLException {
+	public <T> Observable<T> getInputTrackItemStream(final Class<T> clazz, final Integer sourceID, final String pluginName, final String trackName) throws MalformedURLException {
 		return getInputTrackStream(sourceID, pluginName, trackName)
 		   .map(byte2String)
 		   .flatMap(jsonString2Object(clazz));
