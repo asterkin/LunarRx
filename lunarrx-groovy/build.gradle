@@ -10,16 +10,17 @@ dependencies {
 }
 
 sourceSets {
-  main {
-      groovy {
-          srcDir 'src/main/groovy'
-      }
-  }
-  test {
-      groovy {
-          srcDir 'src/test/groovy'
-      }
-  }
+//TODO: add when/if you have something. Git does not commit empty folders
+//  main {
+//      groovy {
+//          srcDir 'src/main/groovy'
+//      }
+//  }
+//  test {
+//      groovy {
+//          srcDir 'src/test/groovy'
+//      }
+//  }
   examples {
       groovy {
           srcDir 'src/examples/groovy'

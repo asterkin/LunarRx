@@ -16,11 +16,12 @@ sourceSets {
           srcDir 'src/main/scala'
       }
   }
-  test {
-      scala {
-          srcDir 'src/test/scala'
-      }
-  }
+//TODO: add when/if you have something. Git does not commit empty folders
+//  test {
+//      scala {
+//          srcDir 'src/test/scala'
+//      }
+//  }
   examples {
       scala {
           srcDir 'src/examples/scala'
