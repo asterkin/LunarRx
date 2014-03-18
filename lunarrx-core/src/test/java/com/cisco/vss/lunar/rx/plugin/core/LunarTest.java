@@ -2,19 +2,16 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.lunar.rx.mq.LunarMQException.StreamingError.LMQ_OK;
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.Date;
-
 import org.junit.Test;
-
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
 import com.cisco.vss.lunar.rx.plugin.core.Lunar;
 import com.cisco.vss.lunar.rx.plugin.core.TrackInfo;
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
 import com.cisco.vss.rx.java.HttpServerStub;
 import com.cisco.vss.rx.java.ObjectHolder;
-import com.google.gson.Gson;
+import static com.cisco.vss.rx.java.Conversions.*;
 
 import rx.functions.Action1;
 
@@ -22,7 +19,6 @@ public class LunarTest {
 	private static final String LUNAR_HOST   = "localhost";
 	private static final String DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 	private static final String SOURCE_ID    = "1";
-	private static final Gson   gson         = new Gson();
 	
 	@Test
 	public void testInputTrackStream() throws IOException, InterruptedException {
@@ -39,7 +35,7 @@ public class LunarTest {
 		response.result = LunarResponseResult.OK;
 		response.data   = new TrackInfo[]{trackInfo};
 		final byte[][]          HTTP_RESPONSES = new byte[][]{
-			gson.toJson(response).getBytes()
+			object2JsonString(TrackInfoResponse.class).call(response).getBytes()
 		};
 		final HttpServerStub lunarServer = new HttpServerStub(HTTP_RESPONSES);
 		final Lunar          lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
@@ -88,7 +84,7 @@ public class LunarTest {
 			"",
 			"Second line"
 		};
-		final String itemJson = gson.toJson(item);
+		final String itemJson = object2JsonString(SampleTrackItem.class).call(item);
 		final byte[][] MQ_RESPONSES  = new byte[][]{
 				LMQ_OK.GetMessage().getBytes(),
 				itemJson.getBytes()
@@ -100,7 +96,7 @@ public class LunarTest {
 		response.result = LunarResponseResult.OK;
 		response.data   = new TrackInfo[]{trackInfo};
 		final byte[][]          HTTP_RESPONSES = new byte[][]{
-			gson.toJson(response).getBytes()
+			object2JsonString(TrackInfoResponse.class).call(response).getBytes()
 		};
 		final HttpServerStub lunarServer    = new HttpServerStub(HTTP_RESPONSES);
 		final Lunar          lunar          = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);

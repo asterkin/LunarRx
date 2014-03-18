@@ -3,33 +3,33 @@
 	<classpathentry kind="src" path="src/main/groovy"/>
 	<classpathentry kind="src" path="src/test/groovy"/>
 	<classpathentry kind="src" path="src/examples/groovy"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="src" path="/lunarrx-core"/>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.0-RC6/456fb4cd278d41abb5947d70b88a893a70a0a503/rxjava-core-0.17.0-RC6.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.0-RC6/6b18d7b6dfe8d4f05aec51e9e19edb1e7f877b0c/rxjava-core-0.17.0-RC6-sources.jar">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT" exported="true"/>
+	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="/lunarrx-core" exported="true"/>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.1/4b4b1a2318fe855c24f5b83ab07eeb840ee5c721/rxjava-core-0.17.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.1/b1651e57f4a403b2475fdaed35a2843fa689bdf6/rxjava-core-0.17.1.jar" exported="true">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.0-RC6/8801749299a219349eabdec67690fe8556abf324/rxjava-core-0.17.0-RC6-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.1/64c72dec70c9495512104d37d8962152bdb07af5/rxjava-core-0.17.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.0-RC6/9ee01c654f06eb8e9af807ebbcc2ffedc8633b1d/rxjava-groovy-0.17.0-RC6.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.0-RC6/ab63638b89cba4843a4d1fba4fcad75b9d6cb59d/rxjava-groovy-0.17.0-RC6-sources.jar">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.1/66eed98edd2cc90cbda9bccbcc5ec59bef89214/rxjava-groovy-0.17.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.1/7f3ecb61ffc263613f8e023bc4093d10fea2b68f/rxjava-groovy-0.17.1.jar" exported="true">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.0-RC6/dc2047d24a35fec817a37a3a6e5bc75453956e00/rxjava-groovy-0.17.0-RC6-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.1/c7b1e47000bee0c7469b678922448413d5206e43/rxjava-groovy-0.17.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar" exported="true">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/f3289e8097c0013b711d058b563064c3bded4423/junit-4.11-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.2.2/7a917c8329fe11445de19c2ca28fd2ca586830da/groovy-all-2.2.2.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.2.2/4496b02f0e030b7b485aa0964eb16f223940ee86/groovy-all-2.2.2-sources.jar">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.2.2/4496b02f0e030b7b485aa0964eb16f223940ee86/groovy-all-2.2.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.2.2/7a917c8329fe11445de19c2ca28fd2ca586830da/groovy-all-2.2.2.jar" exported="true">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.2.2/3ef2795cb5817c24bf9c7f712ed8cebf82f6bb8e/groovy-all-2.2.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" exported="true">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/ad09811315f1d4f5756986575b0ea16b99cd686f/hamcrest-core-1.3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
-	<classpathentry kind="output" path="bin"/>
 </classpath>
