@@ -120,14 +120,14 @@ public class Conversions {
 			if (connection.getResponseCode() != 200)
 				throw new Exception("Got HTTP error code [" + connection.getResponseCode() + "]");
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String inputLine;
-			String result = "";
+			String        inputLine;
+			StringBuilder result = new StringBuilder();
 
 			while ((inputLine = in.readLine()) != null)
-				result += inputLine;
+				result.append(inputLine);
 			in.close();
 			connection.disconnect();				
-			return result;
+			return result.toString();
 		}
 	};
 };
