@@ -33,6 +33,36 @@ public class Lunar {
 			return info.url;
 		}
 	};
+
+	private static final Converter<UpdatesTracksResponse, UpdatesTracksResponse.Data> getResultData1 = new Converter<UpdatesTracksResponse, UpdatesTracksResponse.Data>() {
+		@Override
+		protected UpdatesTracksResponse.Data convert(final UpdatesTracksResponse message)	throws Throwable {
+			if(OK != message.result) throw new Exception("Lunar Response is NOT OK");
+			return message.data; //TODO: more generic?
+		}
+	};
+	
+
+	private static final Func1<UpdatesTracksResponse.Data, String> getURL1 = new Func1<UpdatesTracksResponse.Data, String>() {
+		@Override
+		public String call(final UpdatesTracksResponse.Data data) {
+			return data.url;
+		}
+	};
+	
+	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() throws MalformedURLException {
+		final URL url = new URL("http",hostName,port,"/updates/tracks");
+		return Observable.from(url)
+				.flatMap(synchHttpGet)
+				.flatMap(jsonString2Object(UpdatesTracksResponse.class))
+				.flatMap(getResultData1)
+				.map(getURL1)
+				.flatMap(parseMQUrl)
+				.flatMap(connectToServer)
+				.flatMap(readStream)
+				.map(byte2String)
+				.flatMap(jsonString2Object(TracksStatusUpdate.class));		
+	}
 	
 	public Observable<byte[]> getInputTrackStream(final Integer sourceID, final String pluginName, final String trackName) throws MalformedURLException {
 		final TrackInfo template = new TrackInfo(sourceID,pluginName,trackName);
