@@ -3,7 +3,7 @@ import rx.lang.scala._
 import scala.collection.mutable.WrappedArray
 
 abstract class PsiPat {
-	sealed class Entry(val programNumber: Short, val pid: Short) {
+	sealed class Entry(val programNumber: Integer, val pid: Integer) {
     override def equals(other: Any) = other match {
 	    case that: PsiPat#Entry => (that.programNumber == this.programNumber) && (that.pid == this.pid)
 	    case _                  => false
@@ -12,22 +12,22 @@ abstract class PsiPat {
 	}
 	val table: WrappedArray[Entry]
 	
-	def byProgramNumber(programNumber: Short): Option[Entry] = table.find(e => e.programNumber == programNumber) 
-	def byPid(pid: Short): Option[Entry]                     = table.find(e => e.pid == pid) 
+	def byProgramNumber(programNumber: Integer): Option[Entry] = table.find(e => e.programNumber == programNumber) 
+	def byPid(pid: Integer): Option[Entry]                     = table.find(e => e.pid == pid) 
 	
-	def getNitPid: Short = byProgramNumber(0) match {
+	def getNitPid: Integer = byProgramNumber(0) match {
 	  case Some(entry) => entry.pid
 	  case None        => 0x0010
 	}
 	
-	def isPmtPid(pid: Short): Boolean = byPid(pid) match {
+	def isPmtPid(pid: Integer): Boolean = byPid(pid) match {
 	  case Some(entry) => true
 	  case None        => false
 	}
 	
-	def getPmtPid(programNumber: Short): Integer = byProgramNumber(programNumber) match {
+	def getPmtPid(programNumber: Integer): Integer = byProgramNumber(programNumber) match {
 	  case Some(entry) => entry.pid
-	  case None        => -1
+	  case None        => 0xFFFF
 	}
 	
 	def asObservable: Observable[Entry] = Observable.from(table)
@@ -41,13 +41,11 @@ abstract class PsiPat {
 	  generatePat(payload, new Array[Entry](0))
 	}
 	
-	private def makeShort(b1: Byte, b2: Byte): Short = ((b1<<8) | b2).asInstanceOf[Short]
-	
     private def generatePat(payload: WrappedArray[Byte], result: WrappedArray[Entry]): WrappedArray[Entry] = {
 	  if(0 == payload.length) return result
-	  val programNumber = makeShort(payload(0),payload(1))
-	  if(-1 == programNumber) return result
-	  val pid = makeShort(payload(2), payload(3))
+	  val programNumber = UnsignedShort(payload(0),payload(1))
+	  if(0xFFFF == programNumber) return result
+	  val pid = UnsignedShort(payload(2), payload(3))
 	  generatePat(payload.slice(4,payload.length), result :+ new Entry(programNumber, pid))	    		    
 	}
 }

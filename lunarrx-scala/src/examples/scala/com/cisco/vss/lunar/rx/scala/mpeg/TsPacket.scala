@@ -1,14 +1,22 @@
 package com.cisco.vss.lunar.rx.scala.mpeg
 import scala.collection.mutable.WrappedArray
 
+object UnsignedByte {
+  def apply(b: Byte): Integer = (0xFF & b)
+}
+
+object UnsignedShort {
+  def apply(b1: Byte, b2: Byte): Integer = (UnsignedByte(b1)*256 + UnsignedByte(b2))
+}
+
 abstract class TsPacket {
   private [scala] val packet : WrappedArray[Byte]
   
-  def hasError: Boolean        = (0 != (packet(1) & 0x80))
-  def hasPayloadStart: Boolean = (0 != (packet(1) & 0x40))
-  def hasPriority: Boolean     = (0 != (packet(1) & 0x20))
+  def hasError: Boolean        = (0 != (UnsignedByte(packet(1)) & 0x80))
+  def hasPayloadStart: Boolean = (0 != (UnsignedByte(packet(1)) & 0x40))
+  def hasPriority: Boolean     = (0 != (UnsignedByte(packet(1)) & 0x20))
   
-  def pid : Integer = ((packet(1)&0x1F) << 8) | packet(2)
+  def pid : Integer = 0x1FFF & UnsignedShort(packet(1), packet(2))
   
   def payload : WrappedArray[Byte] = {
     val offset = payloadOffset
@@ -16,11 +24,11 @@ abstract class TsPacket {
   }
   
   private def payloadOffset: Integer = {
-    if (adaptationFieldExist) 4+packet(4) else 4
+    if (adaptationFieldExist) 4 + UnsignedByte(packet(4)) else 4
   }
   
   private def adaptationFieldExist: Boolean = {
-    0 != (packet(3) & 0x20)
+    0 != (UnsignedByte(packet(3)) & 0x20)
   }
   
   override def equals(other: Any) = other match {
