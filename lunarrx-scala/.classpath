@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/main/scala"/>
 	<classpathentry kind="src" path="src/examples/scala"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/test/scala"/>
 	<classpathentry exported="true" kind="src" path="/lunarrx-core"/>
 	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.1/b1651e57f4a403b2475fdaed35a2843fa689bdf6/rxjava-core-0.17.1.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.1/4b4b1a2318fe855c24f5b83ab07eeb840ee5c721/rxjava-core-0.17.1-sources.jar">
 		<attributes>
