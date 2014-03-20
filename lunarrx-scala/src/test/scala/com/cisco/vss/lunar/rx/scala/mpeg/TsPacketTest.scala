@@ -8,8 +8,8 @@ class TsPacketTest extends JUnitSuite {
   @Test def correctPacket() {
     var buf = new Array[Byte](188)
     buf(0)  = 0x47
-    buf(1)  = 0x60
-    buf(2)  = 0x0D
+    buf(1)  = 0x61
+    buf(2)  = 0xFD.toByte
     buf(3)  = 0x01
     for(i <- 4 until 188)
       buf(i) = i.toByte
@@ -18,7 +18,7 @@ class TsPacketTest extends JUnitSuite {
     assertFalse(packet.hasError)
     assertTrue(packet.hasPayloadStart)
     assertTrue(packet.hasPriority)
-    assertEquals(13, packet.pid)
+    assertEquals(0x1FD, packet.pid)
     assertEquals(184, packet.payload.length)
     assertEquals(187.toByte, packet.payload(183))
   }
