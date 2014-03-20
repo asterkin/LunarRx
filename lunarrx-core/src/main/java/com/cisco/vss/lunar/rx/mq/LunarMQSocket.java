@@ -4,7 +4,7 @@ package com.cisco.vss.lunar.rx.mq;
 import java.io.*;
 import java.net.Socket;
 
-class LunarMQSocket
+public class LunarMQSocket
 {        
     private final Socket               socket;
     private final BufferedInputStream  inputStream;
