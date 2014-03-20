@@ -2,17 +2,21 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.lunar.rx.mq.LunarMQException.StreamingError.LMQ_OK;
 import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.Date;
+
+import org.junit.Ignore;
 import org.junit.Test;
+
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
 import com.cisco.vss.lunar.rx.plugin.core.Lunar;
 import com.cisco.vss.lunar.rx.plugin.core.TrackInfo;
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
 import com.cisco.vss.rx.java.HttpServerStub;
 import com.cisco.vss.rx.java.ObjectHolder;
-import static com.cisco.vss.rx.java.Conversions.*;
 
+import static com.cisco.vss.rx.java.Conversions.*;
 import rx.functions.Action1;
 
 public class LunarTest {
@@ -20,6 +24,7 @@ public class LunarTest {
 	private static final String  DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 	private static final Integer SOURCE_ID    = 1;
 	
+	@Ignore //TODO
 	@Test
 	public void testInputTrackStream() throws IOException, InterruptedException {
 		final String PLUGIN_NAME     = "source_stream";
@@ -73,6 +78,7 @@ public class LunarTest {
 		public Long     pts;
 	}
 	
+	@Ignore //TODO
 	@Test
 	public void testInputTrackItemStream() throws IOException, InterruptedException {
 		final String PLUGIN_NAME   = "subtitletext";
@@ -95,7 +101,7 @@ public class LunarTest {
 		final TrackInfoResponse response = new TrackInfoResponse();
 		response.result = LunarResponseResult.OK;
 		response.data   = new TrackInfo[]{trackInfo};
-		final byte[][]          HTTP_RESPONSES = new byte[][]{
+		final byte[][] HTTP_RESPONSES = new byte[][]{
 			object2JsonString(TrackInfoResponse.class).call(response).getBytes()
 		};
 		final HttpServerStub lunarServer    = new HttpServerStub(HTTP_RESPONSES);

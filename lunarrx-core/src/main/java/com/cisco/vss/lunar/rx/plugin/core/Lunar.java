@@ -7,6 +7,7 @@ import rx.Observable;
 import rx.functions.Func1;
 import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarResponseResult.*;
+import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
 public class Lunar {
 	private final String hostName;
@@ -63,14 +64,53 @@ public class Lunar {
 				.map(byte2String)
 				.flatMap(jsonString2Object(TracksStatusUpdate.class));		
 	}
+
+	private static final Func1<TracksStatusUpdate, Boolean> checkStatus(final TrackStatus status) {
+		return new Func1<TracksStatusUpdate, Boolean>() {
+			@Override
+			public Boolean call(final TracksStatusUpdate update) {
+				return update.status.equals(status);
+			}
+		};
+	}
+
+	private static final Func1<TracksStatusUpdate, Observable<TrackInfo>> getTracks = new Func1<TracksStatusUpdate, Observable<TrackInfo>>() {
+		@Override
+		public Observable<TrackInfo> call(final TracksStatusUpdate update) {
+			return Observable.from(update.list);
+		}
+	};
 	
-	public Observable<byte[]> getInputTrackStream(final Integer sourceID, final String pluginName, final String trackName) throws MalformedURLException {
+	private static final Func1<TrackInfo, Boolean> findTrack(final TrackInfo template) {
+		return new Func1<TrackInfo, Boolean>() {
+			@Override
+			public Boolean call(final TrackInfo info) {
+				return    info.sourceID.equals(template.sourceID)
+					   && info.pluginName.equals(template.pluginName)
+					   && info.trackName.equals(template.trackName);
+			}
+		};
+	}
+	
+	public Observable<TrackInfo> getTrackInfoFromUpdate(final Integer sourceID, final String pluginName, final String trackName) throws MalformedURLException {
+		return getTracksStatusUpdateStream()
+			   .filter(checkStatus(TRACK_IS_UP))
+			   .flatMap(getTracks)
+			   .filter(findTrack(new TrackInfo(sourceID,pluginName,trackName)));
+	}
+
+	public Observable<TrackInfo> getTrackInfoFromRest(final Integer sourceID, final String pluginName, final String trackName) throws MalformedURLException {
 		final TrackInfo template = new TrackInfo(sourceID,pluginName,trackName);
 		final URL       url      = new URL("http",hostName,port,template.httpGetRequestPath());
 		return Observable.from(url)
 				.flatMap(synchHttpGet)
 				.flatMap(jsonString2Object(TrackInfoResponse.class))
-				.flatMap(getResultData)
+				.flatMap(getResultData);		
+	}
+	
+	public Observable<byte[]> getInputTrackStream(final Integer sourceID, final String pluginName, final String trackName) throws MalformedURLException {
+//		return Observable.amb(getTrackInfoFromUpdate(sourceID,pluginName,trackName),
+				return getTrackInfoFromRest(sourceID,pluginName,trackName)
 				.map(getURL)
 				.flatMap(parseMQUrl)
 				.flatMap(connectToServer)
