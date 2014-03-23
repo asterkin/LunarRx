@@ -9,6 +9,25 @@ import com.cisco.vss.lunar.rx.mq.LunarMQSocket;
 
 public class LunarConversions extends LunarMQConversions {
 
+	public static final <R> Func1<R[], Observable<R>> flatten(Class<R> clazz) {
+		return new Func1<R[], Observable<R>>() {
+			@Override
+			public Observable<R> call(R[] arr) {
+				return Observable.from(arr);
+			}
+		};
+	}
+	
+ 	public static final <T extends LunarResponse<R>, R> Converter<T, R[]> getData(Class<R> clazz) {
+		return new Converter<T, R[]>() {
+			@Override
+			protected R[] convert(final T response) throws Throwable {
+				if(LunarResponse.ResultType.OK != response.result) throw new Exception("Lunar Response is NOT OK");
+				return response.data;
+			}
+		};
+	}
+	
 	public static final Converter<TrackInfoResponse, TrackInfo> getResultData = new Converter<TrackInfoResponse, TrackInfo>() {
 		@Override
 		protected TrackInfo convert(final TrackInfoResponse message)	throws Throwable {

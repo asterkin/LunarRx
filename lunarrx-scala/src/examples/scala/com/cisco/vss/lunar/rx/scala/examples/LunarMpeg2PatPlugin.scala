@@ -16,7 +16,7 @@ object LunarMpeg2PatPlugin {
     val INPUT_PLUGIN = "source_stream"
     val INPUT_TRACK  = "stream"
     val ts           = lunar.getInputTrackStream(SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)
-    
+ 
     ts
     .map(p => TsPacket(p))
     .filter(tsp => !tsp.hasError)

@@ -17,6 +17,20 @@ public class Lunar {
 		this.developerID = developerID;
 	}
 	
+	private <R, T extends LunarResponse<R>> Observable<R> getResponse(final String path, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
+		final URL  url = new URL("http",hostName,port, path);
+		
+		return Observable.from(url)
+				.flatMap(synchHttpGet)
+				.flatMap(jsonString2Object(responseType))
+				.flatMap(getData(dataType))
+				.flatMap(flatten(dataType));	
+	}
+	
+	public Observable<LunarSource> getSources() throws MalformedURLException {
+		return getResponse("/sources", LunarSource.Response.class, LunarSource.class);
+	}
+	
 	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() throws MalformedURLException {
 		final URL url = new URL("http",hostName,port,"/updates/tracks");
 		return Observable.from(url)
