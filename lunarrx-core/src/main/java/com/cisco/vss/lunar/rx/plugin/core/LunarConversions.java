@@ -18,7 +18,7 @@ public class LunarConversions extends LunarMQConversions {
 		};
 	}
 	
- 	public static final <T extends LunarResponse<R>, R> Converter<T, R[]> getData(Class<R> clazz) {
+ 	public static final <T extends LunarResponse<R>, R> Converter<T, R[]> getResultData(Class<R> clazz) {
 		return new Converter<T, R[]>() {
 			@Override
 			protected R[] convert(final T response) throws Throwable {

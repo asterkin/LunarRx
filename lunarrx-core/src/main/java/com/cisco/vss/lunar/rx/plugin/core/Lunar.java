@@ -23,7 +23,7 @@ public class Lunar {
 		return Observable.from(url)
 				.flatMap(synchHttpGet)
 				.flatMap(jsonString2Object(responseType))
-				.flatMap(getData(dataType))
+				.flatMap(getResultData(dataType))
 				.flatMap(flatten(dataType));	
 	}
 	
