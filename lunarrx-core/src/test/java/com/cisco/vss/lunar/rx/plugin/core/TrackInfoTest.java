@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.cisco.vss.lunar.rx.plugin.core.TrackInfo;
+import com.cisco.vss.lunar.rx.plugin.core.LunarTrack;
 import com.google.gson.Gson;
 
 public class TrackInfoTest {
@@ -23,7 +23,7 @@ public class TrackInfoTest {
 		+"}"
 				;
 		final Gson      gson      = new Gson();
-		final TrackInfo trackInfo = gson.fromJson(input, TrackInfo.class);
+		final LunarTrack trackInfo = gson.fromJson(input, LunarTrack.class);
 		assertEquals(new Integer(1234),              trackInfo.sourceID);
 		assertEquals("LunarMQ",                      trackInfo.protocol);
 		assertEquals("track1",                       trackInfo.trackName);
@@ -35,7 +35,7 @@ public class TrackInfoTest {
 
 	@Test
 	public void testHttpRequestArgs() {
-		final TrackInfo trackInfo = new TrackInfo(1234, "plugin1", "track1");
+		final LunarTrack trackInfo = new LunarTrack(1234, "plugin1", "track1");
 		final String    path      = trackInfo.httpGetRequestPath();
 		final String    EXPECTED  = "/tracks?sourceID=1234&pluginName=plugin1&trackName=track1";
 
@@ -44,7 +44,7 @@ public class TrackInfoTest {
 	
 	@Test
 	public void testStreamerPath() {
-		final TrackInfo trackInfo    = new TrackInfo(1234, "plugin1", "track1");
+		final LunarTrack trackInfo    = new LunarTrack(1234, "plugin1", "track1");
 	    final String    DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 
 		final String    path      = trackInfo.streamerRequestPath(DEVELOPER_ID);

@@ -83,14 +83,6 @@ public class Conversions {
 		};
 	}
 
-	public static <R> Converter<String,R> jsonString2Object(final Type type) {
-		return new Converter<String, R>() {
-			protected R convert(String message) throws Throwable {
-				return gson.fromJson(message, type);
-			}
-		};
-	}
-	
 	public static <T> Func1<T, String> object2JsonString(final Class<T> clazz) {
 		return new Func1<T, String>() {
 			@Override

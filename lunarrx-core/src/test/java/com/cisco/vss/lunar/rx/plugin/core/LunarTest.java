@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
 import com.cisco.vss.lunar.rx.plugin.core.Lunar;
-import com.cisco.vss.lunar.rx.plugin.core.TrackInfo;
+import com.cisco.vss.lunar.rx.plugin.core.LunarTrack;
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
 import com.cisco.vss.rx.java.HttpServerStub;
 import com.cisco.vss.rx.java.ObjectHolder;
@@ -34,11 +34,11 @@ public class LunarTest {
 				"ABCDEFG".getBytes()
 		};
 		final LunarMQServerStub mqServer    = new LunarMQServerStub(MQ_RESPONSES);
-		final TrackInfo         trackInfo   = new TrackInfo(SOURCE_ID,PLUGIN_NAME,TRACK_NAME);
+		final LunarTrack         trackInfo   = new LunarTrack(SOURCE_ID,PLUGIN_NAME,TRACK_NAME);
 		trackInfo.url = String.format("localhost:%d/stream:2.2041.9211", mqServer.startServer());
 		final TrackInfoResponse response = new TrackInfoResponse();
 		response.result = LunarResponseResult.OK;
-		response.data   = new TrackInfo[]{trackInfo};
+		response.data   = new LunarTrack[]{trackInfo};
 		final byte[][]          HTTP_RESPONSES = new byte[][]{
 			object2JsonString(TrackInfoResponse.class).call(response).getBytes()
 		};
@@ -96,11 +96,11 @@ public class LunarTest {
 				itemJson.getBytes()
 		};
 		final LunarMQServerStub mqServer    = new LunarMQServerStub(MQ_RESPONSES);
-		final TrackInfo         trackInfo   = new TrackInfo(SOURCE_ID,PLUGIN_NAME,TRACK_NAME);
+		final LunarTrack         trackInfo   = new LunarTrack(SOURCE_ID,PLUGIN_NAME,TRACK_NAME);
 		trackInfo.url = String.format("localhost:%d/subtitletext:subtitles:1", mqServer.startServer());
 		final TrackInfoResponse response = new TrackInfoResponse();
 		response.result = LunarResponseResult.OK;
-		response.data   = new TrackInfo[]{trackInfo};
+		response.data   = new LunarTrack[]{trackInfo};
 		final byte[][] HTTP_RESPONSES = new byte[][]{
 			object2JsonString(TrackInfoResponse.class).call(response).getBytes()
 		};

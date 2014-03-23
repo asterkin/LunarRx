@@ -28,17 +28,24 @@ public class LunarConversions extends LunarMQConversions {
 		};
 	}
 	
-	public static final Converter<TrackInfoResponse, TrackInfo> getResultData = new Converter<TrackInfoResponse, TrackInfo>() {
+ 	public static final Func1<LunarUrlData, String> getUrl = new Func1<LunarUrlData, String>() {
 		@Override
-		protected TrackInfo convert(final TrackInfoResponse message)	throws Throwable {
+		public String call(final LunarUrlData data) {
+			return data.url;
+		}
+ 	};
+ 	
+	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>() {
+		@Override
+		protected LunarTrack convert(final TrackInfoResponse message)	throws Throwable {
 			if(OK != message.result) throw new Exception("Lunar Response is NOT OK");
 			return message.data[0]; //TODO: more generic?
 		}
 	};
 
-	public static final Func1<TrackInfo, String> getURL = new Func1<TrackInfo, String>() {
+	public static final Func1<LunarTrack, String> getURL = new Func1<LunarTrack, String>() {
 		@Override
-		public String call(final TrackInfo info) {
+		public String call(final LunarTrack info) {
 			return info.url;
 		}
 	};
@@ -68,17 +75,17 @@ public class LunarConversions extends LunarMQConversions {
 		};
 	}
 
-	public static final Func1<TracksStatusUpdate, Observable<TrackInfo>> getTracks = new Func1<TracksStatusUpdate, Observable<TrackInfo>>() {
+	public static final Func1<TracksStatusUpdate, Observable<LunarTrack>> getTracks = new Func1<TracksStatusUpdate, Observable<LunarTrack>>() {
 		@Override
-		public Observable<TrackInfo> call(final TracksStatusUpdate update) {
+		public Observable<LunarTrack> call(final TracksStatusUpdate update) {
 			return Observable.from(update.list);
 		}
 	};
 	
-	public static final Func1<TrackInfo, Boolean> findTrack(final TrackInfo template) {
-		return new Func1<TrackInfo, Boolean>() {
+	public static final Func1<LunarTrack, Boolean> findTrack(final LunarTrack template) {
+		return new Func1<LunarTrack, Boolean>() {
 			@Override
-			public Boolean call(final TrackInfo info) {
+			public Boolean call(final LunarTrack info) {
 				return    info.sourceID.equals(template.sourceID)
 					   && info.pluginName.equals(template.pluginName)
 					   && info.trackName.equals(template.trackName);

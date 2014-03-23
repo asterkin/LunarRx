@@ -2,7 +2,7 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TrackInfo {
+public class LunarTrack {
 	public Integer sourceID;
 	public String  protocol;
 	@SerializedName("track")
@@ -13,8 +13,10 @@ public class TrackInfo {
 	@SerializedName("plugin")
 	public String  pluginName;
 	
+	public class Response extends LunarResponse<LunarTrack> {}
+	
 	//TODO: better encapsulation?
-	public TrackInfo(final Integer sourceID, final String pluginName, final String trackName) {
+	public LunarTrack(final Integer sourceID, final String pluginName, final String trackName) {
 		this.sourceID   = sourceID;
 		this.pluginName = pluginName;
 		this.trackName  = trackName;
