@@ -36,6 +36,16 @@ public class LunarConversions extends LunarMQConversions {
 		}
  	};
  	
+ 	public static final <T> Func1<T, LunarNotify<T>> notifyAdd(Class<T> clazz) {
+ 		return new Func1<T, LunarNotify<T>>() {
+			@Override
+			public LunarNotify<T> call(T item) {
+				return new LunarAdd<T>(item);
+			} 			
+ 		};
+ 	}
+ 	
+ 	//So far new App API
 	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>() {
 		@Override
 		protected LunarTrack convert(final TrackInfoResponse message)	throws Throwable {

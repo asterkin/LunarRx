@@ -45,15 +45,15 @@ public class Lunar {
 				.flatMap(jsonString2Object(LunarUrlData.Response.class))
 				.flatMap(getUrlData);
 	}
-		
+	
+	public Observable<LunarNotify<LunarTrack>> getTracksNotify() throws MalformedURLException {
+		return getTracks()
+			   .map(notifyAdd(LunarTrack.class));
+	}
+	
 	//So far new Application API
 	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() throws MalformedURLException {
-		final URL url = new URL("http",hostName,port,"/updates/tracks");
-		return Observable.from(url)
-				.flatMap(synchHttpGet)
-				.flatMap(jsonString2Object(UpdatesTracksResponse.class))
-				.flatMap(getResultData1)
-				.map(getURL1)
+		return getUpdatesUrl("tracks")
 				.flatMap(parseMQUrl)
 				.flatMap(connectToServer)
 				.flatMap(readStream)
