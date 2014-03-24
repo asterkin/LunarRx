@@ -28,10 +28,10 @@ public class LunarAppApiTest {
 		final byte[][] HTTP_RESPONSES = new byte[][]{
 			object2JsonString(LunarSource.Response.class).call(RESPONSE).getBytes()
   	    };
-		final HttpServerStub lunarServer             = new HttpServerStub(HTTP_RESPONSES);
-		final Lunar          lunar                   = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
-		final ObjectHolder<Throwable> error          = new ObjectHolder<Throwable>();
-		final ObjectHolder<List<LunarSource>> result = new ObjectHolder<List<LunarSource>>(new ArrayList<LunarSource>());
+		final HttpServerStub                  lunarServer = new HttpServerStub(HTTP_RESPONSES);
+		final Lunar                           lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final ObjectHolder<Throwable>         error       = new ObjectHolder<Throwable>();
+		final ObjectHolder<List<LunarSource>> result      = new ObjectHolder<List<LunarSource>>(new ArrayList<LunarSource>());
 		
 		lunar.getSources().subscribe(
 				new Action1<LunarSource>() {
@@ -51,5 +51,38 @@ public class LunarAppApiTest {
 		lunarServer.join();
 		assertNull(error.value);
 		assertArrayEquals(RESPONSE.data, result.value.toArray());
+	}
+	
+	@Test
+	public void testGetUpdatesUrl() throws IOException, InterruptedException {
+		final LunarUrlData.Response RESPONSE = new LunarUrlData().new Response();
+		RESPONSE.data = new LunarUrlData();
+		RESPONSE.data.url = "54.195.242.59:7030/sourceUpdates";
+		final byte[][] HTTP_RESPONSES = new byte[][]{
+			object2JsonString(LunarUrlData.Response.class).call(RESPONSE).getBytes()
+  	    };
+		final HttpServerStub lunarServer    = new HttpServerStub(HTTP_RESPONSES);
+		final Lunar          lunar          = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final ObjectHolder<Throwable> error = new ObjectHolder<Throwable>();
+		final ObjectHolder<String>    result= new ObjectHolder<String>();
+		
+		lunar.getUpdatesUrl("sources").subscribe(
+				new Action1<String>() {
+					@Override
+					public void call(final String url) {
+						result.value = url;
+					}
+				},
+				new Action1<Throwable>() {
+					@Override
+					public void call(Throwable err) {
+						error.value = err;
+					}
+
+				}
+		);
+		lunarServer.join();
+		assertNull(error.value);
+		assertEquals(RESPONSE.data.url, result.value);
 	}
 }

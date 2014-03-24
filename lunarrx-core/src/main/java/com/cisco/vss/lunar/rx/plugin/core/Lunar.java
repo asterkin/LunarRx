@@ -17,36 +17,36 @@ public class Lunar {
 		this.developerID = developerID;
 	}
 	
-	private <R, T extends LunarResponse<R>> Observable<R> getResponse(final String path, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
+	private <R, T extends LunarResponse<R[]>> Observable<R> getArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
 		final URL  url = new URL("http",hostName,port, path);
 		
 		return Observable.from(url)
 				.flatMap(synchHttpGet)
 				.flatMap(jsonString2Object(responseType))
-				.flatMap(getResultData(dataType))
-				.flatMap(flatten(dataType));	
+				.flatMap(getArrayData(dataType))
+				.flatMap(flatten(dataType));
 	}
 	
 	public Observable<LunarSource> getSources() throws MalformedURLException {
-		return getResponse("/sources", LunarSource.Response.class, LunarSource.class);
+		return getArrayResponse("/sources", LunarSource.Response.class, LunarSource.class);
+	}
+
+	public Observable<LunarTrack> getTracks() throws MalformedURLException {
+		final String path = String.format("/tracks");
+		return getArrayResponse(path, LunarTrack.Response.class, LunarTrack.class);
 	}
 	
 	public Observable<String> getUpdatesUrl(final String category) throws MalformedURLException {
 		final String path = String.format("/updates/%s", category);
-		return getResponse(path,LunarUrlData.Response.class, LunarUrlData.class)
-			   .map(getUrl);
+		final URL  url = new URL("http",hostName,port, path);
+		
+		return Observable.from(url)
+				.flatMap(synchHttpGet)
+				.flatMap(jsonString2Object(LunarUrlData.Response.class))
+				.flatMap(getUrlData);
 	}
-	
-	public Observable<LunarTrack> getTracks(final String pluginName, final String trackName) throws MalformedURLException {
-		final String path = String.format("/tracks?pluginName=%s&trackName=%s", pluginName, trackName);
-		return getResponse(path, LunarTrack.Response.class, LunarTrack.class);
-	}
-	
-	public Observable<LunarTrack> getTracks(final int sourceID) throws MalformedURLException {
-		final String path = String.format("/tracks?sourceID=%d", sourceID);
-		return getResponse(path, LunarTrack.Response.class, LunarTrack.class);
-	}
-	
+		
+	//So far new Application API
 	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() throws MalformedURLException {
 		final URL url = new URL("http",hostName,port,"/updates/tracks");
 		return Observable.from(url)

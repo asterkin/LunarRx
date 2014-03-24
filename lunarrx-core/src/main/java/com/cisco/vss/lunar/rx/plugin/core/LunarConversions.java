@@ -9,16 +9,7 @@ import com.cisco.vss.lunar.rx.mq.LunarMQSocket;
 
 public class LunarConversions extends LunarMQConversions {
 
-	public static final <R> Func1<R[], Observable<R>> flatten(Class<R> clazz) {
-		return new Func1<R[], Observable<R>>() {
-			@Override
-			public Observable<R> call(R[] arr) {
-				return Observable.from(arr);
-			}
-		};
-	}
-	
- 	public static final <T extends LunarResponse<R>, R> Converter<T, R[]> getResultData(Class<R> clazz) {
+ 	public static final <T extends LunarResponse<R[]>, R> Converter<T, R[]> getArrayData(Class<R> clazz) {
 		return new Converter<T, R[]>() {
 			@Override
 			protected R[] convert(final T response) throws Throwable {
@@ -27,11 +18,21 @@ public class LunarConversions extends LunarMQConversions {
 			}
 		};
 	}
-	
- 	public static final Func1<LunarUrlData, String> getUrl = new Func1<LunarUrlData, String>() {
+
+ 	public static final <R> Func1<R[], Observable<R>> flatten(Class<R> clazz) {
+ 		return new Func1<R[], Observable<R>>() {
+			@Override
+			public Observable<R> call(final R[] arr) {
+				return Observable.from(arr);
+			}
+ 		};
+	};
+ 	
+ 	public static final Converter<LunarResponse<LunarUrlData>, String> getUrlData = new Converter<LunarResponse<LunarUrlData>, String>() {
 		@Override
-		public String call(final LunarUrlData data) {
-			return data.url;
+		protected String convert(final LunarResponse<LunarUrlData> response) throws Exception {
+			if(LunarResponse.ResultType.OK != response.result) throw new Exception("Lunar Response is NOT OK");
+			return response.data.url;
 		}
  	};
  	

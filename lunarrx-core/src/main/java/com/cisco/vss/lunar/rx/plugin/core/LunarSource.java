@@ -20,5 +20,5 @@ public class LunarSource {
 	public int    sourceID;
 	public String name;
 	
-	public class Response extends LunarResponse<LunarSource> {}
+	public class Response extends LunarResponse<LunarSource[]> {}
 }
