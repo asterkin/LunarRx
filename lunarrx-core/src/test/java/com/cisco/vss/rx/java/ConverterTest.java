@@ -4,9 +4,14 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
+
 import org.junit.Test;
+
+import rx.Observable;
 import rx.functions.Action1;
 import static com.cisco.vss.rx.java.Conversions.*;
 
@@ -162,5 +167,22 @@ public class ConverterTest {
     		}
     	);
     	server.join();
+    }
+    
+    @Test
+    public void testFlatten() {
+    	final String[] INPUT = new String[] {"AAA", "BBB", "CCC"};
+    	final ObjectHolder<List<String>> result = new ObjectHolder<List<String>>(new ArrayList<String>());
+    	Observable.from(new String[][]{INPUT})
+    	.flatMap(flatten(String.class))
+    	.subscribe(
+    		new Action1<String>() {
+				@Override
+				public void call(final String t1) {
+					result.value.add(t1);
+				}
+    		}
+    	);
+    	assertArrayEquals(INPUT, result.value.toArray());
     }
 }

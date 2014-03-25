@@ -111,7 +111,7 @@ public class Conversions {
 		};
 	}
 	
-	public static Converter<URL, String> synchHttpGet = new Converter<URL, String>() {
+	public static final Converter<URL, String> synchHttpGet = new Converter<URL, String>() {
 		@Override
 		protected String convert(URL url) throws Throwable {
 			final HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -129,5 +129,15 @@ public class Conversions {
 			connection.disconnect();				
 			return result.toString();
 		}
+	};
+	
+	//TODO: why I cannot get it from RxJava?
+ 	public static final <R> Func1<R[], Observable<R>> flatten(Class<R> clazz) {
+ 		return new Func1<R[], Observable<R>>() {
+			@Override
+			public Observable<R> call(final R[] arr) {
+				return Observable.from(arr);
+			}
+ 		};
 	};
 };

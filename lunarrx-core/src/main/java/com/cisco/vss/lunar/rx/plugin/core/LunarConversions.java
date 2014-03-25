@@ -19,15 +19,6 @@ public class LunarConversions extends LunarMQConversions {
 		};
 	}
 
- 	public static final <R> Func1<R[], Observable<R>> flatten(Class<R> clazz) {
- 		return new Func1<R[], Observable<R>>() {
-			@Override
-			public Observable<R> call(final R[] arr) {
-				return Observable.from(arr);
-			}
- 		};
-	};
- 	
  	public static final Converter<LunarResponse<LunarUrlData>, String> getUrlData = new Converter<LunarResponse<LunarUrlData>, String>() {
 		@Override
 		protected String convert(final LunarResponse<LunarUrlData> response) throws Exception {
