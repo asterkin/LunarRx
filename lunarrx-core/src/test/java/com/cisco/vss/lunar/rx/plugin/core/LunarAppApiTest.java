@@ -19,7 +19,7 @@ public class LunarAppApiTest {
 	private static final String  DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 
 	@Test
-	public void testGetSources() throws IOException, InterruptedException {
+	public void testGetSourcesNotify() throws IOException, InterruptedException {
 		final LunarSource.Response RESPONSE = new LunarSource().new Response();
 		RESPONSE.data = new LunarSource[] {
 				new LunarSource(1, "source1"),
@@ -33,11 +33,11 @@ public class LunarAppApiTest {
 		final ObjectHolder<Throwable>         error       = new ObjectHolder<Throwable>();
 		final ObjectHolder<List<LunarSource>> result      = new ObjectHolder<List<LunarSource>>(new ArrayList<LunarSource>());
 		
-		lunar.getSources().subscribe(
-				new Action1<LunarSource>() {
+		lunar.getSourcesNotify().subscribe(
+				new Action1<LunarNotify<LunarSource>>() {
 					@Override
-					public void call(final LunarSource source) {
-						result.value.add(source);
+					public void call(final LunarNotify<LunarSource> notify) {
+						if((notify instanceof LunarAdd<?>)) result.value.add(notify.getItem());
 					}
 				},
 				new Action1<Throwable>() {

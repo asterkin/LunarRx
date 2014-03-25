@@ -26,14 +26,26 @@ public class Lunar {
 				.flatMap(getArrayData(dataType))
 				.flatMap(flatten(dataType));
 	}
+
+	private <R, T extends LunarResponse<R[]>> Observable<LunarNotify<R>> getNotifyArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
+		return getArrayResponse(path, responseType, dataType)
+			   .map(notifyAdd(dataType));
+	}
 	
 	public Observable<LunarSource> getSources() throws MalformedURLException {
 		return getArrayResponse("/sources", LunarSource.Response.class, LunarSource.class);
 	}
 
+	public Observable<LunarNotify<LunarSource>> getSourcesNotify() throws MalformedURLException {
+		return getNotifyArrayResponse("/sources", LunarSource.Response.class, LunarSource.class);		
+	}
+	
 	public Observable<LunarTrack> getTracks() throws MalformedURLException {
-		final String path = String.format("/tracks");
-		return getArrayResponse(path, LunarTrack.Response.class, LunarTrack.class);
+		return getArrayResponse("/tracks", LunarTrack.Response.class, LunarTrack.class);
+	}
+	
+	public Observable<LunarNotify<LunarTrack>> getTracksNotify() throws MalformedURLException {
+		return getNotifyArrayResponse("/tracks", LunarTrack.Response.class, LunarTrack.class);
 	}
 	
 	public Observable<String> getUpdatesUrl(final String category) throws MalformedURLException {
@@ -44,11 +56,6 @@ public class Lunar {
 				.flatMap(synchHttpGet)
 				.flatMap(jsonString2Object(LunarUrlData.Response.class))
 				.flatMap(getUrlData);
-	}
-	
-	public Observable<LunarNotify<LunarTrack>> getTracksNotify() throws MalformedURLException {
-		return getTracks()
-			   .map(notifyAdd(LunarTrack.class));
 	}
 	
 	//So far new Application API
