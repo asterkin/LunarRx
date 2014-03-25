@@ -36,7 +36,7 @@ public class Lunar {
 		return getArrayResponse("/sources", LunarSource.Response.class, LunarSource.class);
 	}
 
-	public Observable<LunarNotify<LunarSource>> getSourcesNotify() throws MalformedURLException {
+	Observable<LunarNotify<LunarSource>> getSourcesNotify() throws MalformedURLException {
 		return getNotifyArrayResponse("/sources", LunarSource.Response.class, LunarSource.class);		
 	}
 	
@@ -44,11 +44,11 @@ public class Lunar {
 		return getArrayResponse("/tracks", LunarTrack.Response.class, LunarTrack.class);
 	}
 	
-	public Observable<LunarNotify<LunarTrack>> getTracksNotify() throws MalformedURLException {
+	Observable<LunarNotify<LunarTrack>> getTracksNotify() throws MalformedURLException {
 		return getNotifyArrayResponse("/tracks", LunarTrack.Response.class, LunarTrack.class);
 	}
 	
-	public Observable<String> getUpdatesUrl(final String category) throws MalformedURLException {
+	Observable<String> getUpdatesUrl(final String category) throws MalformedURLException {
 		final String path = String.format("/updates/%s", category);
 		final URL  url = new URL("http",hostName,port, path);
 		
@@ -56,6 +56,20 @@ public class Lunar {
 				.flatMap(synchHttpGet)
 				.flatMap(jsonString2Object(LunarUrlData.Response.class))
 				.flatMap(getUrlData);
+	}
+	
+	<R, T extends LunarStatusUpdateMessage<R>> Observable<LunarNotify<R>> getStatusUpdatesStream(final String category, final Class<T> messageType, final Class<R> dataType) throws MalformedURLException {
+		return getUpdatesUrl(category)
+				.flatMap(parseMQUrl)
+				.flatMap(connectToServer)
+				.flatMap(readStream)
+				.map(byte2String)
+				.flatMap(jsonString2Object(messageType))
+				.flatMap(statusUpdate2Notify(messageType,dataType));
+	}
+	
+	Observable<LunarNotify<LunarSource>> getSourcesStatusUpdatesStream() throws MalformedURLException {
+		return getStatusUpdatesStream("sources", LunarSource.StatusUpdateMessage.class, LunarSource.class);
 	}
 	
 	//So far new Application API

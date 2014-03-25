@@ -13,7 +13,8 @@ public class LunarTrack {
 	@SerializedName("plugin")
 	public String  pluginName;
 	
-	public class Response extends LunarResponse<LunarTrack[]> {}
+	public class Response            extends LunarResponse<LunarTrack[]> {}
+	public class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarTrack> {}
 	
 	//TODO: better encapsulation?
 	public LunarTrack(final Integer sourceID, final String pluginName, final String trackName) {

@@ -35,6 +35,31 @@ public class LunarConversions extends LunarMQConversions {
 			} 			
  		};
  	}
+
+ 	public static final <T> Func1<T, LunarNotify<T>> notifyRemove(Class<T> clazz) {
+ 		return new Func1<T, LunarNotify<T>>() {
+			@Override
+			public LunarNotify<T> call(T item) {
+				return new LunarRemove<T>(item);
+			} 			
+ 		};
+ 	}
+ 	
+ 	public static <R, T extends LunarStatusUpdateMessage<R>> Func1<T , Observable<LunarNotify<R>>> statusUpdate2Notify(final Class<T> messageType, final Class<R> dataType) {
+ 		return new Func1<T, Observable<LunarNotify<R>>>() {
+			@Override
+			public Observable<LunarNotify<R>> call(final T message) {
+				switch(message.status) {
+				case UP:
+					return Observable.from(message.list).map(notifyAdd(dataType));
+				case DOWN:
+					return Observable.from(message.list).map(notifyRemove(dataType));
+				default:
+					return null; //should not get there, but do not want to throw an exception
+				}
+			}
+ 		};
+ 	}
  	
  	//So far new App API
 	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>() {
