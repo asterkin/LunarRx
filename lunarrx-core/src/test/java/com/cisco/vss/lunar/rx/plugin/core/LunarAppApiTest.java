@@ -37,17 +37,16 @@ public class LunarAppApiTest {
 		final byte[][] HTTP_RESPONSES = new byte[][]{
 			object2JsonString(LunarSource.Response.class).call(RESPONSE).getBytes()
   	    };
-		final HttpServerStub                  lunarServer = new HttpServerStub(HTTP_RESPONSES);
-		final Lunar                           lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
-		final ObjectHolder<Throwable>         error       = new ObjectHolder<Throwable>();
-		//TODO: use list directly
-		final ObjectHolder<List<LunarSource>> result      = new ObjectHolder<List<LunarSource>>(new ArrayList<LunarSource>());
+		final HttpServerStub          lunarServer = new HttpServerStub(HTTP_RESPONSES);
+		final Lunar                   lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final ObjectHolder<Throwable> error       = new ObjectHolder<Throwable>();
+		final List<LunarSource>       result      = new ArrayList<LunarSource>();
 		
 		lunar.getNotifyArrayResponse("sources", LunarSource.Response.class, LunarSource.class).subscribe(
 				new Action1<LunarNotify<LunarSource>>() {
 					@Override
 					public void call(final LunarNotify<LunarSource> notify) {
-						if((notify instanceof LunarAdd<?>)) result.value.add(notify.getItem());
+						if((notify instanceof LunarAdd<?>)) result.add(notify.getItem());
 					}
 				},
 				new Action1<Throwable>() {
@@ -60,7 +59,7 @@ public class LunarAppApiTest {
 		);
 		lunarServer.join();
 		assertNull(error.value);
-		assertArrayEquals(RESPONSE.data, result.value.toArray());
+		assertArrayEquals(RESPONSE.data, result.toArray());
 	}
 	
 	@Test
