@@ -15,7 +15,6 @@ import org.junit.Test;
 import rx.functions.Action1;
 import com.cisco.vss.lunar.rx.ConcurrentHttpServerStub;
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
-import com.cisco.vss.rx.java.HttpServerStub;
 import com.cisco.vss.rx.java.ObjectHolder;
 
 public class LunarAppApiTest {
@@ -82,13 +81,16 @@ public class LunarAppApiTest {
 				jsonDown.getBytes()
 		};
 		final LunarMQServerStub mqServer    = new LunarMQServerStub(MQ_RESPONSES);
-		final LunarUrlData.Response RESPONSE = new LunarUrlData().new Response();
-		RESPONSE.data = new LunarUrlData();
-		RESPONSE.data.url = String.format("localhost:%d/sourceUpdates", mqServer.startServer());
-		final byte[][] HTTP_RESPONSES = new byte[][]{
-			object2JsonString(LunarUrlData.Response.class).call(RESPONSE).getBytes()
-  	    };
-		final HttpServerStub            lunarServer = new HttpServerStub(HTTP_RESPONSES);
+		final LunarUrlData.Response UPDATES_RESPONSE = new LunarUrlData().new Response();
+		UPDATES_RESPONSE.data = new LunarUrlData();
+		UPDATES_RESPONSE.data.url = String.format("localhost:%d/sourceUpdates", mqServer.startServer());
+		final String UPDATES_HTTP_RESPONSE = object2JsonString(LunarUrlData.Response.class).call(UPDATES_RESPONSE);
+		@SuppressWarnings("serial")
+		final Map<String, String> HTTP_RESPONSES = new HashMap<String,String>(){{
+			put("/updates/sources", UPDATES_HTTP_RESPONSE);
+		}};
+		
+		final ConcurrentHttpServerStub  lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
 		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
 		final ObjectHolder<Throwable>   error       = new ObjectHolder<Throwable>();
 		final Map<Integer, LunarSource> map         = new HashMap<Integer, LunarSource>();
