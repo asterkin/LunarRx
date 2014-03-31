@@ -11,12 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.junit.Ignore;
 import org.junit.Test;
-
 import rx.functions.Action1;
-
 import com.cisco.vss.lunar.rx.ConcurrentHttpServerStub;
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
 import com.cisco.vss.rx.java.HttpServerStub;
@@ -26,27 +22,29 @@ public class LunarAppApiTest {
 	private static final String  LUNAR_HOST   = "localhost";
 	private static final String  DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 
-	@Ignore
 	@Test
-	public void testGetSourcesNotify() throws IOException, InterruptedException {
-		final LunarSource.Response RESPONSE = new LunarSource().new Response();
-		RESPONSE.data = new LunarSource[] {
+	public void testGetArrayResponse() throws IOException, InterruptedException {
+		final LunarSource.Response SOURCES_RESPONSE = new LunarSource().new Response();
+		SOURCES_RESPONSE.data = new LunarSource[] {
 				new LunarSource(1, "source1"),
 				new LunarSource(2, "source2")
 			};		
-		final byte[][] HTTP_RESPONSES = new byte[][]{
-			object2JsonString(LunarSource.Response.class).call(RESPONSE).getBytes()
-  	    };
-		final HttpServerStub          lunarServer = new HttpServerStub(HTTP_RESPONSES);
-		final Lunar                   lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
-		final ObjectHolder<Throwable> error       = new ObjectHolder<Throwable>();
-		final List<LunarSource>       result      = new ArrayList<LunarSource>();
+		final String SOURCES_HTTP_RESPONSE = object2JsonString(LunarSource.Response.class).call(SOURCES_RESPONSE);
+		@SuppressWarnings("serial")
+		final Map<String, String> HTTP_RESPONSES = new HashMap<String,String>(){{
+			put("/sources", SOURCES_HTTP_RESPONSE);
+		}};
 		
-		lunar.getNotifyArrayResponse("sources", LunarSource.Response.class, LunarSource.class).subscribe(
-				new Action1<LunarNotify<LunarSource>>() {
+		final ConcurrentHttpServerStub lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
+		final Lunar                    lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final ObjectHolder<Throwable>  error       = new ObjectHolder<Throwable>();
+		final List<LunarSource>        result      = new ArrayList<LunarSource>();
+		
+		lunar.getArrayResponse("/sources", LunarSource.Response.class, LunarSource.class).subscribe(
+				new Action1<LunarSource>() {
 					@Override
-					public void call(final LunarNotify<LunarSource> notify) {
-						if((notify instanceof LunarAdd<?>)) result.add(notify.getItem());
+					public void call(final LunarSource source) {
+						result.add(source);
 					}
 				},
 				new Action1<Throwable>() {
@@ -59,7 +57,7 @@ public class LunarAppApiTest {
 		);
 		lunarServer.join();
 		assertNull(error.value);
-		assertArrayEquals(RESPONSE.data, result.toArray());
+		assertArrayEquals(SOURCES_RESPONSE.data, result.toArray());
 	}
 	
 	@Test
@@ -80,8 +78,8 @@ public class LunarAppApiTest {
 		
 		final byte[][] MQ_RESPONSES  = new byte[][]{
 				LMQ_OK.GetMessage().getBytes(),
-				jsonDown.getBytes(),
-				jsonUp.getBytes()
+				jsonUp.getBytes(),
+				jsonDown.getBytes()
 		};
 		final LunarMQServerStub mqServer    = new LunarMQServerStub(MQ_RESPONSES);
 		final LunarUrlData.Response RESPONSE = new LunarUrlData().new Response();
@@ -95,22 +93,15 @@ public class LunarAppApiTest {
 		final ObjectHolder<Throwable>   error       = new ObjectHolder<Throwable>();
 		final Map<Integer, LunarSource> map         = new HashMap<Integer, LunarSource>();
 		
-		//TODO: non-trivial logic. Need to leverage it somewhere (plugins?)
 		lunar.getStatusUpdatesStream("sources", LunarSource.StatusUpdateMessage.class, LunarSource.class).subscribe(
 				new Action1<LunarNotify<LunarSource>>() {
 					@Override
 					public void call(final LunarNotify<LunarSource> notify) {
 						final LunarSource source = notify.getItem();
-						if(notify instanceof LunarAdd<?>) {
-							if(map.containsKey(source.sourceID) && null==map.get(source.sourceID))
-								map.remove(source.sourceID);
-							else
-								map.put(source.sourceID, source);
-						} else if(notify instanceof LunarRemove<?>)
-							if(map.containsKey(source.sourceID) && null!=map.get(source.sourceID))
-								map.remove(source.sourceID);
-							else
-								map.put(source.sourceID, null);
+						if(notify instanceof LunarAdd<?>) 
+							map.put(source.sourceID, source);
+						else if(notify instanceof LunarRemove<?>)
+							map.remove(source.sourceID);
 					}
 				},
 				new Action1<Throwable>() {

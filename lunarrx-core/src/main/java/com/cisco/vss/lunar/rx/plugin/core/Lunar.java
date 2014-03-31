@@ -34,14 +34,6 @@ public class Lunar {
 			   .map(notifyAdd(dataType));
 	}
 	
-	public Observable<LunarSource> getSources() throws MalformedURLException {
-		return getArrayResponse("sources", LunarSource.Response.class, LunarSource.class);
-	}
-
-	public Observable<LunarTrack> getTracks() throws MalformedURLException {
-		return getArrayResponse("tracks", LunarTrack.Response.class, LunarTrack.class);
-	}
-	
 	Observable<String> getUpdatesUrl(final String category) throws MalformedURLException {
 		final String path = String.format("/updates/%s", category);
 		final URL  url = new URL("http",hostName,port, path);
@@ -68,11 +60,11 @@ public class Lunar {
 		return Observable.merge(updates, current);
 	}
 	
-	public Observable<LunarNotify<LunarSource>> getSourcesNotifyStream() throws MalformedURLException {
+	public Observable<LunarNotify<LunarSource>> getSources() throws MalformedURLException {
 		return getCombinedNotifyStream("sources", LunarSource.StatusUpdateMessage.class, LunarSource.Response.class, LunarSource.class);
 	}
 
-	public Observable<LunarNotify<LunarTrack>> getTracksNotifyStream() throws MalformedURLException {
+	public Observable<LunarNotify<LunarTrack>> getTracks() throws MalformedURLException {
 		return getCombinedNotifyStream("tracks", LunarTrack.StatusUpdateMessage.class, LunarTrack.Response.class, LunarTrack.class);
 	}
 	
