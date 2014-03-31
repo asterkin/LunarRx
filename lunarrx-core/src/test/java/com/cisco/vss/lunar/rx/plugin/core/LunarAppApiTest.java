@@ -3,14 +3,11 @@ package com.cisco.vss.lunar.rx.plugin.core;
 import static com.cisco.vss.lunar.rx.mq.LunarMQException.StreamingError.LMQ_OK;
 import static com.cisco.vss.rx.java.Conversions.object2JsonString;
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.junit.Test;
 import rx.functions.Action1;
 import com.cisco.vss.lunar.rx.ConcurrentHttpServerStub;
@@ -163,7 +160,6 @@ public class LunarAppApiTest {
 		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
 		final ObjectHolder<Throwable>   error       = new ObjectHolder<Throwable>();
 		final Map<Integer, LunarSource> map         = new HashMap<Integer, LunarSource>();
-		final Set<Integer>              deleting    = new HashSet<Integer>();
 		final LunarSource[]             EXPECTED    = new LunarSource[] {
 				new LunarSource(1, "source1"),
 				new LunarSource(2, "source2"),
@@ -175,17 +171,10 @@ public class LunarAppApiTest {
 					@Override
 					public void call(final LunarNotify<LunarSource> notify) {
 						final LunarSource source = notify.getItem();
-						final Integer     id     = source.sourceID;
-						if(notify instanceof LunarAdd<?>) {
-							if(deleting.contains(id))
-								deleting.remove(id);
-							else
-								map.put(id, source);
-						} else if(notify instanceof LunarRemove<?>)
-							if(map.containsKey(id))
-								map.remove(id);
-							else
-								deleting.add(id);
+						if(notify instanceof LunarAdd<?>) 
+							map.put(source.sourceID, source);
+						else if(notify instanceof LunarRemove<?>)
+							map.remove(source.sourceID);
 					}
 				},
 				new Action1<Throwable>() {

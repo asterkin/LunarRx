@@ -54,10 +54,12 @@ public class Lunar {
 				.flatMap(statusUpdate2Notify(messageType,dataType));
 	}
 	
-	<R, T extends LunarStatusUpdateMessage<R>, S extends LunarResponse<R[]>> Observable<LunarNotify<R>> getCombinedNotifyStream(final String category, final Class<T> messageType, final Class<S> responseType, final Class<R> dataType) throws MalformedURLException {
+	<R extends LunarEntity, T extends LunarStatusUpdateMessage<R>, S extends LunarResponse<R[]>> Observable<LunarNotify<R>> getCombinedNotifyStream(final String category, final Class<T> messageType, final Class<S> responseType, final Class<R> dataType) throws MalformedURLException {
 		final Observable<LunarNotify<R>> updates = getStatusUpdatesStream(category, messageType, dataType);
 		final Observable<LunarNotify<R>> current = getNotifyArrayResponse(category, responseType, dataType);
-		return Observable.merge(updates, current);
+		//TODO to optimize such that it happens only during the fetch of initial table
+		return Observable.merge(updates, current)
+			   .filter(prematureRemove(dataType)); //filter OUT premature removes if happen
 	}
 	
 	public Observable<LunarNotify<LunarSource>> getSources() throws MalformedURLException {

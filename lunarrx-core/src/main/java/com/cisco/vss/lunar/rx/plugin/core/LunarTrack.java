@@ -2,7 +2,7 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LunarTrack {
+public class LunarTrack implements LunarEntity {
 	public Integer sourceID;
 	public String  protocol;
 	@SerializedName("track")
@@ -42,6 +42,15 @@ public class LunarTrack {
 	
 	public String streamerRequestPath(final String developerID) {
 		return String.format(streamerTemplate,sourceID,pluginName,trackName,mime,deployed,protocol,developerID);
+	}
+
+	@Override
+	public Long getId() {
+		int hash = 7;
+		hash = 31*hash + pluginName.hashCode();
+		hash = 31+hash + trackName.hashCode();
+		long id = sourceID << 32 | hash; 
+		return id;
 	}
 }
 

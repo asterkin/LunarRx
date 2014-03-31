@@ -1,6 +1,10 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.lunar.rx.plugin.core.LunarResponseResult.OK;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -27,7 +31,7 @@ public class LunarConversions extends LunarMQConversions {
 		}
  	};
  	
- 	public static final <T> Func1<T, LunarNotify<T>> notifyAdd(Class<T> clazz) {
+ 	public static final <T> Func1<T, LunarNotify<T>> notifyAdd(final Class<T> clazz) {
  		return new Func1<T, LunarNotify<T>>() {
 			@Override
 			public LunarNotify<T> call(T item) {
@@ -36,7 +40,7 @@ public class LunarConversions extends LunarMQConversions {
  		};
  	}
 
- 	public static final <T> Func1<T, LunarNotify<T>> notifyRemove(Class<T> clazz) {
+ 	public static final <T> Func1<T, LunarNotify<T>> notifyRemove(final Class<T> clazz) {
  		return new Func1<T, LunarNotify<T>>() {
 			@Override
 			public LunarNotify<T> call(T item) {
@@ -61,6 +65,32 @@ public class LunarConversions extends LunarMQConversions {
  		};
  	}
  	
+ 	public static <T extends LunarEntity> Func1<LunarNotify<T>, Boolean> prematureRemove(final Class<T> clazz) {
+		return new Func1<LunarNotify<T>, Boolean>() {
+			private final Set<Long> added    = new HashSet<Long>();
+			private final Set<Long> deleting = new HashSet<Long>();
+			@Override
+			public Boolean call(final LunarNotify<T> notify) {
+				final Long id = notify.getItem().getId();
+				Boolean    rc = false;
+				if(notify instanceof LunarAdd<?>)
+					if(deleting.contains(id))
+						deleting.remove(id);
+					else {
+						added.add(id);
+						rc = true;
+					}
+				else if(notify instanceof LunarRemove<?>) {
+					if(added.contains(id)) {
+						added.remove(id);
+						rc = true;
+					} else
+						deleting.add(id);
+				}
+				return rc;
+			}
+		};		
+ 	}
  	//So far new App API
 	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>() {
 		@Override
