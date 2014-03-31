@@ -1,5 +1,12 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
+import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.connectToServer;
+import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.parseMQUrl;
+import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.readStream;
+import static com.cisco.vss.rx.java.Conversions.byte2String;
+import static com.cisco.vss.rx.java.Conversions.jsonString2Object;
+import rx.Observable;
+
 import com.google.gson.annotations.SerializedName;
 
 public class LunarTrack implements LunarEntity {
@@ -25,6 +32,19 @@ public class LunarTrack implements LunarEntity {
 		this.protocol   = "LunarMQ";
 		this.mime       = "json";
 		this.deployed   = false;   
+	}
+	
+	public Observable<byte[]> getBitestream() {
+		return Observable.from(url)
+				.flatMap(parseMQUrl)
+				.flatMap(connectToServer)
+				.flatMap(readStream);
+	}
+	
+	public <T extends TrackItem> Observable<T> getItems(Class<T> clazz) {
+		return getBitestream()
+				.map(byte2String)
+				.flatMap(jsonString2Object(clazz));
 	}
 	
 	public String httpGetRequestPath() {
