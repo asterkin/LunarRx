@@ -2,6 +2,7 @@ package com.cisco.vss.rx.java;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -137,6 +138,34 @@ public class Conversions {
 			return result.toString();
 		}
 	};
+	
+	public static Converter<URL, String> synchHttpPost(final String message) {
+		return new Converter<URL, String>() {
+			@Override
+			protected String convert(URL url) throws Throwable {
+				final HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+				connection.setRequestMethod("POST");
+	            connection.addRequestProperty("Content-Type", "application/json");
+	            connection.setDoOutput(true);
+				final OutputStream out = connection.getOutputStream();
+				out.write(message.getBytes());
+				out.flush();
+				//TODO: common with GET
+				if (connection.getResponseCode() != 200)
+					throw new Exception("Got HTTP error code [" + connection.getResponseCode() + "]");
+				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String        inputLine;
+				StringBuilder result = new StringBuilder();
+
+				while ((inputLine = in.readLine()) != null)
+					result.append(inputLine);
+				in.close();
+				connection.disconnect();				
+				return result.toString();
+			}
+			
+		};
+	}
 	
 	//TODO: why I cannot get it from RxJava?
  	public static final <R> Func1<R[], Observable<R>> flatten(Class<R> clazz) {

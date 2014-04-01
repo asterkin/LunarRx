@@ -2,7 +2,6 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import rx.Observable;
 import rx.functions.Func1;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
@@ -19,7 +18,7 @@ public class Lunar {
 		this.developerID = developerID;
 	}
 	
-	<R, T extends LunarResponse<R[]>> Observable<R> getArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
+	<R, T extends LunarDataResponse<R[]>> Observable<R> getArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
 		final URL  url = new URL("http",hostName,port, path);
 		
 		return Observable.from(url)
@@ -29,7 +28,7 @@ public class Lunar {
 				.flatMap(flatten(dataType));
 	}
 
-	<R, T extends LunarResponse<R[]>> Observable<LunarNotify<R>> getNotifyArrayResponse(final String category, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
+	<R, T extends LunarDataResponse<R[]>> Observable<LunarNotify<R>> getNotifyArrayResponse(final String category, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
 		final String path = String.format("/%s", category);
 		return getArrayResponse(path, responseType, dataType)
 			   .map(notifyAdd(dataType));
@@ -55,7 +54,7 @@ public class Lunar {
 				.flatMap(statusUpdate2Notify(messageType,dataType));
 	}
 	
-	<R extends LunarEntity, T extends LunarStatusUpdateMessage<R>, S extends LunarResponse<R[]>> Observable<LunarNotify<R>> getCombinedNotifyStream(final String category, final Class<T> messageType, final Class<S> responseType, final Class<R> dataType) throws MalformedURLException {
+	<R extends LunarEntity, T extends LunarStatusUpdateMessage<R>, S extends LunarDataResponse<R[]>> Observable<LunarNotify<R>> getCombinedNotifyStream(final String category, final Class<T> messageType, final Class<S> responseType, final Class<R> dataType) throws MalformedURLException {
 		final Observable<LunarNotify<R>> updates = getStatusUpdatesStream(category, messageType, dataType);
 		final Observable<LunarNotify<R>> current = getNotifyArrayResponse(category, responseType, dataType);
 		//TODO to optimize such that it happens only during the fetch of initial table
@@ -84,12 +83,21 @@ public class Lunar {
 			   .map(createRawWriter);
 	}
 	
-	public <T extends TrackItem, R extends TrackItem> LunarTrackFilter<T,R> getFilter(final Func1<T, Observable<R>> transform) throws MalformedURLException {
+	<T extends TrackItem, R extends TrackItem> LunarTrackFilter<T,R> getFilter(final Func1<T, Observable<R>> transform) throws MalformedURLException {
 		final Observable<LunarNotify<LunarTrack>> input  = getTracks().filter(pluginTrack(null)); //TODO: where to get a prototype from?
 		final Observable<LunarMQWriter>           output = getOutputTrackStream(null); //TODO: where to get a prototype from?
 		return new LunarTrackItemFilter<T,R>(input, transform, output);
 	}
 	
+	Observable<LunarResponse> sendReport(final LunarPluginStateReport report) throws MalformedURLException {
+		final String json = object2JsonString(LunarPluginStateReport.class).call(report);
+		final URL    url  = new URL("http",hostName,port,"/state/plugins");
+		return Observable.from(url)
+				.flatMap(synchHttpPost(json))
+				.flatMap(jsonString2Object(LunarResponse.class))
+				.flatMap(checkResult(LunarResponse.class));
+	}
+
 	//So far new Application API
 	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() throws MalformedURLException {
 		return getUpdatesUrl("tracks")

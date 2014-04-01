@@ -20,7 +20,7 @@ public class LunarTrack implements LunarEntity {
 	@SerializedName("plugin")
 	public String  pluginName;
 	
-	public class Response            extends LunarResponse<LunarTrack[]> {}
+	public class Response            extends LunarDataResponse<LunarTrack[]> {}
 	public class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarTrack> {}
 	
 	//TODO: better encapsulation?

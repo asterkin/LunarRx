@@ -20,7 +20,7 @@ public class LunarSource implements LunarEntity {
 	public int    sourceID;
 	public String name;
 	
-	public class Response            extends LunarResponse<LunarSource[]> {}
+	public class Response            extends LunarDataResponse<LunarSource[]> {}
 	public class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarSource> {}
 	
 	@Override

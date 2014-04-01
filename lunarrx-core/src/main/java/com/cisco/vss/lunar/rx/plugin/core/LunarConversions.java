@@ -13,7 +13,17 @@ import com.cisco.vss.lunar.rx.mq.LunarMQSocket;
 
 public class LunarConversions extends LunarMQConversions {
 
- 	public static final <T extends LunarResponse<R[]>, R> Converter<T, R[]> getArrayData(Class<R> clazz) {
+ 	public static final <T extends LunarResponse> Converter<T, T> checkResult(Class<T> clazz) {
+		return new Converter<T, T>() {
+			@Override
+			protected T convert(final T response) throws Throwable {
+				if(LunarResponse.ResultType.OK != response.result) throw new Exception("Lunar Response is NOT OK: "+response.message);
+				return response;
+			}
+		};
+	}
+	
+ 	public static final <T extends LunarDataResponse<R[]>, R> Converter<T, R[]> getArrayData(Class<R> clazz) {
 		return new Converter<T, R[]>() {
 			@Override
 			protected R[] convert(final T response) throws Throwable {
@@ -23,9 +33,9 @@ public class LunarConversions extends LunarMQConversions {
 		};
 	}
 
- 	public static final Converter<LunarResponse<LunarUrlData>, String> getUrlData = new Converter<LunarResponse<LunarUrlData>, String>() {
+ 	public static final Converter<LunarDataResponse<LunarUrlData>, String> getUrlData = new Converter<LunarDataResponse<LunarUrlData>, String>() {
 		@Override
-		protected String convert(final LunarResponse<LunarUrlData> response) throws Exception {
+		protected String convert(final LunarDataResponse<LunarUrlData> response) throws Exception {
 			if(LunarResponse.ResultType.OK != response.result) throw new Exception("Lunar Response is NOT OK");
 			return response.data.url;
 		}
