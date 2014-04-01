@@ -84,7 +84,7 @@ public class Lunar {
 			   .map(createRawWriter);
 	}
 	
-	public <T extends TrackItem, R extends TrackItem> LunarPlugin<T,R> getPlugin(final Func1<T, Observable<R>> transform) throws MalformedURLException {
+	public <T extends TrackItem, R extends TrackItem> LunarTrackFilter<T,R> getFilter(final Func1<T, Observable<R>> transform) throws MalformedURLException {
 		final Observable<LunarNotify<LunarTrack>> input  = getTracks().filter(pluginTrack(null)); //TODO: where to get a prototype from?
 		final Observable<LunarMQWriter>           output = getOutputTrackStream(null); //TODO: where to get a prototype from?
 		return new LunarTrackItemFilter<T,R>(input, transform, output);

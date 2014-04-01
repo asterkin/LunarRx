@@ -11,7 +11,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import static com.cisco.vss.rx.java.Conversions.*;
 
-public class LunarTrackItemFilter<T extends TrackItem, R extends TrackItem> implements LunarPlugin<T, R> {
+public class LunarTrackItemFilter<T extends TrackItem, R extends TrackItem> implements LunarTrackFilter<T, R> {
 	private final Observable<LunarNotify<LunarTrack>> tracksStatus;
 	private final Func1<T, Observable<R>>             transform;
 	private final Observable<LunarMQWriter>           output;
@@ -69,14 +69,14 @@ public class LunarTrackItemFilter<T extends TrackItem, R extends TrackItem> impl
 		//TODO: obtain new writer per track
 		final Observable<T> input  = track.getItems(null); //TODO: clazz for input
 		final Observable<R> result = input.flatMap(transform);
-		output.subscribe(
+		output.subscribe( //TODO: Thread
 			new Action1<LunarMQWriter>(){
 				@Override
 				public void call(final LunarMQWriter writer) {
 					final Subscription  sub = result
 							.map(object2JsonString(null)) //TODO: clazz for result
 							.map(string2Byte)
-							.subscribeOn(Schedulers.newThread())
+							.subscribeOn(Schedulers.newThread()) //TODO: quazar
 							.subscribe(
 									writer, //TODO: report status
 									new Action1<Throwable>() {
