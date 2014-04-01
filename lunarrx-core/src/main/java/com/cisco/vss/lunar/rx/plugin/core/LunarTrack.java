@@ -34,7 +34,7 @@ public class LunarTrack implements LunarEntity {
 		this.deployed   = false;   
 	}
 	
-	public Observable<byte[]> getBitestream() {
+	public Observable<byte[]> getBytestream() {
 		return Observable.from(url)
 				.flatMap(parseMQUrl)
 				.flatMap(connectToServer)
@@ -42,7 +42,7 @@ public class LunarTrack implements LunarEntity {
 	}
 	
 	public <T extends TrackItem> Observable<T> getItems(Class<T> clazz) {
-		return getBitestream()
+		return getBytestream()
 				.map(byte2String)
 				.flatMap(jsonString2Object(clazz));
 	}

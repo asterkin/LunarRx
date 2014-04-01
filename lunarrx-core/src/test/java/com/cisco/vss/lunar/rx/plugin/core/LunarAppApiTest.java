@@ -207,7 +207,7 @@ public class LunarAppApiTest {
 		track.url = String.format("localhost:%d/stream:2.2041.9211", mqServer.startServer());
 		final ObjectHolder<Throwable> error = new ObjectHolder<Throwable>();
 		
-		track.getBitestream()
+		track.getBytestream()
 		.subscribe(
 			new Action1<byte[]>() {
 				@Override

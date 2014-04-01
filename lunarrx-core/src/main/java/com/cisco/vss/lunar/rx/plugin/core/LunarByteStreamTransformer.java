@@ -1,5 +1,9 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
+import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.pluginTrack;
+import static com.cisco.vss.rx.java.Conversions.object2JsonString;
+import static com.cisco.vss.rx.java.Conversions.string2Byte;
+
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,23 +14,18 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 
-public abstract class LunarTrackItemTransformer<T extends TrackItem, R extends TrackItem> {
-	private final Lunar                      lunar;
-	private final String                     developerID;
-	private final Class<T>                   inputType;
-	private final Class<R>                   resultType;
-	private final Map<Integer, Subscription> tracks;
-	
-	protected LunarTrackItemTransformer(final Lunar lunar, final String developerID, final Class<T> inputType, final Class<R> resultType) {
+public abstract class LunarByteStreamTransformer {
+	protected final Lunar                      lunar;
+	protected final String                     developerID;
+	protected final Map<Integer, Subscription> tracks;
+
+	protected  LunarByteStreamTransformer(final Lunar lunar, final String developerID) {
 		this.lunar       = lunar;
 		this.developerID = developerID;
-		this.inputType   = inputType;
-		this.resultType  = resultType;
 		this.tracks      = new HashMap<Integer, Subscription>();
 	}
-	
+
 	public void run() throws MalformedURLException {
 		//TODO: re-start
 		lunar.getTracks()
@@ -49,7 +48,7 @@ public abstract class LunarTrackItemTransformer<T extends TrackItem, R extends T
 					public void call(final Throwable err) {
 						//TODO: report status
 					}
-
+	
 				},
 				new Action0() {
 					@Override
@@ -59,10 +58,6 @@ public abstract class LunarTrackItemTransformer<T extends TrackItem, R extends T
 				}			
 		);
 	}
-
-	protected abstract LunarTrack              getInputTrackTemplate();
-	protected abstract LunarTrack              getResultTrackTemplate(final Integer sourceID);
-	protected abstract Func1<T, Observable<R>> transform();
 
 	private void reflectTrackStatus(final LunarNotify<LunarTrack> notify) throws MalformedURLException {
 		final LunarTrack track = notify.getItem();
@@ -77,17 +72,17 @@ public abstract class LunarTrackItemTransformer<T extends TrackItem, R extends T
 		this.tracks.remove(id);
 	}
 
-	private void startTrack(final LunarTrack track) throws MalformedURLException {
-		final Observable<T>             input  = track.getItems(inputType); 
-		final Observable<R>             result = input.flatMap(transform());
+	void startTrack(final LunarTrack track) throws MalformedURLException {
+		//final Observable<T>             input  = track.getItems(inputType); 
+		final Observable<byte[]>         result = getResultStream(track);//input.flatMap(transform());
 		final Observable<LunarMQWriter> output = lunar.getOutputTrackStream(developerID, getResultTrackTemplate(track.sourceID)); 
 		output.subscribe( //TODO: Thread
 			new Action1<LunarMQWriter>(){
 				@Override
 				public void call(final LunarMQWriter writer) {
 					final Subscription  sub = result
-							.map(object2JsonString(resultType))
-							.map(string2Byte)
+//							.map(object2JsonString(resultType))
+//							.map(string2Byte)
 							.subscribeOn(Schedulers.newThread()) //TODO: quazar
 							.subscribe(
 									writer, //TODO: report status
@@ -114,5 +109,13 @@ public abstract class LunarTrackItemTransformer<T extends TrackItem, R extends T
 				}
 			}
 		);		
+	}
+
+	protected abstract LunarTrack         getInputTrackTemplate();
+	protected abstract LunarTrack         getResultTrackTemplate(final Integer sourceID);
+	protected abstract Observable<byte[]> transform(final Observable<byte[]> input);
+	
+	protected Observable<byte[]> getResultStream(final LunarTrack track) {
+		return transform(track.getBytestream());
 	}
 }
