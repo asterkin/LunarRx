@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import rx.Observable;
+import rx.functions.Func1;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
@@ -69,6 +70,25 @@ public class Lunar {
 	public Observable<LunarNotify<LunarTrack>> getTracks() throws MalformedURLException {
 		return getCombinedNotifyStream("tracks", LunarTrack.StatusUpdateMessage.class, LunarTrack.Response.class, LunarTrack.class);
 	}
+
+	Observable<LunarMQWriter> getOutputTrackStream(final LunarTrack track) throws MalformedURLException {
+		final URL url = new URL("http",hostName,port,track.streamerRequestPath(developerID));
+		//TODO: embed reporting capabilities somewhere here
+		return Observable.from(url)
+			   .flatMap(synchHttpGet)
+			   .flatMap(jsonString2Object(TrackInfoResponse.class))
+			   .flatMap(getResultData)
+			   .map(getURL)
+			   .flatMap(parseMQUrl)
+			   .flatMap(connectToServer)
+			   .map(createRawWriter);
+	}
+	
+	public <T extends TrackItem, R extends TrackItem> LunarPlugin<T,R> getPlugin(final Func1<T, Observable<R>> transform) throws MalformedURLException {
+		final Observable<LunarNotify<LunarTrack>> input  = getTracks().filter(pluginTrack(null)); //TODO: where to get a prototype from?
+		final Observable<LunarMQWriter>           output = getOutputTrackStream(null); //TODO: where to get a prototype from?
+		return new LunarTrackItemFilter<T,R>(input, transform, output);
+	}
 	
 	//So far new Application API
 	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() throws MalformedURLException {
@@ -110,20 +130,5 @@ public class Lunar {
 		   .map(byte2String)
 		   .flatMap(jsonString2Object(clazz));
 	}
-
-	public Observable<LunarMQWriter> getOutputTrackStream(final LunarTrack track) throws MalformedURLException {
-		final URL url = new URL("http",hostName,port,track.streamerRequestPath(developerID));
-		return Observable.from(url)
-			   .flatMap(synchHttpGet)
-			   .flatMap(jsonString2Object(TrackInfoResponse.class))
-			   .flatMap(getResultData)
-			   .map(getURL)
-			   .flatMap(parseMQUrl)
-			   .flatMap(connectToServer)
-			   .map(createRawWriter);
-	}
 	
-	public <T extends TrackItem> LunarTractItemWriter<T> getOutputTractItemStream(final Class<T> clazz, final String sourceID, final String pluginName, final String trackName) {
-		return null;
-	}
 }

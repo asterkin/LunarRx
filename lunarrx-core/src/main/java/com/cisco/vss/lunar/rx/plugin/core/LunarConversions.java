@@ -91,6 +91,18 @@ public class LunarConversions extends LunarMQConversions {
 			}
 		};		
  	}
+
+	public static final Func1<LunarNotify<LunarTrack>, Boolean> pluginTrack(final LunarTrack template) {
+		return new Func1<LunarNotify<LunarTrack>, Boolean>() {
+			@Override
+			public Boolean call(final LunarNotify<LunarTrack> notify) {
+				final LunarTrack track = notify.getItem();
+				return    track.pluginName.equals(template.pluginName)
+					   && track.trackName.equals(template.trackName);
+			}
+		};
+	}
+ 	
  	//So far new App API
 	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>() {
 		@Override

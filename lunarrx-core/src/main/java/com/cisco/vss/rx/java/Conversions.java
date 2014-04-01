@@ -30,6 +30,13 @@ public class Conversions {
        		return new String(message);
         }      
     };
+
+    public final static Func1<String, byte[]> string2Byte = new Func1<String, byte[]>() {
+       	@Override
+        public byte[] call(final String message) {
+       		return message.getBytes();
+        }      
+    };
     
 	public static abstract class Converter<T1,T2> implements Func1<T1, Observable<T2>> {
 
