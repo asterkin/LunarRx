@@ -1,18 +1,13 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.pluginTrack;
-import static com.cisco.vss.rx.java.Conversions.object2JsonString;
-import static com.cisco.vss.rx.java.Conversions.string2Byte;
-
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
-
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public abstract class LunarByteStreamTransformer {
