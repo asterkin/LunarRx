@@ -3,7 +3,6 @@ package com.cisco.vss.lunar.rx.plugin.core;
 import java.net.MalformedURLException;
 import java.net.URL;
 import rx.Observable;
-import rx.functions.Func1;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
@@ -80,13 +79,7 @@ public class Lunar {
 			   .flatMap(connectToServer)
 			   .map(createRawWriter);
 	}
-	
-	<T extends TrackItem, R extends TrackItem> LunarTrackFilter<T,R> getFilter(final Func1<T, Observable<R>> transform) throws MalformedURLException {
-		final Observable<LunarNotify<LunarTrack>> input  = getTracks().filter(pluginTrack(null)); //TODO: where to get a prototype from?
-		final Observable<LunarMQWriter>           output = getOutputTrackStream(null, null); //TODO: where to get a prototype from?
-		return new LunarTrackItemFilter<T,R>(input, transform, output);
-	}
-	
+		
 	Observable<LunarResponse> sendReport(final LunarPluginStateReport report) throws MalformedURLException {
 		final String json = object2JsonString(LunarPluginStateReport.class).call(report);
 		final URL    url  = new URL("http",hostName,port,"/state/plugins");
