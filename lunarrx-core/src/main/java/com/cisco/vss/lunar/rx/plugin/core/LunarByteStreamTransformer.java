@@ -67,41 +67,76 @@ public abstract class LunarByteStreamTransformer {
 		this.tracks.remove(id);
 	}
 
-	void startTrack(final LunarTrack track) throws MalformedURLException {
-		//final Observable<T>             input  = track.getItems(inputType); 
-		final Observable<byte[]>         result = getResultStream(track);//input.flatMap(transform());
-		final Observable<LunarMQWriter> output = lunar.getOutputTrackStream(developerID, getResultTrackTemplate(track.sourceID)); 
+	void startTrack(final LunarTrack inputTrack) throws MalformedURLException {
+		final Observable<byte[]>        result      = getResultStream(inputTrack);
+		final LunarTrack                resultTrack = getResultTrackTemplate(inputTrack.sourceID);
+		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
+
+		lunar.sendReport(LunarPluginStateReport.starting(developerID, resultTrack)).subscribe();//TODO: threads? Error handling
+		
 		output.subscribe( //TODO: Thread
 			new Action1<LunarMQWriter>(){
 				@Override
 				public void call(final LunarMQWriter writer) {
+					try {
+						lunar.sendReport(LunarPluginStateReport.running(developerID, resultTrack)).subscribe(); //TODO: threads? Error handling
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						//should not get there
+						e.printStackTrace();
+					}//TODO: threads? Error handling
+					
 					final Subscription  sub = result
-//							.map(object2JsonString(resultType))
-//							.map(string2Byte)
 							.subscribeOn(Schedulers.newThread()) //TODO: quazar
 							.subscribe(
-									writer, //TODO: report status
+									writer,
 									new Action1<Throwable>() {
 										@Override
 										public void call(final Throwable err) {
-											//TODO: report status
+											try {
+												lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
+											} catch (MalformedURLException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}//TODO: threads? Error handling
 										}
 									},
 									new Action0() {
 										@Override
 										public void call() {
-											//TODO: report status
+											try {
+												lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
+											} catch (MalformedURLException e) {
+												// TODO Auto-generated catch block
+												e.printStackTrace();
+											}//TODO: threads? Error handling
 										}					
 									}			
 							);
-					tracks.put(track.sourceID, sub);
+					tracks.put(inputTrack.sourceID, sub);
 				}				
 			}, 
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable t1) {
-					//TODO: report status
+					try {
+						lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}//TODO: threads? Error handling
 				}
+			},
+			new Action0() {
+				@Override
+				public void call() {
+					try {
+						lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}//TODO: threads? Error handling
+				}				
 			}
 		);		
 	}

@@ -22,19 +22,19 @@ public class LunarPluginStateReport {
 		this.state       = state;
 	}
 
-	static LunarPluginStateReport starting(String developerID, String pluginName, Integer sourceID, String message) {
-		return new LunarPluginStateReport(developerID, pluginName, sourceID, message, State.starting);
+	public static LunarPluginStateReport stopping(final String developerID, final LunarTrack track) {
+		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.stopping);
 	}
-	
-	static LunarPluginStateReport running(String developerID, String pluginName, Integer sourceID, String message) {
-		return new LunarPluginStateReport(developerID, pluginName, sourceID, message, State.running);
+
+	public static LunarPluginStateReport stopped(final String developerID, final LunarTrack track) {
+		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.stopped);
 	}
-	
-	static LunarPluginStateReport stopping(String developerID, String pluginName, Integer sourceID, String message) {
-		return new LunarPluginStateReport(developerID, pluginName, sourceID, message, State.stopping);
+
+	public static LunarPluginStateReport starting(final String developerID, final LunarTrack track) {
+		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.starting);
 	}
-	
-	static LunarPluginStateReport stopped(String developerID, String pluginName, Integer sourceID, String message) {
-		return new LunarPluginStateReport(developerID, pluginName, sourceID, message, State.stopped);
+
+	public static LunarPluginStateReport running(final String developerID, final LunarTrack track) {
+		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.running);
 	}		
 }
