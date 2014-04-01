@@ -8,8 +8,7 @@ class LunarWatchAndLearnPlugin {
 	static main(args) {
 		final HOST         = args[0]
 		final PORT         = Integer.parseInt(args[1])
-		final DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441"
-		final lunar        = new Lunar(HOST, PORT, DEVELOPER_ID)
+		final lunar        = new Lunar(HOST, PORT)
 		final SOURCE_ID    = 1
 		final INPUT_PLUGIN = "subtitletext"
 		final INPUT_TRACK  = "subtitles"

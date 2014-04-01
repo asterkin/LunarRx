@@ -16,7 +16,6 @@ import rx.functions.Action1;
 
 public class LunarTest {
 	private static final String  LUNAR_HOST   = "localhost";
-	private static final String  DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 	private static final Integer SOURCE_ID    = 1;
 	
 	@Test
@@ -37,7 +36,7 @@ public class LunarTest {
 			object2JsonString(TrackInfoResponse.class).call(response).getBytes()
 		};
 		final HttpServerStub lunarServer = new HttpServerStub(HTTP_RESPONSES);
-		final Lunar          lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final Lunar          lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer());
 		final ObjectHolder<Throwable> error = new ObjectHolder<Throwable>();
 		
 		lunar.getInputTrackStream(SOURCE_ID, PLUGIN_NAME, TRACK_NAME)
@@ -98,7 +97,7 @@ public class LunarTest {
 			object2JsonString(TrackInfoResponse.class).call(response).getBytes()
 		};
 		final HttpServerStub lunarServer    = new HttpServerStub(HTTP_RESPONSES);
-		final Lunar          lunar          = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final Lunar          lunar          = new Lunar(LUNAR_HOST,lunarServer.startServer());
 		final ObjectHolder<Throwable> error = new ObjectHolder<Throwable>();
 
 		lunar.getInputTrackItemStream(SampleTrackItem.class, SOURCE_ID, PLUGIN_NAME, TRACK_NAME)

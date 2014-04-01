@@ -18,7 +18,6 @@ import com.cisco.vss.rx.java.ObjectHolder;
 
 public class LunarAppApiTest {
 	private static final String  LUNAR_HOST   = "localhost";
-	private static final String  DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 
 	@Test
 	public void testGetArrayResponse() throws IOException, InterruptedException {
@@ -34,7 +33,7 @@ public class LunarAppApiTest {
 		}};
 		
 		final ConcurrentHttpServerStub lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
-		final Lunar                    lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final Lunar                    lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer());
 		final ObjectHolder<Throwable>  error       = new ObjectHolder<Throwable>();
 		final List<LunarSource>        result      = new ArrayList<LunarSource>();
 		
@@ -90,7 +89,7 @@ public class LunarAppApiTest {
 		}};
 		
 		final ConcurrentHttpServerStub  lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
-		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer());
 		final ObjectHolder<Throwable>   error       = new ObjectHolder<Throwable>();
 		final Map<Integer, LunarSource> map         = new HashMap<Integer, LunarSource>();
 		
@@ -159,7 +158,7 @@ public class LunarAppApiTest {
 			put("/updates/sources", UPDATES_HTTP_RESPONSE);
 		}};
 		final ConcurrentHttpServerStub  lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
-		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(),DEVELOPER_ID);
+		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer());
 		final ObjectHolder<Throwable>   error       = new ObjectHolder<Throwable>();
 		final Map<Integer, LunarSource> map         = new HashMap<Integer, LunarSource>();
 		final LunarSource[]             EXPECTED    = new LunarSource[] {

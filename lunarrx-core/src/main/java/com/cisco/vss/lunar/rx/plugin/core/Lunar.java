@@ -10,12 +10,10 @@ import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 public class Lunar {
 	private final String hostName;
 	private final int    port;
-	private final String developerID;
 	
-	public Lunar(final String hostName, final int port, final String developerID) {
+	public Lunar(final String hostName, final int port) {
 		this.hostName    = hostName;
 		this.port        = port;
-		this.developerID = developerID;
 	}
 	
 	<R, T extends LunarDataResponse<R[]>> Observable<R> getArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) throws MalformedURLException {
@@ -70,7 +68,7 @@ public class Lunar {
 		return getCombinedNotifyStream("tracks", LunarTrack.StatusUpdateMessage.class, LunarTrack.Response.class, LunarTrack.class);
 	}
 
-	Observable<LunarMQWriter> getOutputTrackStream(final LunarTrack track) throws MalformedURLException {
+	Observable<LunarMQWriter> getOutputTrackStream(final String developerID, final LunarTrack track) throws MalformedURLException {
 		final URL url = new URL("http",hostName,port,track.streamerRequestPath(developerID));
 		//TODO: embed reporting capabilities somewhere here
 		return Observable.from(url)
@@ -85,7 +83,7 @@ public class Lunar {
 	
 	<T extends TrackItem, R extends TrackItem> LunarTrackFilter<T,R> getFilter(final Func1<T, Observable<R>> transform) throws MalformedURLException {
 		final Observable<LunarNotify<LunarTrack>> input  = getTracks().filter(pluginTrack(null)); //TODO: where to get a prototype from?
-		final Observable<LunarMQWriter>           output = getOutputTrackStream(null); //TODO: where to get a prototype from?
+		final Observable<LunarMQWriter>           output = getOutputTrackStream(null, null); //TODO: where to get a prototype from?
 		return new LunarTrackItemFilter<T,R>(input, transform, output);
 	}
 	

@@ -21,7 +21,7 @@ abstract class Lunar {
 }
 
 object Lunar {
-  def apply(host: String, port: Integer, developerID: String): Lunar =  new Lunar {
-    val asJavaLunar = new core.Lunar(host, port, developerID)
+  def apply(host: String, port: Integer): Lunar =  new Lunar {
+    val asJavaLunar = new core.Lunar(host, port)
   } 
 }
