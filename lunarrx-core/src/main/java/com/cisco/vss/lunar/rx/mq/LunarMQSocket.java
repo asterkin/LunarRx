@@ -8,7 +8,7 @@ public class LunarMQSocket
 {        
     private final Socket               socket;
     private final BufferedInputStream  inputStream;
-    private final OutputStream outputStream;
+    private final OutputStream         outputStream;
     private int                        incomingMessageNum;
     private int                        outgoingMessageNum;
     
