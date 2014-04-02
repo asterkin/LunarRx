@@ -1,7 +1,6 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.pluginTrack;
-import java.net.MalformedURLException;
+import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import java.util.HashMap;
 import java.util.Map;
 import rx.Observable;
@@ -21,7 +20,7 @@ public abstract class LunarByteStreamTransformer {
 		this.tracks      = new HashMap<Integer, Subscription>();
 	}
 
-	public void run() throws MalformedURLException {
+	public void run() {
 		//TODO: re-start
 		lunar.getTracks()
 		.filter(pluginTrack(getInputTrackTemplate()))
@@ -29,13 +28,7 @@ public abstract class LunarByteStreamTransformer {
 				new Action1<LunarNotify<LunarTrack>>() {
 					@Override
 					public void call(final LunarNotify<LunarTrack> notify) {
-						try {
-							reflectTrackStatus(notify);
-						} catch (MalformedURLException e) {
-							// TODO Auto-generated catch block
-							//could not get there
-							e.printStackTrace();
-						}
+						reflectTrackStatus(notify);
 					}
 				},
 				new Action1<Throwable>() {
@@ -54,7 +47,7 @@ public abstract class LunarByteStreamTransformer {
 		);
 	}
 
-	private void reflectTrackStatus(final LunarNotify<LunarTrack> notify) throws MalformedURLException {
+	private void reflectTrackStatus(final LunarNotify<LunarTrack> notify) {
 		final LunarTrack track = notify.getItem();
 		if(notify instanceof LunarAdd<?>) startTrack(track);
 		else if (notify instanceof LunarRemove<?>) stopTrack(track);
@@ -67,7 +60,7 @@ public abstract class LunarByteStreamTransformer {
 		this.tracks.remove(id);
 	}
 
-	void startTrack(final LunarTrack inputTrack) throws MalformedURLException {
+	void startTrack(final LunarTrack inputTrack) {
 		final Observable<byte[]>        result      = getResultStream(inputTrack);
 		final LunarTrack                resultTrack = getResultTrackTemplate(inputTrack.sourceID);
 		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
@@ -78,13 +71,7 @@ public abstract class LunarByteStreamTransformer {
 			new Action1<LunarMQWriter>(){
 				@Override
 				public void call(final LunarMQWriter writer) {
-					try {
-						lunar.sendReport(LunarPluginStateReport.running(developerID, resultTrack)).subscribe(); //TODO: threads? Error handling
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						//should not get there
-						e.printStackTrace();
-					}//TODO: threads? Error handling
+					lunar.sendReport(LunarPluginStateReport.running(developerID, resultTrack)).subscribe(); //TODO: threads? Error handling
 					
 					final Subscription  sub = result
 							.subscribeOn(Schedulers.newThread()) //TODO: quazar
@@ -93,23 +80,13 @@ public abstract class LunarByteStreamTransformer {
 									new Action1<Throwable>() {
 										@Override
 										public void call(final Throwable err) {
-											try {
-												lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
-											} catch (MalformedURLException e) {
-												// TODO Auto-generated catch block
-												e.printStackTrace();
-											}//TODO: threads? Error handling
+											lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
 										}
 									},
 									new Action0() {
 										@Override
 										public void call() {
-											try {
-												lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
-											} catch (MalformedURLException e) {
-												// TODO Auto-generated catch block
-												e.printStackTrace();
-											}//TODO: threads? Error handling
+											lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
 										}					
 									}			
 							);
@@ -119,23 +96,13 @@ public abstract class LunarByteStreamTransformer {
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable t1) {
-					try {
-						lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}//TODO: threads? Error handling
+					lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
 				}
 			},
 			new Action0() {
 				@Override
 				public void call() {
-					try {
-						lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}//TODO: threads? Error handling
+					lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
 				}				
 			}
 		);		
