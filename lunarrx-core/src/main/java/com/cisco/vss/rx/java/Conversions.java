@@ -43,7 +43,7 @@ public class Conversions {
     };
     
 	public static abstract class Converter<T1,T2> implements Func1<T1, Observable<T2>> {
-		private final Logger LOGGER;
+		protected final Logger LOGGER;
 
 		public Converter(final String conversionType) {
 			final String name = String.format("%s(%s)", this.getClass().getName(), conversionType);

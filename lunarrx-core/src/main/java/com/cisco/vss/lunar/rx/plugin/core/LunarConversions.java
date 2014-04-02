@@ -5,6 +5,9 @@ import static com.cisco.vss.lunar.rx.plugin.core.LunarResponseResult.OK;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -79,14 +82,16 @@ public class LunarConversions extends LunarMQConversions {
 		return new Func1<LunarNotify<T>, Boolean>() {
 			private final Set<Long> added    = new HashSet<Long>();
 			private final Set<Long> deleting = new HashSet<Long>();
+			private final Logger    LOGGER   = LogManager.getLogger(String.format("LunarConversions.prematureRemove<%s>", this.getClass().getName()));
 			@Override
 			public Boolean call(final LunarNotify<T> notify) {
 				final Long id = notify.getItem().getId();
 				Boolean    rc = false;
 				if(notify instanceof LunarAdd<?>)
-					if(deleting.contains(id))
+					if(deleting.contains(id)) {
+						LOGGER.info("Premature remove resolved for id={}", id);
 						deleting.remove(id);
-					else {
+					} else {
 						added.add(id);
 						rc = true;
 					}
@@ -94,8 +99,10 @@ public class LunarConversions extends LunarMQConversions {
 					if(added.contains(id)) {
 						added.remove(id);
 						rc = true;
-					} else
+					} else {
+						LOGGER.info("Premature remove detected for id={}", id);
 						deleting.add(id);
+					}
 				}
 				return rc;
 			}
