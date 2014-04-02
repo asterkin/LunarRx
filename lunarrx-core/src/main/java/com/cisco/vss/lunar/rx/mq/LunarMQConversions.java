@@ -10,7 +10,7 @@ public class LunarMQConversions extends com.cisco.vss.rx.java.Conversions {
 	
 	public final static Converter<String, Matcher> parseMQUrl = parseString("MQ URL","([^:]+):([^/]+)/(.*)"); 
 	
-	public final static Converter<Matcher, LunarMQSocket> connectToServer = new Converter<Matcher, LunarMQSocket>() {
+	public final static Converter<Matcher, LunarMQSocket> connectToServer = new Converter<Matcher, LunarMQSocket>("connectToServer") {
 		@Override
 		protected LunarMQSocket convert(final Matcher matcher) throws IOException, LunarMQException {
 			return LunarMQSocket.createSocket(

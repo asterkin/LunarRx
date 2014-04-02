@@ -18,7 +18,7 @@ import static com.cisco.vss.rx.java.Conversions.*;
 public class ConverterTest {
     @Test
     public void testConverterOK() {
-        final Converter<String, Integer> converter = new Converter<String, Integer>() {
+        final Converter<String, Integer> converter = new Converter<String, Integer>("testConverter") {
         	@Override
 			protected Integer convert(String message) throws Throwable {
         		return message.length();
@@ -39,7 +39,7 @@ public class ConverterTest {
     	final String MESSAGE                 = "Error ABC";
     	final ObjectHolder<Throwable> result = new ObjectHolder<Throwable>();
     	
-        final Converter<String, String> converter = new Converter<String, String>() {
+        final Converter<String, String> converter = new Converter<String, String>("buggyConverter") {
         	@Override
 			protected String convert(String message) throws Throwable {
         		throw new Exception(MESSAGE);

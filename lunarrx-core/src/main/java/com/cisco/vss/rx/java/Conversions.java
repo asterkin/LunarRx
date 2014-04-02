@@ -43,8 +43,13 @@ public class Conversions {
     };
     
 	public static abstract class Converter<T1,T2> implements Func1<T1, Observable<T2>> {
-		private final static Logger LOGGER = LogManager.getLogger();
+		private final Logger LOGGER;
 
+		public Converter(final String conversionType) {
+			final String name = String.format("%s(%s)", this.getClass().getName(), conversionType);
+			LOGGER = LogManager.getLogger(name);
+		}
+		
 	    @Override
 	    public Observable<T2> call(final T1 message) {
 	    	final Observable.OnSubscribe<T2> func = new Observable.OnSubscribe<T2>() {
@@ -53,7 +58,7 @@ public class Conversions {
 	    			try {
 	    				LOGGER.debug("Converting: {}", message);
 	    				final T2 result = convert(message);
-	    				LOGGER.debug("Conversion Result: {}", result);
+	    				LOGGER.debug("Result: {}", result);
 	    				observer.onNext(result);
 	    				observer.onCompleted();
 	    			} catch(Throwable err) {
@@ -92,7 +97,7 @@ public class Conversions {
 	   .registerTypeAdapter(Date.class, deser).create();
 	
 	public static <R> Converter<String,R> jsonString2Object(final Class<R> clazz) {
-		return new Converter<String, R>() {
+		return new Converter<String, R>("jsonString2Object") {
 			protected R convert(String message) throws Throwable {
 				return gson.fromJson(message, clazz);
 			}
@@ -111,7 +116,7 @@ public class Conversions {
 	public static Converter<String, Matcher> parseString(final String type, final String sPattern) {
 		final Pattern pattern = Pattern.compile(sPattern);
 		
-		return new Converter<String, Matcher>() {
+		return new Converter<String, Matcher>("parseString") {
 			@Override
 			protected Matcher convert(String message) throws Throwable {
 				final Matcher matcher = pattern.matcher(message);
@@ -127,7 +132,7 @@ public class Conversions {
 		};
 	}
 	
-	public static final Converter<URL, String> synchHttpGet = new Converter<URL, String>() {
+	public static final Converter<URL, String> synchHttpGet = new Converter<URL, String>("synchHttpGet") {
 		@Override
 		protected String convert(URL url) throws Throwable {
 			final HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -148,7 +153,7 @@ public class Conversions {
 	};
 	
 	public static Converter<URL, String> synchHttpPost(final String message) {
-		return new Converter<URL, String>() {
+		return new Converter<URL, String>("synchHttpPost") {
 			@Override
 			protected String convert(URL url) throws Throwable {
 				final HttpURLConnection connection = (HttpURLConnection)url.openConnection();

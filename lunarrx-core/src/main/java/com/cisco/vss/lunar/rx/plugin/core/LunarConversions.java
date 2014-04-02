@@ -14,7 +14,7 @@ import com.cisco.vss.lunar.rx.mq.LunarMQSocket;
 public class LunarConversions extends LunarMQConversions {
 
  	public static final <T extends LunarResponse> Converter<T, T> checkResult(Class<T> clazz) {
-		return new Converter<T, T>() {
+		return new Converter<T, T>("checkResult") {
 			@Override
 			protected T convert(final T response) throws Throwable {
 				if(LunarResponse.ResultType.OK != response.result) throw new Exception("Lunar Response is NOT OK: "+response.message);
@@ -24,7 +24,7 @@ public class LunarConversions extends LunarMQConversions {
 	}
 	
  	public static final <T extends LunarDataResponse<R[]>, R> Converter<T, R[]> getArrayData(Class<R> clazz) {
-		return new Converter<T, R[]>() {
+		return new Converter<T, R[]>("getArrayData") {
 			@Override
 			protected R[] convert(final T response) throws Throwable {
 				if(LunarResponse.ResultType.OK != response.result) throw new Exception("Lunar Response is NOT OK");
@@ -33,7 +33,7 @@ public class LunarConversions extends LunarMQConversions {
 		};
 	}
 
- 	public static final Converter<LunarDataResponse<LunarUrlData>, String> getUrlData = new Converter<LunarDataResponse<LunarUrlData>, String>() {
+ 	public static final Converter<LunarDataResponse<LunarUrlData>, String> getUrlData = new Converter<LunarDataResponse<LunarUrlData>, String>("getUrlData") {
 		@Override
 		protected String convert(final LunarDataResponse<LunarUrlData> response) throws Exception {
 			if(LunarResponse.ResultType.OK != response.result) throw new Exception("Lunar Response is NOT OK");
@@ -114,7 +114,7 @@ public class LunarConversions extends LunarMQConversions {
 	}
  	
  	//So far new App API
-	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>() {
+	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>("getResultData") {
 		@Override
 		protected LunarTrack convert(final TrackInfoResponse message)	throws Throwable {
 			if(OK != message.result) throw new Exception("Lunar Response is NOT OK");
@@ -129,7 +129,7 @@ public class LunarConversions extends LunarMQConversions {
 		}
 	};
 
-	public static final Converter<UpdatesTracksResponse, UpdatesTracksResponse.Data> getResultData1 = new Converter<UpdatesTracksResponse, UpdatesTracksResponse.Data>() {
+	public static final Converter<UpdatesTracksResponse, UpdatesTracksResponse.Data> getResultData1 = new Converter<UpdatesTracksResponse, UpdatesTracksResponse.Data>("getResultData1") {
 		@Override
 		protected UpdatesTracksResponse.Data convert(final UpdatesTracksResponse message)	throws Throwable {
 			if(OK != message.result) throw new Exception("Lunar Response is NOT OK");
