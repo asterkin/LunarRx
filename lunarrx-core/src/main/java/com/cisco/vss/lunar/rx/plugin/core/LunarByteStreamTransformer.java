@@ -76,8 +76,16 @@ public abstract class LunarByteStreamTransformer {
 		reportStatus(LunarPluginStateReport.stopping(developerID, track));
 	}
 
+	private void stopping(final LunarTrack track, final Throwable err) {
+		reportStatus(LunarPluginStateReport.stopping(developerID, track, err));
+	}
+	
 	private void stopped(final LunarTrack track) {
 		reportStatus(LunarPluginStateReport.stopped(developerID, track));
+	}
+
+	private void stopped(final LunarTrack track, final Throwable err) {
+		reportStatus(LunarPluginStateReport.stopped(developerID, track, err));
 	}
 	
 	void startTrack(final LunarTrack inputTrack) {
@@ -100,7 +108,7 @@ public abstract class LunarByteStreamTransformer {
 									new Action1<Throwable>() {
 										@Override
 										public void call(final Throwable err) {
-											stopping(resultTrack);
+											stopping(resultTrack, err);
 										}
 									},
 									new Action0() {
@@ -115,8 +123,8 @@ public abstract class LunarByteStreamTransformer {
 			}, 
 			new Action1<Throwable>(){
 				@Override
-				public void call(Throwable t1) {
-					stopped(resultTrack);
+				public void call(Throwable err) {
+					stopped(resultTrack, err);
 				}
 			},
 			new Action0() {
