@@ -2,11 +2,16 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import rx.Observable;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
 public class Lunar {
+	private final static Logger LOGGER = LogManager.getLogger();
 	private final String hostName;
 	private final int    port;
 	
@@ -29,8 +34,7 @@ public class Lunar {
 		try {
 			return new URL("http",hostName,port, path);
 		} catch (MalformedURLException e) {
-			//Should not get there
-			e.printStackTrace();
+			LOGGER.fatal("Unexpected MalformedURLException for {} Stack trace: {}", path, e.getStackTrace());
 		}
 		return null;
 	}

@@ -21,14 +21,14 @@ public class LunarMQOnSubscribe implements Observable.OnSubscribe<byte[]> {
 		while(!subscriber.isUnsubscribed()) {
 			try {
 				final byte[] buf = socket.read();
-				LOGGER.trace("Got new message from Lunar MQ Stream: {}", buf);
+				LOGGER.debug("Got new message from Lunar MQ Stream: {}", buf);
 				subscriber.onNext(buf);
 			} catch (LunarMQException e) {
-				LOGGER.trace("Got Lunar MQ Exception: {}", e.toString());
+				LOGGER.debug("Got Lunar MQ Exception: {}", e.toString());
 				if (e.getCode() == LunarMQException.StreamingError.LMQ_EOF ||
 						e.getCode() == LunarMQException.StreamingError.LMQ_EOS) {
 					subscriber.onCompleted();
-					LOGGER.trace("End of Lunar MQ Stream");
+					LOGGER.debug("End of Lunar MQ Stream");
 					break;
 				}
 				if (e.isRecoverable() == false) 

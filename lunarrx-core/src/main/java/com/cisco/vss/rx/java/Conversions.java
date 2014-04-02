@@ -51,9 +51,9 @@ public class Conversions {
 	    		@Override
 	    		public void call(Subscriber<? super T2> observer) {
 	    			try {
-	    				LOGGER.trace("Converting: {}", message);
+	    				LOGGER.debug("Converting: {}", message);
 	    				final T2 result = convert(message);
-	    				LOGGER.trace("Conversion Result: {}", result);
+	    				LOGGER.debug("Conversion Result: {}", result);
 	    				observer.onNext(result);
 	    				observer.onCompleted();
 	    			} catch(Throwable err) {
