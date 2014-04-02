@@ -34,7 +34,7 @@ public class Lunar {
 		try {
 			return new URL("http",hostName,port, path);
 		} catch (MalformedURLException e) {
-			LOGGER.fatal("Unexpected MalformedURLException for {} Stack trace: {}", path, e.getStackTrace());
+			LOGGER.fatal("Unexpected MalformedURLException for {}:{}{} Stack trace: {}", hostName, port, path, e.getStackTrace());
 		}
 		return null;
 	}
