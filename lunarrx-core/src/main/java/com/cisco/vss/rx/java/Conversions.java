@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -40,6 +43,7 @@ public class Conversions {
     };
     
 	public static abstract class Converter<T1,T2> implements Func1<T1, Observable<T2>> {
+		private final static Logger LOGGER = LogManager.getLogger();
 
 	    @Override
 	    public Observable<T2> call(final T1 message) {
@@ -47,9 +51,13 @@ public class Conversions {
 	    		@Override
 	    		public void call(Subscriber<? super T2> observer) {
 	    			try {
-	    				observer.onNext(convert(message));
+	    				LOGGER.trace("Converting: {}", message);
+	    				final T2 result = convert(message);
+	    				LOGGER.trace("Conversion Result: {}", result);
+	    				observer.onNext(result);
 	    				observer.onCompleted();
 	    			} catch(Throwable err) {
+	    				LOGGER.error("Got an error during conversion: {}", err.toString());
 	    				observer.onError(err);
 	    			}
 	    		}

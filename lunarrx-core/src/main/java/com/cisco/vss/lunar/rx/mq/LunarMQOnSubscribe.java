@@ -21,10 +21,10 @@ public class LunarMQOnSubscribe implements Observable.OnSubscribe<byte[]> {
 		while(!subscriber.isUnsubscribed()) {
 			try {
 				final byte[] buf = socket.read();
-				LOGGER.trace("Got new message from Lunar MQ Stream {}", buf);
+				LOGGER.trace("Got new message from Lunar MQ Stream: {}", buf);
 				subscriber.onNext(buf);
 			} catch (LunarMQException e) {
-				LOGGER.debug("Got Lunar MQ Exception {}", e.toString());
+				LOGGER.trace("Got Lunar MQ Exception: {}", e.toString());
 				if (e.getCode() == LunarMQException.StreamingError.LMQ_EOF ||
 						e.getCode() == LunarMQException.StreamingError.LMQ_EOS) {
 					subscriber.onCompleted();
@@ -33,12 +33,12 @@ public class LunarMQOnSubscribe implements Observable.OnSubscribe<byte[]> {
 				}
 				if (e.isRecoverable() == false) 
 				{
-					LOGGER.error("Unrecoverable Lunar MQ Exception {}", e.toString());
+					LOGGER.error("Unrecoverable Lunar MQ Exception: {}", e.toString());
 					subscriber.onError(e);
 					break;
 				}
 			} catch (IOException e) {
-				LOGGER.error("Unrecoverable IO Exception {}", e.toString());
+				LOGGER.error("Unrecoverable IO Exception: {}", e.toString());
 				subscriber.onError(e);
 				break;
 			}
@@ -46,7 +46,7 @@ public class LunarMQOnSubscribe implements Observable.OnSubscribe<byte[]> {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			LOGGER.debug("IO Exception while closing Lunar MQ Socket", e.toString());
+			LOGGER.debug("IO Exception while closing Lunar MQ Socket: ", e.toString());
 		}
 	}
 }
