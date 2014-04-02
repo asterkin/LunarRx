@@ -60,18 +60,38 @@ public abstract class LunarByteStreamTransformer {
 		this.tracks.remove(id);
 	}
 
+	private void reportStatus(final LunarPluginStateReport report) {
+		lunar.sendReport(report).subscribe();//TODO: threads? Error handling		
+	}
+	
+	private void starting(final LunarTrack track) {
+		reportStatus(LunarPluginStateReport.starting(developerID, track));
+	}
+
+	private void running(final LunarTrack track) {
+		reportStatus(LunarPluginStateReport.running(developerID, track));
+	}
+
+	private void stopping(final LunarTrack track) {
+		reportStatus(LunarPluginStateReport.stopping(developerID, track));
+	}
+
+	private void stopped(final LunarTrack track) {
+		reportStatus(LunarPluginStateReport.stopped(developerID, track));
+	}
+	
 	void startTrack(final LunarTrack inputTrack) {
 		final Observable<byte[]>        result      = getResultStream(inputTrack);
 		final LunarTrack                resultTrack = getResultTrackTemplate(inputTrack.sourceID);
 		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
 
-		lunar.sendReport(LunarPluginStateReport.starting(developerID, resultTrack)).subscribe();//TODO: threads? Error handling
+		starting(resultTrack);
 		
 		output.subscribe( //TODO: Thread
 			new Action1<LunarMQWriter>(){
 				@Override
 				public void call(final LunarMQWriter writer) {
-					lunar.sendReport(LunarPluginStateReport.running(developerID, resultTrack)).subscribe(); //TODO: threads? Error handling
+					running(resultTrack);
 					
 					final Subscription  sub = result
 							.subscribeOn(Schedulers.newThread()) //TODO: quazar
@@ -80,13 +100,13 @@ public abstract class LunarByteStreamTransformer {
 									new Action1<Throwable>() {
 										@Override
 										public void call(final Throwable err) {
-											lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
+											stopping(resultTrack);
 										}
 									},
 									new Action0() {
 										@Override
 										public void call() {
-											lunar.sendReport(LunarPluginStateReport.stopping(developerID, resultTrack)).subscribe();
+											stopping(resultTrack);
 										}					
 									}			
 							);
@@ -96,13 +116,13 @@ public abstract class LunarByteStreamTransformer {
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable t1) {
-					lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
+					stopped(resultTrack);
 				}
 			},
 			new Action0() {
 				@Override
 				public void call() {
-					lunar.sendReport(LunarPluginStateReport.stopped(developerID, resultTrack)).subscribe();
+					stopped(resultTrack);
 				}				
 			}
 		);		
