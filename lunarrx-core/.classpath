@@ -5,14 +5,24 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
 	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/a77585b7d0ea4d77f90f6bd1a36bf0015606473d/rxjava-core-0.17.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/ccb0bea07837b2a3b40533e56c8a8f29e7130e5a/rxjava-core-0.17.2.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/a024659a4c4e0ecca37da90877ff7cf0a0720cd8/rxjava-core-0.17.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a6dc5db8a12928e583bd3f23e72d3ab611ecd58f/gson-2.2.4-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar" exported="true">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/edf793f307583c05c23d2bff956e1a10ead8702c/gson-2.2.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/a77585b7d0ea4d77f90f6bd1a36bf0015606473d/rxjava-core-0.17.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/ccb0bea07837b2a3b40533e56c8a8f29e7130e5a/rxjava-core-0.17.2.jar" exported="true">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.0-rc1/3f5cc4c8f2064e158c09dca453fe02c482378040/log4j-api-2.0-rc1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.0-rc1/6db18fe48f391d302568a2cc246bbb9885edaa51/log4j-api-2.0-rc1.jar" exported="true">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/a024659a4c4e0ecca37da90877ff7cf0a0720cd8/rxjava-core-0.17.2-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.0-rc1/372568e5e52478b6e771acbb1ed985ddf3b813e8/log4j-api-2.0-rc1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.0-rc1/bb3513845f32f63b815f735e5262f6d6c6421fc9/log4j-core-2.0-rc1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.0-rc1/4363cdf913a584fe8fa72cf4c0eaae181ef7d1eb/log4j-core-2.0-rc1.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.0-rc1/23bf5b8ded006611e97dee53e59c67e705c8d6a0/log4j-core-2.0-rc1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar" exported="true">
