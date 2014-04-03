@@ -20,12 +20,18 @@ public class Lunar {
 		this.port        = port;
 	}
 	
-	<R, T extends LunarDataResponse<R[]>> Observable<R> getArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) {
+	Observable<String> httpRequest(final String path, final Converter<URL, String> method) {
 		final URL  url = makeUrl(path);
 		
-		return Observable.from(url)
-				.flatMap(synchHttpGet)
-				.flatMap(jsonString2Object(responseType))
+		return Observable.from(url).flatMap(method);	
+	}
+
+	<R> Observable<R> httpRequest(final String path, final Converter<URL, String> method, final Class<R> responseType) {
+		return httpRequest(path, method).flatMap(jsonString2Object(responseType));
+	}
+	
+	<R, T extends LunarDataResponse<R[]>> Observable<R> getArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) {
+		return httpRequest(path, synchHttpGet, responseType)
 				.flatMap(getArrayData(dataType))
 				.flatMap(flatten(dataType));
 	}
@@ -46,22 +52,12 @@ public class Lunar {
 	}
 	
 	Observable<String> getUpdatesUrl(final String category) {
-		final String path = String.format("/updates/%s", category);
-		final URL  url = makeUrl(path);
-		
-		return Observable.from(url)
-				.flatMap(synchHttpGet)
-				.flatMap(jsonString2Object(LunarUrlData.Response.class))
+		return httpRequest(String.format("/updates/%s", category), synchHttpGet, LunarUrlData.Response.class)
 				.flatMap(getUrlData);
 	}
-	
+
 	<R, T extends LunarStatusUpdateMessage<R>> Observable<LunarNotify<R>> getStatusUpdatesStream(final String category, final Class<T> messageType, final Class<R> dataType) {
-		return getUpdatesUrl(category)
-				.flatMap(parseMQUrl)
-				.flatMap(connectToServer)
-				.flatMap(readStream)
-				.map(byte2String)
-				.flatMap(jsonString2Object(messageType))
+		return getMQStream(getUpdatesUrl(category), messageType)
 				.flatMap(statusUpdate2Notify(messageType,dataType));
 	}
 	
@@ -82,10 +78,7 @@ public class Lunar {
 	}
 
 	Observable<LunarMQWriter> getOutputTrackStream(final String developerID, final LunarTrack track) {
-		final URL url = makeUrl(track.streamerRequestPath(developerID));
-		return Observable.from(url)
-			   .flatMap(synchHttpGet)
-			   .flatMap(jsonString2Object(TrackInfoResponse.class))
+		return httpRequest(track.streamerRequestPath(developerID), synchHttpGet, TrackInfoResponse.class)
 			   .flatMap(getResultData)
 			   .map(getURL)
 			   .flatMap(parseMQUrl)
@@ -95,10 +88,7 @@ public class Lunar {
 		
 	Observable<LunarResponse> sendReport(final LunarPluginStateReport report) {
 		final String json = object2JsonString(LunarPluginStateReport.class).call(report);
-		final URL    url  = makeUrl("/state/plugins");
-		return Observable.from(url)
-				.flatMap(synchHttpPost(json))
-				.flatMap(jsonString2Object(LunarResponse.class))
+		return httpRequest("/state/plugins", synchHttpPost(json), LunarResponse.class)
 				.flatMap(checkResult(LunarResponse.class));
 	}
 

@@ -2,7 +2,6 @@ package com.cisco.vss.lunar.rx.mq;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
-
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -27,4 +26,15 @@ public class LunarMQConversions extends com.cisco.vss.rx.java.Conversions {
 		}		
 	};
 	
+	public static Observable<String> getMQStream(final Observable<String> urlSource) {
+		return urlSource
+				.flatMap(parseMQUrl)
+				.flatMap(connectToServer)
+				.flatMap(readStream)
+				.map(byte2String);
+	}
+	
+	public static <R> Observable<R> getMQStream(final Observable<String> urlSource, final Class<R> messageType) {
+		return getMQStream(urlSource).flatMap(jsonString2Object(messageType));
+	}
 }
