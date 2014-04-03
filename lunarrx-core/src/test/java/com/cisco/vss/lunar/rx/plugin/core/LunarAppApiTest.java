@@ -10,10 +10,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.Test;
+
 import rx.functions.Action1;
-import com.cisco.vss.lunar.rx.ConcurrentHttpServerStub;
+
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
+import com.cisco.vss.rx.java.ConcurrentHttpServerStub;
 import com.cisco.vss.rx.java.ObjectHolder;
 
 public class LunarAppApiTest {
