@@ -7,7 +7,11 @@ public class LunarResponse {
 		NOT_OK
 	}
 
+	public LunarResponse() {
+		result = ResultType.OK;
+	}
+	
 	public ResultType result;
-	public String message;
+	public String     message;
 
 }

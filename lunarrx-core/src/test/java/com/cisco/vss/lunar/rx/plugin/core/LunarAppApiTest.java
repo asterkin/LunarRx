@@ -194,4 +194,26 @@ public class LunarAppApiTest {
 		assertEquals(EXPECTED.length, map.size());
 		assertArrayEquals(EXPECTED, map.values().toArray());
 	}
+	
+	@Test
+	public void testtReporting() throws IOException, InterruptedException {
+		final LunarResponse RESPONSE      = new LunarResponse();
+		final String        HTTP_RESPONSE = object2JsonString(LunarResponse.class).call(RESPONSE);
+		@SuppressWarnings("serial")
+		final Map<String, String> HTTP_RESPONSES = new HashMap<String,String>(){{
+			put("/state/plugins", HTTP_RESPONSE);
+		}};
+		
+		final ConcurrentHttpServerStub lunarServer  = new ConcurrentHttpServerStub(HTTP_RESPONSES);
+		final Lunar                    lunar        = new Lunar(LUNAR_HOST,lunarServer.startServer());
+		final String                   DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
+		final LunarPluginStateReport   REPORT       = LunarPluginStateReport.running(DEVELOPER_ID, new LunarTrack(1, "plugin1", "track1"));
+		final String                   REPORT_JSON  = object2JsonString(LunarPluginStateReport.class).call(REPORT); 
+		lunar.sendReport(REPORT).subscribe();
+		
+		lunarServer.join();
+		final Map<String, String> requests = lunarServer.getRequests();
+		assertEquals(1, requests.size());
+		assertArrayEquals(new String[]{REPORT_JSON}, requests.values().toArray());		
+	}
 }
