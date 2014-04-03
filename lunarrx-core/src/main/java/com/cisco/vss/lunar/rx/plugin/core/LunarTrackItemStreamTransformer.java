@@ -12,13 +12,11 @@ public abstract class LunarTrackItemStreamTransformer<T extends TrackItem, R ext
 	}
 
 	@Override
-	protected Observable<R> transform(Class<R> clazz, final Observable<byte[]> input) {
-		return transform(
-			inputType, 
-			resultType, 
+	protected Observable<R> generateR(final Observable<byte[]> input) {
+		return transformT(
 			input.map(byte2String).flatMap(jsonString2Object(inputType))
 		);
 	}
 	
-	protected abstract Observable<R> transform(final Class<T> inputType, final Class<R> resultType, final Observable<T> input);
+	protected abstract Observable<R> transformT(final Observable<T> input);
 }
