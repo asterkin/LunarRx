@@ -1,13 +1,10 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -16,12 +13,14 @@ import rx.schedulers.Schedulers;
 
 public abstract class LunarByteStreamTransformer {
 	protected final Lunar                      lunar;
+	protected final LunarPluginStateReporter   reporter;
 	protected final String                     developerID;
 	protected final Map<Integer, Subscription> tracks;
 	protected final Logger                     logger;
 
 	protected  LunarByteStreamTransformer(final Lunar lunar, final String developerID) {
 		this.lunar       = lunar;
+		this.reporter    = new LunarPluginStateReporter(lunar, developerID);
 		this.developerID = developerID;
 		this.tracks      = new HashMap<Integer, Subscription>();
 		this.logger      = LogManager.getLogger();
@@ -67,70 +66,35 @@ public abstract class LunarByteStreamTransformer {
 		this.tracks.remove(id);
 	}
 
-	private void reportStatus(final LunarPluginStateReport report) {
-		lunar.sendReport(report)
-		.doOnError(
-			new Action1<Throwable>() {
-				@Override
-				public void call(final Throwable err) {
-					logger.error("Got an error {} while reporting status {}", err, report);
-				}				
-			}
-		).subscribeOn(Schedulers.newThread()) //TODO: qusars
-		.subscribe();		
-	}
-	
-	private void starting(final LunarTrack track) {
-		reportStatus(LunarPluginStateReport.starting(developerID, track));
-	}
-
-	private void running(final LunarTrack track) {
-		reportStatus(LunarPluginStateReport.running(developerID, track));
-	}
-
-	private void stopping(final LunarTrack track) {
-		reportStatus(LunarPluginStateReport.stopping(developerID, track));
-	}
-
-	private void stopping(final LunarTrack track, final Throwable err) {
-		reportStatus(LunarPluginStateReport.stopping(developerID, track, err));
-	}
-	
-	private void stopped(final LunarTrack track) {
-		reportStatus(LunarPluginStateReport.stopped(developerID, track));
-	}
-
-	private void stopped(final LunarTrack track, final Throwable err) {
-		reportStatus(LunarPluginStateReport.stopped(developerID, track, err));
-	}
-	
 	void startTrack(final LunarTrack inputTrack) {
 		final Observable<byte[]>        result      = getResultStream(inputTrack);
 		final LunarTrack                resultTrack = getResultTrackTemplate(inputTrack.sourceID);
 		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
 
-		starting(resultTrack);
+		reporter.starting(resultTrack);
 		
-		output.subscribe( //TODO: Thread
+		output
+		.subscribeOn(Schedulers.newThread()) //TODO: quazar
+		.observeOn(Schedulers.trampoline())
+		.subscribe(
 			new Action1<LunarMQWriter>(){
 				@Override
 				public void call(final LunarMQWriter writer) {
-					running(resultTrack);
+					reporter.running(resultTrack);
 					
 					final Subscription  sub = result
-							.subscribeOn(Schedulers.newThread()) //TODO: quazar
 							.subscribe(
 									writer,
 									new Action1<Throwable>() {
 										@Override
 										public void call(final Throwable err) {
-											stopping(resultTrack, err);
+											reporter.stopping(resultTrack, err);
 										}
 									},
 									new Action0() {
 										@Override
 										public void call() {
-											stopping(resultTrack);
+											reporter.stopping(resultTrack);
 										}					
 									}			
 							);
@@ -140,13 +104,13 @@ public abstract class LunarByteStreamTransformer {
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable err) {
-					stopped(resultTrack, err);
+					reporter.stopped(resultTrack, err);
 				}
 			},
 			new Action0() {
 				@Override
 				public void call() {
-					stopped(resultTrack);
+					reporter.stopped(resultTrack);
 				}				
 			}
 		);		
