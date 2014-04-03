@@ -1,8 +1,13 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action0;
@@ -13,11 +18,13 @@ public abstract class LunarByteStreamTransformer {
 	protected final Lunar                      lunar;
 	protected final String                     developerID;
 	protected final Map<Integer, Subscription> tracks;
+	protected final Logger                     logger;
 
 	protected  LunarByteStreamTransformer(final Lunar lunar, final String developerID) {
 		this.lunar       = lunar;
 		this.developerID = developerID;
 		this.tracks      = new HashMap<Integer, Subscription>();
+		this.logger      = LogManager.getLogger();
 	}
 
 	public void run() {
@@ -34,14 +41,14 @@ public abstract class LunarByteStreamTransformer {
 				new Action1<Throwable>() {
 					@Override
 					public void call(final Throwable err) {
-						//TODO: report status
+						logger.fatal("Got an error while getting Tracks status", err);
 					}
 	
 				},
 				new Action0() {
 					@Override
 					public void call() {
-						//TODO: report status
+						logger.warn("Unexpected end of Tracks status update stream. Is Lunar up?");
 					}					
 				}			
 		);
@@ -61,7 +68,16 @@ public abstract class LunarByteStreamTransformer {
 	}
 
 	private void reportStatus(final LunarPluginStateReport report) {
-		lunar.sendReport(report).subscribe();//TODO: threads? Error handling		
+		lunar.sendReport(report)
+		.doOnError(
+			new Action1<Throwable>() {
+				@Override
+				public void call(final Throwable err) {
+					logger.error("Got an error {} while reporting status {}", err, report);
+				}				
+			}
+		).subscribeOn(Schedulers.newThread()) //TODO: qusars
+		.subscribe();		
 	}
 	
 	private void starting(final LunarTrack track) {
