@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import rx.Observable;
+import rx.functions.Action1;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
@@ -89,7 +90,15 @@ public class Lunar {
 	Observable<LunarResponse> sendReport(final LunarPluginStateReport report) {
 		final String json = object2JsonString(LunarPluginStateReport.class).call(report);
 		return httpRequest("/state/plugins", synchHttpPost(json), LunarResponse.class)
-				.flatMap(checkResult(LunarResponse.class));
+				.flatMap(checkResult(LunarResponse.class))
+				.doOnError(
+						new Action1<Throwable>() {
+							@Override
+							public void call(final Throwable err) {
+								LOGGER.error("Got an error {} while reporting status {}", err, json);
+							}				
+						}
+				);
 	}
 
 	//So far new Application API
