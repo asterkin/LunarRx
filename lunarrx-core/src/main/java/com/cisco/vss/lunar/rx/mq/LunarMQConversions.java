@@ -26,15 +26,16 @@ public class LunarMQConversions extends com.cisco.vss.rx.java.Conversions {
 		}		
 	};
 	
-	public static Observable<String> getMQStream(final Observable<String> urlSource) {
+	public static Observable<byte[]> getMQStream(final Observable<String> urlSource) {
 		return urlSource
 				.flatMap(parseMQUrl)
 				.flatMap(connectToServer)
-				.flatMap(readStream)
-				.map(byte2String);
+				.flatMap(readStream);
 	}
 	
 	public static <R> Observable<R> getMQStream(final Observable<String> urlSource, final Class<R> messageType) {
-		return getMQStream(urlSource).flatMap(jsonString2Object(messageType));
+		return getMQStream(urlSource)
+				.map(byte2String)
+				.flatMap(jsonString2Object(messageType));
 	}
 }
