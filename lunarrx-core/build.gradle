@@ -3,7 +3,7 @@
   version = '0.1.0'
 
   dependencies {
-    testCompile 'junit:junit:4.+'
+    testCompile 'junit:junit:4.+', 'org.mockito:mockito-all:1.9+'
     runtime     'com.netflix.rxjava:rxjava-core:0.+', 
 				'com.google.code.gson:gson:2.+', 
 				'org.apache.logging.log4j:log4j-api:2.+', 

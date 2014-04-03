@@ -5,14 +5,14 @@
 	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT" exported="true"/>
 	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="/lunarrx-core" exported="true"/>
-	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/a77585b7d0ea4d77f90f6bd1a36bf0015606473d/rxjava-core-0.17.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/ccb0bea07837b2a3b40533e56c8a8f29e7130e5a/rxjava-core-0.17.2.jar" exported="true">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.4/41f016d526c050fb1c354d3f9de99f80d638fc97/rxjava-core-0.17.4-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.4/c525b8fc2c9c97f9ebc61f0628fc090ae9692766/rxjava-core-0.17.4.jar" exported="true">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.2/a024659a4c4e0ecca37da90877ff7cf0a0720cd8/rxjava-core-0.17.2-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.4/a4b9e68b73c02c046e1ef7de127cedfcc8fe0d3a/rxjava-core-0.17.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.2/778ddba300285224b48c968f5a5a3f8c37168f0e/rxjava-groovy-0.17.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.2/994db2953261cc574ae92bd53586b632e204efd1/rxjava-groovy-0.17.2.jar" exported="true">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.4/5ddc37b233b368d86e4890bc658516a5cd75325f/rxjava-groovy-0.17.4-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.4/603b21fc0f775ef6cdf3997b2010f08e48b6c6a5/rxjava-groovy-0.17.4.jar" exported="true">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.2/3ee65d0cb3fcadf02a1527122fdf85303f177734/rxjava-groovy-0.17.2-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.17.4/dd0478066ed0e87339d5ce88f9242bef89147dc9/rxjava-groovy-0.17.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar" exported="true">

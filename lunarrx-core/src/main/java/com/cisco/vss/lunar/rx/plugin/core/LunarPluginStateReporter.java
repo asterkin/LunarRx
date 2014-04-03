@@ -2,11 +2,11 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import rx.schedulers.Schedulers;
 
-public class LunarTrackStateReporter {
+public class LunarPluginStateReporter {
 	protected final Lunar        lunar;
 	protected final String       developerID;
 	
-	public LunarTrackStateReporter(final Lunar lunar, final String developerID) {
+	public LunarPluginStateReporter(final Lunar lunar, final String developerID) {
 		this.lunar       = lunar;
 		this.developerID = developerID;		
 	}

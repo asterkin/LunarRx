@@ -22,6 +22,18 @@ public class LunarPluginStateReport {
 		this.state       = state;
 	}
 
+	@Override
+	public boolean equals(final Object object) {
+		if(null == object) return false;
+		if(!(object instanceof LunarPluginStateReport)) return false;
+		final LunarPluginStateReport that = (LunarPluginStateReport)object;
+		return (this.developerID.equals(that.developerID))
+				&& (this.pluginName.equals(that.pluginName))
+				&& (this.sourceID.equals(that.sourceID))
+				&& ((this.message == null && that.message == null) || (this.message.equals(that.message))
+				&& (this.state.equals(that.state)));
+	}
+	
 	public static LunarPluginStateReport stopping(final String developerID, final LunarTrack track) {
 		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.stopping);
 	}
