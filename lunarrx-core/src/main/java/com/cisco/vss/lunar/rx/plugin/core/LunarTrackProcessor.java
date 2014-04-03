@@ -1,59 +1,29 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public abstract class LunarByteStreamTransformer {
-	protected final Lunar                      lunar;
-	protected final LunarPluginStateReporter   reporter;
-	protected final String                     developerID;
-	protected final Map<Integer, Subscription> tracks;
-	protected final Logger                     logger;
-
-	protected  LunarByteStreamTransformer(final Lunar lunar, final String developerID) {
+public abstract class LunarTrackProcessor implements Action1<LunarNotify<LunarTrack>>{
+	private final Lunar                      lunar;
+	private final LunarPluginStateReporter   reporter;
+	private final String                     developerID;
+	private final Map<Integer, Subscription> tracks;
+	
+	public LunarTrackProcessor(final Lunar lunar, final String developerID) {
 		this.lunar       = lunar;
 		this.reporter    = new LunarPluginStateReporter(lunar, developerID);
 		this.developerID = developerID;
-		this.tracks      = new HashMap<Integer, Subscription>();
-		this.logger      = LogManager.getLogger();
+		this.tracks      = new HashMap<Integer, Subscription>();		
 	}
-
-	public void run() {
-		//TODO: re-start
-		lunar.getTracks()
-		.filter(pluginTrack(getInputTrackTemplate()))
-		.subscribe(
-				new Action1<LunarNotify<LunarTrack>>() {
-					@Override
-					public void call(final LunarNotify<LunarTrack> notify) {
-						reflectTrackStatus(notify);
-					}
-				},
-				new Action1<Throwable>() {
-					@Override
-					public void call(final Throwable err) {
-						logger.fatal("Got an error while getting Tracks status", err);
-					}
 	
-				},
-				new Action0() {
-					@Override
-					public void call() {
-						logger.warn("Unexpected end of Tracks status update stream. Is Lunar up?");
-					}					
-				}			
-		);
-	}
-
-	private void reflectTrackStatus(final LunarNotify<LunarTrack> notify) {
+	@Override
+	public void call(final LunarNotify<LunarTrack> notify) {
 		final LunarTrack track = notify.getItem();
 		if(notify instanceof LunarAdd<?>) startTrack(track);
 		else if (notify instanceof LunarRemove<?>) stopTrack(track);
@@ -67,7 +37,7 @@ public abstract class LunarByteStreamTransformer {
 		this.tracks.remove(id);
 	}
 
-	void startTrack(final LunarTrack inputTrack) {
+	private void startTrack(final LunarTrack inputTrack) {
 		final Observable<byte[]>        result      = getResultStream(inputTrack);
 		final LunarTrack                resultTrack = getResultTrackTemplate(inputTrack.sourceID);
 		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
@@ -111,12 +81,12 @@ public abstract class LunarByteStreamTransformer {
 			}
 		);		
 	}
-
-	protected abstract LunarTrack         getInputTrackTemplate();
-	protected abstract LunarTrack         getResultTrackTemplate(final Integer sourceID);
-	protected abstract Observable<byte[]> transform(final Observable<byte[]> input);
 	
-	protected Observable<byte[]> getResultStream(final LunarTrack track) {
+	private Observable<byte[]> getResultStream(final LunarTrack track) {
 		return transform(track.getBytestream());
 	}
+	
+	protected abstract LunarTrack         getResultTrackTemplate(final Integer sourceID);
+	protected abstract Observable<byte[]> transform(final Observable<byte[]> input);		
 }
+

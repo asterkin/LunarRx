@@ -20,6 +20,11 @@ public class LunarTrack implements LunarEntity {
 	public class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarTrack> {}
 	
 	//TODO: better encapsulation?
+	public LunarTrack(final String pluginName, final String trackName) {
+		this.pluginName = pluginName;
+		this.trackName  = trackName;
+	}
+
 	public LunarTrack(final Integer sourceID, final String pluginName, final String trackName) {
 		this.sourceID   = sourceID;
 		this.pluginName = pluginName;
