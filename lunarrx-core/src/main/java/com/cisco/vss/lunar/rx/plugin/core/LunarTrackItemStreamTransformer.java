@@ -7,7 +7,7 @@ public abstract class LunarTrackItemStreamTransformer<T extends TrackItem, R ext
 	final Class<T> inputType;
 	
 	protected LunarTrackItemStreamTransformer(final Lunar lunar, final String developerID, final Class<T> inputType, final Class<R> resultType) {
-		super(lunar, developerID, resultType);
+		super(lunar, developerID, getTrackTemplate(inputType), resultType);
 		this.inputType = inputType;
 	}
 
