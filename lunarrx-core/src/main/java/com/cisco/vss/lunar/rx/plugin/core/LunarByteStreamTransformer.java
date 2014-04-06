@@ -1,6 +1,5 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
@@ -17,19 +16,22 @@ public abstract class LunarByteStreamTransformer {
 	protected final String                     developerID;
 	protected final Map<Integer, Subscription> tracks;
 	protected final Logger                     logger;
+	private   final LunarTrack                 sourceTemplate;
+	private   final LunarTrack                 resultTemplate;
 
-	protected  LunarByteStreamTransformer(final Lunar lunar, final String developerID) {
-		this.lunar       = lunar;
-		this.reporter    = new LunarPluginStateReporter(lunar, developerID);
-		this.developerID = developerID;
-		this.tracks      = new HashMap<Integer, Subscription>();
-		this.logger      = LogManager.getLogger();
+	protected  LunarByteStreamTransformer(final Lunar lunar, final String developerID, final String sourcePlugin, final String sourceTrack, final String resultPlugin, final String resultTrack) {
+		this.lunar          = lunar;
+		this.reporter       = new LunarPluginStateReporter(lunar, developerID);
+		this.developerID    = developerID;
+		this.tracks         = new HashMap<Integer, Subscription>();
+		this.logger         = LogManager.getLogger();
+		this.sourceTemplate = new LunarTrack(sourcePlugin,sourceTrack);
+		this.resultTemplate = new LunarTrack(null, resultPlugin, resultTrack);
 	}
 
 	public void run() {
 		//TODO: re-start
-		lunar.getTracks()
-		.filter(pluginTrack(getInputTrackTemplate()))
+		lunar.getTracks(this.sourceTemplate)
 		.subscribe(
 				new Action1<LunarNotify<LunarTrack>>() {
 					@Override
@@ -68,8 +70,8 @@ public abstract class LunarByteStreamTransformer {
 	}
 
 	void startTrack(final LunarTrack inputTrack) {
-		final Observable<byte[]>        result      = getResultStream(inputTrack);
-		final LunarTrack                resultTrack = getResultTrackTemplate(inputTrack.sourceID);
+		final Observable<byte[]>        result      = getTransformedStream(inputTrack);
+		final LunarTrack                resultTrack = resultTemplate.attachToSource(inputTrack.sourceID);
 		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
 
 		reporter.starting(resultTrack);
@@ -112,11 +114,9 @@ public abstract class LunarByteStreamTransformer {
 		);		
 	}
 
-	protected abstract LunarTrack         getInputTrackTemplate();
-	protected abstract LunarTrack         getResultTrackTemplate(final Integer sourceID);
 	protected abstract Observable<byte[]> transform(final Observable<byte[]> input);
 	
-	protected Observable<byte[]> getResultStream(final LunarTrack track) {
+	protected Observable<byte[]> getTransformedStream(final LunarTrack track) {
 		return transform(track.getBytestream());
 	}
 }

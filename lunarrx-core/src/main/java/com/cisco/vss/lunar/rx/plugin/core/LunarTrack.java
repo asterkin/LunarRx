@@ -68,5 +68,9 @@ public class LunarTrack implements LunarEntity {
 		long id = sourceID << 32 | hash; 
 		return id;
 	}
+
+	public LunarTrack attachToSource(final Integer sourceID) {
+		return new LunarTrack(sourceID, this.pluginName, this.trackName);
+	}
 }
 

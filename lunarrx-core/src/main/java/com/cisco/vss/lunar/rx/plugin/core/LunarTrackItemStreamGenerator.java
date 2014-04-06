@@ -7,7 +7,7 @@ public abstract class LunarTrackItemStreamGenerator<R extends TrackItem> extends
 	final Class<R> resultType;
 
 	protected LunarTrackItemStreamGenerator(final Lunar lunar, final String developerID, final Class<R> resultType) {
-		super(lunar, developerID);
+		super(lunar, developerID, null, null, null, null); //TODO: detect automatically
 		this.resultType = resultType;
 	}
 

@@ -3,17 +3,11 @@ package com.cisco.vss.lunar.rx.plugin.core;
 import static com.cisco.vss.lunar.rx.mq.LunarMQException.StreamingError.LMQ_OK;
 import static com.cisco.vss.rx.java.Conversions.object2JsonString;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.Date;
-
 import org.junit.Test;
-
 import rx.functions.Action1;
-
 import com.cisco.vss.lunar.rx.mq.LunarMQServerStub;
 import com.cisco.vss.rx.java.ObjectHolder;
 import com.google.gson.Gson;
@@ -152,4 +146,14 @@ public class LunarTrackTest {
 		assertNull(error.value);		
 	}
 	
+	@Test
+	public void testAttachToSource() {
+		final LunarTrack template = new LunarTrack(null, "pluginA", "trackB");
+		final LunarTrack result   = template.attachToSource(1);
+		
+		assertEquals(new Integer(1), result.sourceID);
+		assertEquals("pluginA", result.pluginName);
+		assertEquals("trackB",  result.trackName);
+		assertFalse (template == result);
+	}
 }
