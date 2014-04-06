@@ -6,8 +6,8 @@ import static com.cisco.vss.rx.java.Conversions.*;
 public abstract class LunarTrackItemStreamGenerator<R extends TrackItem> extends LunarByteStreamTransformer {
 	final Class<R> resultType;
 
-	protected LunarTrackItemStreamGenerator(final Lunar lunar, final String developerID, final LunarTrack sourceTemplate, final Class<R> resultType) {
-		super(lunar, developerID, sourceTemplate, getTrackTemplate(resultType)); 
+	protected LunarTrackItemStreamGenerator(final Lunar lunar, final LunarTrack sourceTemplate, final Class<R> resultType) {
+		super(lunar, sourceTemplate, getTrackTemplate(resultType)); 
 		this.resultType = resultType;
 	}
 

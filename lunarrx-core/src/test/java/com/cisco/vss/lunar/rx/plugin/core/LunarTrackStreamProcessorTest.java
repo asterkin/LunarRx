@@ -11,10 +11,10 @@ import rx.Observable;
 @RunWith(MockitoJUnitRunner.class)
 public class LunarTrackStreamProcessorTest {
 	@Mock
-	private LunarPluginStateReporter   reporter;
+	private Lunar          lunar;
 	@Mock
-	private LunarMQWriter              writer;
-	private LunarTrack                 resultTrack;
+	private LunarMQWriter  writer;
+	private LunarTrack     resultTrack;
 	
 	@Before
 	public void setUp() {
@@ -26,25 +26,25 @@ public class LunarTrackStreamProcessorTest {
 		final byte[]                    BUFFER    = "abcedefg".getBytes();
 		final byte[][]                  RESULTS   = new byte[][] {BUFFER};
 		final Observable<byte[]>        result    = Observable.from(RESULTS);
-		final LunarTrackStreamProcessor processor = new LunarTrackStreamProcessor(reporter, resultTrack, result);
+		final LunarTrackStreamProcessor processor = new LunarTrackStreamProcessor(lunar, resultTrack, result);
 		
 		processor.call(writer);
 		
 		verify(writer).call(BUFFER);
-		verify(reporter).running(resultTrack);
-		verify(reporter).stopped(resultTrack);
+		verify(lunar).running(resultTrack);
+		verify(lunar).stopped(resultTrack);
 	}
 
 	@Test
 	public void testCall_ERROR() {
 		final Exception                 ERROR     = new Exception("Error Message");
 		final Observable<byte[]>        result    = Observable.error(ERROR);
-		final LunarTrackStreamProcessor processor = new LunarTrackStreamProcessor(reporter, resultTrack, result);
+		final LunarTrackStreamProcessor processor = new LunarTrackStreamProcessor(lunar, resultTrack, result);
 		
 		processor.call(writer);
 		
-		verify(reporter).running(resultTrack);
-		verify(reporter).stopped(resultTrack, ERROR);
+		verify(lunar).running(resultTrack);
+		verify(lunar).stopped(resultTrack, ERROR);
 		verify(writer, never()).call((byte[])anyObject());
 	}
 	

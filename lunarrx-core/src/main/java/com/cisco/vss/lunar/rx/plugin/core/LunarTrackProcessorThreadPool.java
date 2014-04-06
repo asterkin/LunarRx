@@ -7,35 +7,31 @@ import rx.schedulers.Schedulers;
 
 public class LunarTrackProcessorThreadPool {
 	private final Lunar                                         lunar;
-	private final LunarPluginStateReporter                      reporter;
-	private final String                                        developerID;
 	private final Func1<Observable<byte[]>, Observable<byte[]>> transform;
 	private final LunarTrack                                    resultTemplate;
 
-	public LunarTrackProcessorThreadPool(final Lunar lunar, final String developerID, final Func1<Observable<byte[]>, Observable<byte[]>> transform, final LunarTrack resultTemplate) {
+	public LunarTrackProcessorThreadPool(final Lunar lunar, final Func1<Observable<byte[]>, Observable<byte[]>> transform, final LunarTrack resultTemplate) {
 		this.lunar          = lunar;
-		this.developerID    = developerID;
-		this.reporter       = new LunarPluginStateReporter(lunar, developerID);//TODO: hide in Lunar
 		this.transform      = transform;
 		this.resultTemplate = resultTemplate;
 	}
 	
 	public void startTrack(final LunarTrack sourceTrack) {
-		final Observable<byte[]>        result      = getTransformedStream(sourceTrack).subscribeOn(Schedulers.newThread()); //TODO: quazar or not required?
+		final Observable<byte[]>        result      = getTransformedStream(sourceTrack); 
 		final LunarTrack                resultTrack = resultTemplate.attachToSource(sourceTrack.sourceID);
-		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
+		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(resultTrack);
 
-		reporter.starting(resultTrack);
+		lunar.starting(resultTrack);
 		
 		output
 		.subscribeOn(Schedulers.newThread()) //TODO: quazar
 		.observeOn(Schedulers.trampoline())
 		.subscribe(
-			new LunarTrackStreamProcessor(reporter, resultTrack, result),
+			new LunarTrackStreamProcessor(lunar, resultTrack, result),
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable err) {
-					reporter.stopped(resultTrack, err);
+					lunar.stopped(resultTrack, err);
 				}
 			}
 		);	

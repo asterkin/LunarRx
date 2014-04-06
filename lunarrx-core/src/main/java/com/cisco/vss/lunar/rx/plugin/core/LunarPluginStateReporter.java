@@ -12,9 +12,9 @@ public class LunarPluginStateReporter {
 	}
 
 	private void reportStatus(final LunarPluginStateReport report) {
-		lunar.sendReport(report)
-		.subscribeOn(Schedulers.newThread()) //TODO: quasars
-		.subscribe();		
+//		lunar.sendReport(report)
+//		.subscribeOn(Schedulers.newThread()) //TODO: quasars
+//		.subscribe();		
 	}
 	
 	public void starting(final LunarTrack track) {

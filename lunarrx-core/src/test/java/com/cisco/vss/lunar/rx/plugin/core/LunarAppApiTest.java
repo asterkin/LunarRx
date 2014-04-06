@@ -20,6 +20,7 @@ import com.cisco.vss.rx.java.ObjectHolder;
 
 public class LunarAppApiTest {
 	private static final String  LUNAR_HOST   = "localhost";
+	private static final String  DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 
 	@Test
 	public void testGetArrayResponse() throws IOException, InterruptedException {
@@ -35,7 +36,7 @@ public class LunarAppApiTest {
 		}};
 		
 		final ConcurrentHttpServerStub lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
-		final Lunar                    lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer());
+		final Lunar                    lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(), DEVELOPER_ID);
 		final ObjectHolder<Throwable>  error       = new ObjectHolder<Throwable>();
 		final List<LunarSource>        result      = new ArrayList<LunarSource>();
 		
@@ -91,7 +92,7 @@ public class LunarAppApiTest {
 		}};
 		
 		final ConcurrentHttpServerStub  lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
-		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer());
+		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(), DEVELOPER_ID);
 		final ObjectHolder<Throwable>   error       = new ObjectHolder<Throwable>();
 		final Map<Integer, LunarSource> map         = new HashMap<Integer, LunarSource>();
 		
@@ -160,7 +161,7 @@ public class LunarAppApiTest {
 			put("/updates/sources", UPDATES_HTTP_RESPONSE);
 		}};
 		final ConcurrentHttpServerStub  lunarServer = new ConcurrentHttpServerStub(HTTP_RESPONSES);
-		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer());
+		final Lunar                     lunar       = new Lunar(LUNAR_HOST,lunarServer.startServer(), DEVELOPER_ID);
 		final ObjectHolder<Throwable>   error       = new ObjectHolder<Throwable>();
 		final Map<Integer, LunarSource> map         = new HashMap<Integer, LunarSource>();
 		final LunarSource[]             EXPECTED    = new LunarSource[] {
@@ -205,12 +206,12 @@ public class LunarAppApiTest {
 		}};
 		
 		final ConcurrentHttpServerStub lunarServer  = new ConcurrentHttpServerStub(HTTP_RESPONSES);
-		final Lunar                    lunar        = new Lunar(LUNAR_HOST,lunarServer.startServer());
-		final String                   DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
-		final LunarPluginStateReport   REPORT       = LunarPluginStateReport.running(DEVELOPER_ID, new LunarTrack(1, "plugin1", "track1"));
+		final Lunar                    lunar        = new Lunar(LUNAR_HOST, lunarServer.startServer(), DEVELOPER_ID);
+		final LunarTrack               TRACK        = new LunarTrack(1, "plugin1", "track1"); 
+		final LunarPluginStateReport   REPORT       = LunarPluginStateReport.running(DEVELOPER_ID, TRACK);
 		final String                   REPORT_JSON  = object2JsonString(LunarPluginStateReport.class).call(REPORT); 
-		lunar.sendReport(REPORT).subscribe();
-		
+
+		lunar.running(TRACK);
 		lunarServer.join();
 		final Map<String, String> requests = lunarServer.getRequests();
 		assertEquals(1, requests.size());

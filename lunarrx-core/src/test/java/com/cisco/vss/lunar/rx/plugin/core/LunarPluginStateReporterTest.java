@@ -33,37 +33,37 @@ public class LunarPluginStateReporterTest {
 	
 	@Test
 	public void testStarting() {
-		when(lunarMock.sendReport(LunarPluginStateReport.starting(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
+//		when(lunarMock.sendReport(LunarPluginStateReport.starting(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
 		reporter.starting(TRACK);
 	}
 	
 	@Test
 	public void testRunning() {
-		when(lunarMock.sendReport(LunarPluginStateReport.running(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
+//		when(lunarMock.sendReport(LunarPluginStateReport.running(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
 		reporter.running(TRACK);
 	}
 
 	@Test
 	public void testStopping() {
-		when(lunarMock.sendReport(LunarPluginStateReport.stopping(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
+//		when(lunarMock.sendReport(LunarPluginStateReport.stopping(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
 		reporter.stopping(TRACK);
 	}
 
 	@Test
 	public void testStoppingError() {
-		when(lunarMock.sendReport(LunarPluginStateReport.stopping(DEVELOPER_ID, TRACK, ERROR))).thenReturn(obsMock);
+//		when(lunarMock.sendReport(LunarPluginStateReport.stopping(DEVELOPER_ID, TRACK, ERROR))).thenReturn(obsMock);
 		reporter.stopping(TRACK, ERROR);
 	}
 
 	@Test
 	public void testStopped() {
-		when(lunarMock.sendReport(LunarPluginStateReport.stopped(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
+//		when(lunarMock.sendReport(LunarPluginStateReport.stopped(DEVELOPER_ID, TRACK))).thenReturn(obsMock);
 		reporter.stopped(TRACK);
 	}
 
 	@Test
 	public void testStoppedError() {
-		when(lunarMock.sendReport(LunarPluginStateReport.stopped(DEVELOPER_ID, TRACK, ERROR))).thenReturn(obsMock);
+//		when(lunarMock.sendReport(LunarPluginStateReport.stopped(DEVELOPER_ID, TRACK, ERROR))).thenReturn(obsMock);
 		reporter.stopped(TRACK, ERROR);
 	}
 	

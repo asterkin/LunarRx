@@ -13,11 +13,11 @@ public abstract class LunarByteStreamTransformer {
 	private   final LunarTrack                    sourceTemplate;
 	private   final LunarTrackProcessorThreadPool threadPool;
 
-	protected  LunarByteStreamTransformer(final Lunar lunar, final String developerID, final LunarTrack sourceTemplate, final LunarTrack resultTemplate) {
+	protected  LunarByteStreamTransformer(final Lunar lunar, final LunarTrack sourceTemplate, final LunarTrack resultTemplate) {
 		this.lunar          = lunar;
 		this.logger         = LogManager.getLogger();
 		this.sourceTemplate = sourceTemplate;
-		this.threadPool = new LunarTrackProcessorThreadPool(lunar, developerID, new Func1<Observable<byte[]>, Observable<byte[]>>(){
+		this.threadPool = new LunarTrackProcessorThreadPool(lunar, new Func1<Observable<byte[]>, Observable<byte[]>>(){
 
 			@Override
 			public Observable<byte[]> call(final Observable<byte[]> inputStream) {

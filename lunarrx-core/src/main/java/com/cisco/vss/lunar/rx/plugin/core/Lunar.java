@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
@@ -15,10 +16,12 @@ public class Lunar {
 	private final static Logger LOGGER = LogManager.getLogger();
 	private final String hostName;
 	private final int    port;
+	private final String developerID;
 	
-	public Lunar(final String hostName, final int port) {
+	public Lunar(final String hostName, final int port, final String developerID) {
 		this.hostName    = hostName;
 		this.port        = port;
+		this.developerID = developerID;
 	}
 	
 	Observable<String> httpRequest(final String path, final Converter<URL, String> method) {
@@ -82,7 +85,7 @@ public class Lunar {
 		return getTracks().filter(pluginTrack(template));
 	}
 	
-	Observable<LunarMQWriter> getOutputTrackStream(final String developerID, final LunarTrack track) {
+	Observable<LunarMQWriter> getOutputTrackStream(final LunarTrack track) {
 		return httpRequest(track.streamerRequestPath(developerID), synchHttpGet, TrackInfoResponse.class)
 			   .flatMap(getResultData)
 			   .map(getURL)
@@ -91,20 +94,48 @@ public class Lunar {
 			   .map(createRawWriter);
 	}
 		
-	Observable<LunarResponse> sendReport(final LunarPluginStateReport report) {
+	void sendReport(final LunarPluginStateReport report) {
+		//TODO: observable from report: use another version with fixed URL or zip?
 		final String json = object2JsonString(LunarPluginStateReport.class).call(report);
-		return httpRequest("/state/plugins", synchHttpPost(json), LunarResponse.class)
-				.flatMap(checkResult(LunarResponse.class))
-				.doOnError(
-						new Action1<Throwable>() {
-							@Override
-							public void call(final Throwable err) {
-								LOGGER.error("Got an error {} while reporting status {}", err, json);
-							}				
-						}
-				);
+		httpRequest("/state/plugins", synchHttpPost(json), LunarResponse.class)
+			.flatMap(checkResult(LunarResponse.class))
+			.doOnError(
+				new Action1<Throwable>() {
+					@Override
+					public void call(final Throwable err) {
+						LOGGER.error("Got an error {} while reporting status {}", err, json);
+					}				
+				}
+		)
+		.subscribeOn(Schedulers.newThread())//TODO: quazar or outside of Lunar?
+		.observeOn(Schedulers.trampoline())
+		.subscribe();
 	}
 
+	public void starting(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.starting(developerID, track));
+	}
+
+	public void running(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.running(developerID, track));
+	}
+
+	public void stopping(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopping(developerID, track));
+	}
+
+	public void stopping(final LunarTrack track, final Throwable err) {
+		sendReport(LunarPluginStateReport.stopping(developerID, track, err));
+	}
+	
+	public void stopped(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopped(developerID, track));
+	}
+
+	public void stopped(final LunarTrack track, final Throwable err) {
+		sendReport(LunarPluginStateReport.stopped(developerID, track, err));
+	}
+	
 	//So far new Application API
 	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() {
 		return getUpdatesUrl("tracks")
