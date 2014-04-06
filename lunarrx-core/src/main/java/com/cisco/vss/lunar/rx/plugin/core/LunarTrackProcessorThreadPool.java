@@ -1,9 +1,6 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-import java.util.HashMap;
-import java.util.Map;
 import rx.Observable;
-import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -12,7 +9,6 @@ public class LunarTrackProcessorThreadPool {
 	private final Lunar                                         lunar;
 	private final LunarPluginStateReporter                      reporter;
 	private final String                                        developerID;
-	private final Map<Integer, Subscription>                    tracks;
 	private final Func1<Observable<byte[]>, Observable<byte[]>> transform;
 	private final LunarTrack                                    resultTemplate;
 
@@ -20,7 +16,6 @@ public class LunarTrackProcessorThreadPool {
 		this.lunar          = lunar;
 		this.developerID    = developerID;
 		this.reporter       = new LunarPluginStateReporter(lunar, developerID);//TODO: hide in Lunar
-		this.tracks         = new HashMap<Integer, Subscription>();
 		this.transform      = transform;
 		this.resultTemplate = resultTemplate;
 	}
@@ -36,7 +31,7 @@ public class LunarTrackProcessorThreadPool {
 		.subscribeOn(Schedulers.newThread()) //TODO: quazar
 		.observeOn(Schedulers.trampoline())
 		.subscribe(
-			new LunarTrackStreamProcessor(reporter, tracks, resultTrack, result),
+			new LunarTrackStreamProcessor(reporter, resultTrack, result),
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable err) {
@@ -51,10 +46,10 @@ public class LunarTrackProcessorThreadPool {
 	}
 
 	public void stopTrack(final LunarTrack sourceTrack) {
-		final Integer id = sourceTrack.sourceID;
-		
-		this.reporter.stopping(sourceTrack);
-		this.tracks.get(id).unsubscribe();
-		this.tracks.remove(id);
+//		final Integer id = sourceTrack.sourceID;
+//		
+//		this.reporter.stopping(sourceTrack);
+//		this.tracks.get(id).unsubscribe();
+//		this.tracks.remove(id);
 	}
 }
