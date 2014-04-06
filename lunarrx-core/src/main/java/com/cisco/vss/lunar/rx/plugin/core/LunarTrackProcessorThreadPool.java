@@ -26,7 +26,7 @@ public class LunarTrackProcessorThreadPool {
 	}
 	
 	public void startTrack(final LunarTrack sourceTrack) {
-		final Observable<byte[]>        result      = getTransformedStream(sourceTrack);
+		final Observable<byte[]>        result      = getTransformedStream(sourceTrack).subscribeOn(Schedulers.newThread()); //TODO: quazar or not required?
 		final LunarTrack                resultTrack = resultTemplate.attachToSource(sourceTrack.sourceID);
 		final Observable<LunarMQWriter> output      = lunar.getOutputTrackStream(developerID, resultTrack);
 
@@ -36,7 +36,7 @@ public class LunarTrackProcessorThreadPool {
 		.subscribeOn(Schedulers.newThread()) //TODO: quazar
 		.observeOn(Schedulers.trampoline())
 		.subscribe(
-			new LunarStreamProcessor(reporter, tracks, resultTrack, result),
+			new LunarTrackStreamProcessor(reporter, tracks, resultTrack, result),
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable err) {
