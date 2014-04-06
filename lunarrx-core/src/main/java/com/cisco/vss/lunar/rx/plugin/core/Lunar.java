@@ -78,6 +78,10 @@ public class Lunar {
 		return getCombinedNotifyStream("tracks", LunarTrack.StatusUpdateMessage.class, LunarTrack.Response.class, LunarTrack.class);
 	}
 
+	public Observable<LunarNotify<LunarTrack>> getTracks(final LunarTrack template) {
+		return getTracks().filter(pluginTrack(template));
+	}
+	
 	Observable<LunarMQWriter> getOutputTrackStream(final String developerID, final LunarTrack track) {
 		return httpRequest(track.streamerRequestPath(developerID), synchHttpGet, TrackInfoResponse.class)
 			   .flatMap(getResultData)

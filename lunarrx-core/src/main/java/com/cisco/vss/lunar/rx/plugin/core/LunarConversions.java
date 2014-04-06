@@ -114,8 +114,9 @@ public class LunarConversions extends LunarMQConversions {
 			@Override
 			public Boolean call(final LunarNotify<LunarTrack> notify) {
 				final LunarTrack track = notify.getItem();
-				return    track.pluginName.equals(template.pluginName)
-					   && track.trackName.equals(template.trackName);
+				return    ((template.sourceID  ==null)||(template.sourceID.equals(track.sourceID)))
+					   && ((template.pluginName==null)||(template.pluginName.equals(track.pluginName)))
+					   && ((template.trackName ==null)||(template.trackName.equals(track.trackName)));
 			}
 		};
 	}
