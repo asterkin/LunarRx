@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.getMQStream;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
@@ -134,6 +135,10 @@ public class Lunar {
 
 	public void stopped(final LunarTrack track, final Throwable err) {
 		sendReport(LunarPluginStateReport.stopped(developerID, track, err));
+	}
+
+	Observable<byte[]> getInputTrackStream(final LunarTrack sourceTrack) {
+		return getMQStream(Observable.from(sourceTrack.url));
 	}
 	
 	//So far new Application API
