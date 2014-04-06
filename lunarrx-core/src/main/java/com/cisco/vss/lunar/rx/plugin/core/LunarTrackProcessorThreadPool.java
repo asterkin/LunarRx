@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import rx.Observable;
 import rx.Subscription;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -37,31 +36,7 @@ public class LunarTrackProcessorThreadPool {
 		.subscribeOn(Schedulers.newThread()) //TODO: quazar
 		.observeOn(Schedulers.trampoline())
 		.subscribe(
-			new Action1<LunarMQWriter>(){
-				@Override
-				public void call(final LunarMQWriter writer) {
-					reporter.running(resultTrack);
-					
-					final Subscription  sub = result
-							.subscribeOn(Schedulers.newThread()) //TODO: quazar
-							.subscribe(
-									writer,
-									new Action1<Throwable>() {
-										@Override
-										public void call(final Throwable err) {
-											reporter.stopped(resultTrack, err);
-										}
-									},
-									new Action0() {
-										@Override
-										public void call() {
-											reporter.stopped(resultTrack);
-										}					
-									}			
-							);
-					tracks.put(sourceTrack.sourceID, sub);
-				}				
-			}, 
+			new LunarStreamProcessor(reporter, tracks, resultTrack, result),
 			new Action1<Throwable>(){
 				@Override
 				public void call(Throwable err) {
