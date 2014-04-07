@@ -43,6 +43,11 @@ public class LunarTrack implements LunarEntity {
 		return getMQStream(Observable.from(url), clazz);
 	}
 	
+	@Override
+	public String toString() {
+		return object2JsonString(LunarTrack.class).call(this);
+	}
+	
 	public String httpGetRequestPath() {
 		return String.format("/tracks?sourceID=%s&pluginName=%s&trackName=%s",sourceID,pluginName,trackName);
 	}

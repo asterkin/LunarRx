@@ -23,4 +23,8 @@ public class LunarMQWriter implements Action1<byte[]>{
 		}
 	}
 
+	public void close() throws IOException {
+		socket.close();
+	}
+
 }

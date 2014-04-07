@@ -1,10 +1,14 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
+import java.io.IOException;
+
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
 import static org.mockito.Mockito.*;
 import rx.Observable;
 
@@ -22,7 +26,7 @@ public class LunarTrackStreamProcessorTest {
 	}
 	
 	@Test
-	public void testCall_OK() {
+	public void testCall_OK() throws IOException {
 		final byte[]                    BUFFER    = "abcedefg".getBytes();
 		final byte[][]                  RESULTS   = new byte[][] {BUFFER};
 		final Observable<byte[]>        result    = Observable.from(RESULTS);
@@ -31,6 +35,7 @@ public class LunarTrackStreamProcessorTest {
 		processor.call(writer);
 		
 		verify(writer).call(BUFFER);
+		verify(writer).close();
 		verify(lunar).running(resultTrack);
 		verify(lunar).stopped(resultTrack);
 	}
@@ -46,6 +51,18 @@ public class LunarTrackStreamProcessorTest {
 		verify(lunar).running(resultTrack);
 		verify(lunar).stopped(resultTrack, ERROR);
 		verify(writer, never()).call((byte[])anyObject());
+	}
+
+	@Ignore //Nothing to assert, just need to look at logs printed out
+	@Test
+	public void testCall_IOException() throws IOException {
+		final byte[]                    BUFFER    = "abcedefg".getBytes();
+		final byte[][]                  RESULTS   = new byte[][] {BUFFER};
+		final Observable<byte[]>        result    = Observable.from(RESULTS);
+		final LunarTrackStreamProcessor processor = new LunarTrackStreamProcessor(lunar, resultTrack, result);
+		
+		doThrow(new IOException("Close failed")).when(writer).close();
+		processor.call(writer);
 	}
 	
 }
