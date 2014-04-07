@@ -23,7 +23,7 @@ public abstract class LunarByteStreamTransformer {
 			@Override
 			public Observable<byte[]> call(final Observable<byte[]> inputStream) {
 				return transform(inputStream);
-			}});
+			}}, null);
 	}
 
 	public void run() {
