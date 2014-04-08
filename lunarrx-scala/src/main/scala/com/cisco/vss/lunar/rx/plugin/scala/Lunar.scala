@@ -25,3 +25,4 @@ object Lunar {
     val asJavaLunar = new core.Lunar(host, port, developerID)
   } 
 }
+

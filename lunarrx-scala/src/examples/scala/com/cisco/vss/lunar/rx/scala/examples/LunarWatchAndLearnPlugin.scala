@@ -6,7 +6,7 @@ import rx.lang.scala.Observable
 import java.net.URL
 
 object LunarWatchAndLearnPlugin {
-    //TODO: move to Lunar?
+    //TODO: move to Lunar?	
 	implicit class Regex(sc: StringContext) {
 	  def r = new util.matching.Regex(sc.parts.mkString, sc.parts.tail.map(_ => "x"): _*)
 	}

@@ -10,12 +10,12 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 
 public class LunarTrackStreamProcessor implements Action1<LunarMQWriter> {
-	private final static Logger      LOGGER = LogManager.getLogger();
-	private final Lunar              lunar;
-	private final LunarTrack         resultTrack;
-	private final Observable<byte[]> result;
+	private final static Logger                LOGGER = LogManager.getLogger();
+	private final Lunar                        lunar;
+	private final LunarTrack                   resultTrack;
+	private final Observable<? extends byte[]> result;
 
-	public LunarTrackStreamProcessor(final Lunar lunar, final LunarTrack resultTrack, final Observable<byte[]> result) {
+	public LunarTrackStreamProcessor(final Lunar lunar, final LunarTrack resultTrack, final Observable<? extends byte[]> result) {
 		this.lunar       = lunar;
 		this.resultTrack = resultTrack;
 		this.result      = result;

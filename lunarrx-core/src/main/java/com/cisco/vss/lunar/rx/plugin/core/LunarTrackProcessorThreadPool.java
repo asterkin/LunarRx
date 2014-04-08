@@ -11,18 +11,18 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class LunarTrackProcessorThreadPool {
-	private final static Logger                                 LOGGER = LogManager.getLogger();
-	private final Lunar                                         lunar;
-	private final Func1<Observable<byte[]>, Observable<byte[]>> transform;
+	private final static Logger                                           LOGGER = LogManager.getLogger();
+	private final Lunar                                                   lunar;
+	private final Func1<Observable<byte[]>, Observable<? extends byte[]>> transform;
 	
-	public LunarTrackProcessorThreadPool(final Lunar lunar, final Func1<Observable<byte[]>, Observable<byte[]>> transform) {
+	public LunarTrackProcessorThreadPool(final Lunar lunar, final Func1<Observable<byte[]>, Observable<? extends byte[]>> transform) {
 		this.lunar     = lunar;
 		this.transform = transform;
 	}
 	
 	public Subscription startTrack(final LunarTrack sourceTrack, final LunarTrack resultTrack, final Action0 finallyDo) {
-		final Observable<byte[]>        result = getTransformedStream(sourceTrack); 
-		final Observable<LunarMQWriter> output = lunar.getOutputTrackStream(resultTrack);
+		final Observable<? extends byte[]> result = getTransformedStream(sourceTrack); 
+		final Observable<LunarMQWriter>    output = lunar.getOutputTrackStream(resultTrack);
 
 		lunar.starting(resultTrack);
 		
@@ -42,7 +42,7 @@ public class LunarTrackProcessorThreadPool {
 		);	
 	}
 	
-	private Observable<byte[]> getTransformedStream(final LunarTrack sourceTrack) {
+	private Observable<? extends byte[]> getTransformedStream(final LunarTrack sourceTrack) {
 		return transform.call(lunar.getInputTrackStream(sourceTrack));
 	}
 

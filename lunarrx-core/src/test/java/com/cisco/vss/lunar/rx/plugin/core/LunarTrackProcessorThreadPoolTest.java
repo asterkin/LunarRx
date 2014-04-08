@@ -14,13 +14,20 @@ import rx.functions.Func1;
 @RunWith(MockitoJUnitRunner.class)
 public class LunarTrackProcessorThreadPoolTest {
 	@Mock
-	private Lunar                                         lunar;
+	private Lunar                                                   lunar;
 	@Mock
-	private Func1<Observable<byte[]>, Observable<byte[]>> transform;
-	@Mock
-	private LunarMQWriter                                 writer;
-	private LunarTrack                                    sourceTrack;
-	private LunarTrack                                    resultTrack;
+	private LunarMQWriter                                           writer;
+	private final byte[]                        RESULT        = "xyz".getBytes();
+	private final Observable<? extends byte[]>  RESULT_STREAM = Observable.from(new byte[][]{RESULT});
+	private Func1<Observable<byte[]>, Observable<? extends byte[]>> transform = new Func1<Observable<byte[]>, Observable<? extends byte[]>>() {
+		@Override
+		public Observable<? extends byte[]> call(Observable<byte[]> t1) {
+			return RESULT_STREAM;
+		}
+		
+	};
+	private LunarTrack                                              sourceTrack;
+	private LunarTrack                                              resultTrack;
 
 	@Before
 	public void setUp() {
@@ -38,12 +45,9 @@ public class LunarTrackProcessorThreadPoolTest {
 			}
 		};
 		final byte[]                        INPUT         = "abced".getBytes();
-		final byte[]                        RESULT        = "xyz".getBytes();
 		final Observable<byte[]>            INPUT_STREAM  = Observable.from(new byte[][]{INPUT});
-		final Observable<byte[]>            RESULT_STREAM = Observable.from(new byte[][]{RESULT});
 		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform);
 		
-		when(transform.call(INPUT_STREAM)).thenReturn(RESULT_STREAM);
 		when(lunar.getInputTrackStream(sourceTrack)).thenReturn(INPUT_STREAM); 
 		when(lunar.getOutputTrackStream(resultTrack)).thenReturn(Observable.from(writer));
 		when(writer.call(RESULT)).thenReturn(Observable.from(RESULT));
@@ -74,14 +78,11 @@ public class LunarTrackProcessorThreadPoolTest {
 			}
 		};
 		final byte[]                        INPUT         = "abced".getBytes();
-		final byte[]                        RESULT        = "xyz".getBytes();
 		final Observable<byte[]>            INPUT_STREAM  = Observable.from(new byte[][]{INPUT});
-		final Observable<byte[]>            RESULT_STREAM = Observable.from(new byte[][]{RESULT});
 		final Throwable                     ERROR         = new Exception("Error to acquire Writer");
 		final Observable<LunarMQWriter>     ERROR_OBS     = Observable.error(ERROR);
 		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform);
 		
-		when(transform.call(INPUT_STREAM)).thenReturn(RESULT_STREAM);
 		when(lunar.getInputTrackStream(sourceTrack)).thenReturn(INPUT_STREAM); 
 		when(lunar.getOutputTrackStream(resultTrack)).thenReturn(ERROR_OBS);
 		

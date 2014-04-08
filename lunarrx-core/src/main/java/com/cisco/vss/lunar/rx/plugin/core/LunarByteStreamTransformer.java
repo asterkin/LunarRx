@@ -23,9 +23,9 @@ public abstract class LunarByteStreamTransformer {
 		this.sourceTemplate = sourceTemplate;
 		this.resultTemplate = resultTemplate;
 		this.threadPool = new LunarTrackProcessorThreadPool(lunar, 
-			new Func1<Observable<byte[]>, Observable<byte[]>>(){
+			new Func1<Observable<byte[]>, Observable<? extends byte[]>>(){
 				@Override
-				public Observable<byte[]> call(final Observable<byte[]> inputStream) {
+				public Observable<? extends byte[]> call(final Observable<byte[]> inputStream) {
 					return transform(inputStream);
 				}
 			}
@@ -87,5 +87,5 @@ public abstract class LunarByteStreamTransformer {
 		}
 	}
 
-	protected abstract Observable<byte[]> transform(final Observable<byte[]> input);
+	protected abstract Observable<? extends byte[]> transform(final Observable<byte[]> input);
 }
