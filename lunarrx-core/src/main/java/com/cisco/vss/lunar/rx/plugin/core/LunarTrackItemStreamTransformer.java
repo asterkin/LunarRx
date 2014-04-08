@@ -2,6 +2,7 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import rx.Observable;
 import static com.cisco.vss.rx.java.Conversions.*;
+import static com.cisco.vss.lunar.rx.plugin.core.LunarTrackTemplateFactory.*;
 
 public abstract class LunarTrackItemStreamTransformer<T extends TrackItem, R extends TrackItem> extends LunarTrackItemStreamGenerator<R> {
 	final Class<T> inputType;

@@ -2,6 +2,7 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import rx.Observable;
 import static com.cisco.vss.rx.java.Conversions.*;
+import static com.cisco.vss.lunar.rx.plugin.core.LunarTrackTemplateFactory.*;
 
 public abstract class LunarTrackItemStreamGenerator<R extends TrackItem> extends LunarByteStreamTransformer {
 	final Class<R> resultType;
@@ -9,11 +10,6 @@ public abstract class LunarTrackItemStreamGenerator<R extends TrackItem> extends
 	protected LunarTrackItemStreamGenerator(final Lunar lunar, final LunarTrack sourceTemplate, final Class<R> resultType) {
 		super(lunar, sourceTemplate, getTrackTemplate(resultType)); 
 		this.resultType = resultType;
-	}
-
-	protected static LunarTrack getTrackTemplate(final Class<?> resultType) {
-		// TODO infer automatically from the Class info
-		return null;
 	}
 
 	@Override
