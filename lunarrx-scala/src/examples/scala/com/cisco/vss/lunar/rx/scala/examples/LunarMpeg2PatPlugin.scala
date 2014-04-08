@@ -10,7 +10,8 @@ object LunarMpeg2PatPlugin {
   def main(args: Array[String]): Unit = {
     val HOST         = args(0)
     val PORT         = Integer.parseInt(args(1))
-    val lunar        = Lunar(HOST, PORT)
+	val DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
+    val lunar        = Lunar(HOST, PORT, DEVELOPER_ID)
     val SOURCE_ID    = 1
     val INPUT_PLUGIN = "source_stream"
     val INPUT_TRACK  = "stream"
