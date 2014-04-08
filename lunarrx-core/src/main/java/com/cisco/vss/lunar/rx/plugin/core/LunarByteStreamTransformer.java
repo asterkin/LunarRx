@@ -80,7 +80,8 @@ public abstract class LunarByteStreamTransformer {
 			final Subscription subs = tracks.get(resultTrack.sourceID);
 			if(null != subs) {
 				lunar.stopping(resultTrack);
-				subs.unsubscribe();
+				//TODO: need to fix the subscription structure to make it possibe. Hopefully not top priority
+//				subs.unsubscribe();
 				LOGGER.debug("Stopping Track {}", resultTrack);
 			}
 		}
