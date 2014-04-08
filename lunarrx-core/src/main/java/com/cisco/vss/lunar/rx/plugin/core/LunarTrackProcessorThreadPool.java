@@ -14,15 +14,13 @@ public class LunarTrackProcessorThreadPool {
 	private final static Logger                                 LOGGER = LogManager.getLogger();
 	private final Lunar                                         lunar;
 	private final Func1<Observable<byte[]>, Observable<byte[]>> transform;
-	private final Action0                                       finallyDo;
 	
-	public LunarTrackProcessorThreadPool(final Lunar lunar, final Func1<Observable<byte[]>, Observable<byte[]>> transform, final Action0 finallyDo) {
+	public LunarTrackProcessorThreadPool(final Lunar lunar, final Func1<Observable<byte[]>, Observable<byte[]>> transform) {
 		this.lunar     = lunar;
 		this.transform = transform;
-		this.finallyDo = finallyDo;
 	}
 	
-	public Subscription startTrack(final LunarTrack sourceTrack, final LunarTrack resultTrack) {
+	public Subscription startTrack(final LunarTrack sourceTrack, final LunarTrack resultTrack, final Action0 finallyDo) {
 		final Observable<byte[]>        result = getTransformedStream(sourceTrack); 
 		final Observable<LunarMQWriter> output = lunar.getOutputTrackStream(resultTrack);
 

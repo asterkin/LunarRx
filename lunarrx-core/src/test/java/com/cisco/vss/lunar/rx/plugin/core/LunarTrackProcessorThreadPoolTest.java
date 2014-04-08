@@ -41,14 +41,14 @@ public class LunarTrackProcessorThreadPoolTest {
 		final byte[]                        RESULT        = "xyz".getBytes();
 		final Observable<byte[]>            INPUT_STREAM  = Observable.from(new byte[][]{INPUT});
 		final Observable<byte[]>            RESULT_STREAM = Observable.from(new byte[][]{RESULT});
-		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform, finallyDo);
+		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform);
 		
 		when(transform.call(INPUT_STREAM)).thenReturn(RESULT_STREAM);
 		when(lunar.getInputTrackStream(sourceTrack)).thenReturn(INPUT_STREAM); 
 		when(lunar.getOutputTrackStream(resultTrack)).thenReturn(Observable.from(writer));
 		when(writer.call(RESULT)).thenReturn(Observable.from(RESULT));
 		
-		pool.startTrack(sourceTrack, resultTrack);
+		pool.startTrack(sourceTrack, resultTrack, finallyDo);
 		
 		
 		while (null != lock.value)
@@ -79,13 +79,13 @@ public class LunarTrackProcessorThreadPoolTest {
 		final Observable<byte[]>            RESULT_STREAM = Observable.from(new byte[][]{RESULT});
 		final Throwable                     ERROR         = new Exception("Error to acquire Writer");
 		final Observable<LunarMQWriter>     ERROR_OBS     = Observable.error(ERROR);
-		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform, finallyDo);
+		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform);
 		
 		when(transform.call(INPUT_STREAM)).thenReturn(RESULT_STREAM);
 		when(lunar.getInputTrackStream(sourceTrack)).thenReturn(INPUT_STREAM); 
 		when(lunar.getOutputTrackStream(resultTrack)).thenReturn(ERROR_OBS);
 		
-		pool.startTrack(sourceTrack, resultTrack);
+		pool.startTrack(sourceTrack, resultTrack, finallyDo);
 		
 		
 		while (null != lock.value)
