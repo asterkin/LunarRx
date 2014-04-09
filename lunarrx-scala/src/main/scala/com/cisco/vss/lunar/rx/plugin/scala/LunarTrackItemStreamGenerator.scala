@@ -4,11 +4,10 @@ import rx.lang.scala.JavaConversions._
 import rx.lang.scala._
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem
 
-abstract class LunarTrackItemStreamGenerator[R <: TrackItem] (lunar: Lunar, sourceTrackTemplate: core.LunarTrack) (implicit clazz: Class[R]) {
+abstract class LunarTrackItemStreamGenerator[R <: TrackItem] (lunar: Lunar, sourceTrackTemplate: core.LunarTrack) {
 	private [scala] val asJava: core.LunarTrackItemStreamGenerator[R] = new core.LunarTrackItemStreamGenerator[R](
 	    lunar.asJavaLunar, 
-	    sourceTrackTemplate, 
-	    clazz
+	    sourceTrackTemplate
 	){
       @Override
       def generateR(input: rx.Observable[Array[Byte]]) : rx.Observable[_ <: R] = {
