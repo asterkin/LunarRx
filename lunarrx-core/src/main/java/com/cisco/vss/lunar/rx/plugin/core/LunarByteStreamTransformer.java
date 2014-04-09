@@ -20,8 +20,6 @@ public abstract class LunarByteStreamTransformer {
 
 	protected  LunarByteStreamTransformer(final Lunar lunar, final LunarTrack sourceTemplate, final LunarTrack resultTemplate) {
 		this.lunar          = lunar;
-		this.sourceTemplate = sourceTemplate;
-		this.resultTemplate = resultTemplate;
 		this.threadPool = new LunarTrackProcessorThreadPool(lunar, 
 			new Func1<Observable<byte[]>, Observable<? extends byte[]>>(){
 				@Override
@@ -31,8 +29,10 @@ public abstract class LunarByteStreamTransformer {
 			}
 		);
 		this.tracks = new HashMap<Integer, Subscription>();
+		this.sourceTemplate = sourceTemplate;
+		this.resultTemplate = resultTemplate;
 	}
-
+	
 	public void run() {
 		//TODO: re-start
 		lunar.getTracks(this.sourceTemplate)

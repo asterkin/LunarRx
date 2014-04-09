@@ -5,8 +5,8 @@ import rx.lang.scala.JavaConversions._
 import rx.lang.scala._
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem
 
-abstract class LunarTrackItemStreamTransformer[T <: TrackItem, R <: TrackItem] (lunar: Lunar) {
-  private [scala] val asJava: core.LunarTrackItemStreamTransformer[T, R] = new core.LunarTrackItemStreamTransformer[T, R](lunar.asJavaLunar) {
+abstract class LunarTrackItemStreamTransformer[T <: TrackItem, R <: TrackItem] (lunar: Lunar, sourceType: Class[T], resultType: Class[R]) {
+  private [scala] val asJava: core.LunarTrackItemStreamTransformer[T, R] = new core.LunarTrackItemStreamTransformer[T, R](lunar.asJavaLunar, sourceType, resultType) {
     @Override
     def transformT(input: rx.Observable[T]) : rx.Observable[_ <: R] = {
         val result     = transformA(toScalaObservable(input))
@@ -15,6 +15,8 @@ abstract class LunarTrackItemStreamTransformer[T <: TrackItem, R <: TrackItem] (
     }
   } 
 
+  def run: Unit = asJava.run
+  
   //Name?!!!!
   def transformA(input: Observable[T]): Observable[R]
 }

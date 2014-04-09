@@ -10,8 +10,10 @@ abstract class LunarByteStreamTransformer(lunar: Lunar, sourceTrackTemplate: cor
         val result     = transformA(toScalaObservable(input))
         val javaResult = toJavaObservable(result) 
         return javaResult
-      } 
+      }      
     } 
+
+    def run: Unit = asJava.run()
 
 	//TODO: name!???
 	def transformA(input: Observable[Array[Byte]]): Observable[Array[Byte]]
