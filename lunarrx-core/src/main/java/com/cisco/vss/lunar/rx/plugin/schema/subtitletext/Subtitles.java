@@ -1,12 +1,12 @@
-package com.cisco.vss.lunar.rx.plugin.schema;
+package com.cisco.vss.lunar.rx.plugin.schema.subtitletext;
 
 import java.util.Date;
 
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
 
-public class SubtitlesTrackItem extends TrackItem {
+public class Subtitles extends TrackItem {
 
-	public SubtitlesTrackItem(int sourceID, Date time, String pluginName, String trackName, int trackVersion) {
+	public Subtitles(int sourceID, Date time, String pluginName, String trackName, int trackVersion) {
 		super(sourceID, time, pluginName, trackName, trackVersion);
 		data = new Data();
 	}
@@ -32,7 +32,7 @@ public class SubtitlesTrackItem extends TrackItem {
 
 	public String getText() {
 		String text = "";
-		for(SubtitlesTrackItem.SubtitleLine l : data.lines)
+		for(Subtitles.SubtitleLine l : data.lines)
 			text += l.text;
 		return text;
 	}

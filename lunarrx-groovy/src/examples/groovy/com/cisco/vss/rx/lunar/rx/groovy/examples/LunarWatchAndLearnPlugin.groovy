@@ -1,6 +1,8 @@
 package com.cisco.vss.rx.lunar.rx.groovy.examples
 import com.cisco.vss.lunar.rx.plugin.core.Lunar
 import com.cisco.vss.lunar.rx.plugin.schema.*
+import com.cisco.vss.lunar.rx.plugin.schema.subtitletext.Subtitles;
+
 import static com.cisco.vss.rx.java.Conversions.*
 import rx.Observable
 
@@ -12,10 +14,10 @@ class LunarWatchAndLearnPlugin {
 		final SOURCE_ID    = 1
 		final INPUT_PLUGIN = "subtitletext"
 		final INPUT_TRACK  = "subtitles"
-		final ts           = lunar.getInputTrackItemStream(SubtitlesTrackItem.class, SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)
+		final ts           = lunar.getInputTrackItemStream(Subtitles.class, SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)
 		
 		ts
-		.map({SubtitlesTrackItem sub -> return sub.getText()})
+		.map({Subtitles sub -> return sub.getText()})
 		.map({String text -> return text.split("[ .,?!']")})
 		.flatMap({String[] wordList -> Observable.from(wordList)})
 		.map({String word -> word.trim()})

@@ -1,13 +1,14 @@
 package com.cisco.vss.lunar.rx.scala.examples
 
 import com.cisco.vss.lunar.rx.plugin.scala._
-import com.cisco.vss.lunar.rx.plugin.schema._
+import com.cisco.vss.lunar.rx.plugin.schema.subtitletext._
+import com.cisco.vss.lunar.rx.plugin.schema.capsrx._
 import rx.lang.scala._
 
-class LunarCapsPlugin(lunar: Lunar) extends LunarTrackItemStreamTransformer[SubtitlesTrackItem, CapsTrackItem] (lunar, classOf[SubtitlesTrackItem], classOf[CapsTrackItem]){
+class LunarCapsPlugin(lunar: Lunar) extends LunarTrackItemStreamTransformer[Subtitles, Caps] (lunar, classOf[Subtitles], classOf[Caps]){
 
   @Override
-  def transformA(input: Observable[SubtitlesTrackItem]): Observable[CapsTrackItem] = {
+  def transformA(input: Observable[Subtitles]): Observable[Caps] = {
     null
   }
 }
