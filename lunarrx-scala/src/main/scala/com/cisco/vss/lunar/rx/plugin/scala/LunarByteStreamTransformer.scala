@@ -13,6 +13,7 @@ abstract class LunarByteStreamTransformer(lunar: Lunar, sourceTrackTemplate: cor
       } 
     } 
 
+	//TODO: name!???
 	def transformA(input: Observable[Array[Byte]]): Observable[Array[Byte]]
 }
 

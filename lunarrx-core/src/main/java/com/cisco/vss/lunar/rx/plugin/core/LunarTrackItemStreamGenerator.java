@@ -19,6 +19,6 @@ public abstract class LunarTrackItemStreamGenerator<R extends TrackItem> extends
 			   .map(string2Byte);
 	}
 	
-	protected abstract Observable<R> generateR(final Observable<byte[]> input);
+	protected abstract Observable<? extends R> generateR(final Observable<byte[]> input);
 
 }
