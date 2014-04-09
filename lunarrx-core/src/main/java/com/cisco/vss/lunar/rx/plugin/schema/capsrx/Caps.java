@@ -5,11 +5,11 @@ import java.util.Date;
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
 
 public class Caps extends TrackItem {
-
-	public Caps(int sourceID, Date time, String pluginName,
-			String trackName, int trackVersion) {
+	public final String[] caps;
+	
+	public Caps(int sourceID, Date time, String pluginName, String trackName, int trackVersion, final String[] caps) {
 		super(sourceID, time, pluginName, trackName, trackVersion);
-		// TODO Auto-generated constructor stub
+		this.caps = caps; 
 	}
 
 }

@@ -70,7 +70,7 @@ public class Lunar {
 		final Observable<LunarNotify<R>> updates = getStatusUpdatesStream(category, messageType, dataType);
 		final Observable<LunarNotify<R>> current = getNotifyArrayResponse(category, responseType, dataType);
 		//TODO to optimize such that it happens only during the fetch of initial table
-		return Observable.merge(updates, current)
+		return Observable.merge(current.subscribeOn(Schedulers.newThread()).observeOn(Schedulers.trampoline()), updates)
 			   .filter(prematureRemove(dataType)); //filter OUT premature removes if happen
 	}
 	

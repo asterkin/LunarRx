@@ -1,7 +1,7 @@
 package com.cisco.vss.lunar.rx.scala.examples
 
 import com.cisco.vss.lunar.rx.plugin.scala.Lunar
-import com.cisco.vss.lunar.rx.plugin.schema.SubtitlesTrackItem
+import com.cisco.vss.lunar.rx.plugin.schema.subtitletext.Subtitles
 import rx.lang.scala.Observable
 import java.net.URL
 
@@ -19,7 +19,7 @@ object LunarWatchAndLearnPlugin {
 	    val SOURCE_ID    = 1
 	    val INPUT_PLUGIN = "subtitletext"
 	    val INPUT_TRACK  = "subtitles"
-	    val ts           = lunar.getInputTrackItemStream(classOf[SubtitlesTrackItem], SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)
+	    val ts           = lunar.getInputTrackItemStream(classOf[Subtitles], SOURCE_ID, INPUT_PLUGIN, INPUT_TRACK)
 	    
 	    ts
 	    .map(sub => sub.getText())

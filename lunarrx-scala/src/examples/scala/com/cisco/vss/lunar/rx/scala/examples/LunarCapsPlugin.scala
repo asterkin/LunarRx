@@ -7,9 +7,15 @@ import rx.lang.scala._
 
 class LunarCapsPlugin(lunar: Lunar) extends LunarTrackItemStreamTransformer[Subtitles, Caps] (lunar, classOf[Subtitles], classOf[Caps]){
 
+  def makeCaps(caps: Array[String]): Caps = new Caps(0, null, null, null, 0, caps)
+  
   @Override
   def transformA(input: Observable[Subtitles]): Observable[Caps] = {
-    null
+    input
+    .map(sub => sub.getText())
+    .map(text => text.split("[ .,?!']")) //TODO: regex
+    .map(words => words.filter(word => Character.isUpperCase(word(0))))
+    .map(caps => makeCaps(caps))
   }
 }
 
