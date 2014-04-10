@@ -10,7 +10,7 @@ object LunarCapsPlugin {
 		input
 		.map(sub   => sub.getText())
 		.map(text  => text.split("[ .,?!']")) //TODO: regex
-		.map(words => words.filter(word => word.length() > 0 && Character.isUpperCase(word(0))))
+		.map(words => words.map(word => word.trim()).filter(word => word.length() > 0 && Character.isUpperCase(word(0))))
 		.map(caps  => new Caps(caps))
 	}
   
