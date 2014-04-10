@@ -7,7 +7,7 @@ import rx.lang.scala._
 
 class LunarCapsPlugin(lunar: Lunar) extends LunarTrackItemStreamTransformer[Subtitles, Caps] (lunar, classOf[Subtitles], classOf[Caps]){
 
-  def makeCaps(caps: Array[String]): Caps = new Caps(0, null, null, null, 0, caps)
+  def makeCaps(caps: Array[String]): Caps = new Caps(caps)
   
   @Override
   def transformA(input: Observable[Subtitles]): Observable[Caps] = {
