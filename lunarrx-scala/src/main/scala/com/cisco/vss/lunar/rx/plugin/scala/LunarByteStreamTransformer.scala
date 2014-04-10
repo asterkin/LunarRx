@@ -4,14 +4,15 @@ import rx.lang.scala.JavaConversions._
 import rx.lang.scala._
 
 abstract class LunarByteStreamTransformer(lunar: Lunar, sourceTrackTemplate: core.LunarTrack, resultTrackTemplate: core.LunarTrack) {
-	private [scala] val asJava: core.LunarByteStreamTransformer = new core.LunarByteStreamTransformer(lunar.asJavaLunar, sourceTrackTemplate, resultTrackTemplate) {
-      @Override
-      def transform(input: rx.Observable[Array[Byte]]) : rx.Observable[_ <: Array[Byte]] = {
-        val result     = transformA(toScalaObservable(input))
-        val javaResult = toJavaObservable(result) 
-        return javaResult
-      }      
-    } 
+	private [scala] val asJava: core.LunarByteStreamTransformer = null //TODO 
+//	  new core.LunarByteStreamTransformer(lunar.asJavaLunar, sourceTrackTemplate, resultTrackTemplate) {
+//      @Override
+//      def transform(input: rx.Observable[Array[Byte]]) : rx.Observable[_ <: Array[Byte]] = {
+//        val result     = transformA(toScalaObservable(input))
+//        val javaResult = toJavaObservable(result) 
+//        return javaResult
+//      }      
+//    } 
 
     def run: Unit = asJava.run()
 

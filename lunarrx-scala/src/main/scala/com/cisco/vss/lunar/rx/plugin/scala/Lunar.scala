@@ -23,6 +23,17 @@ abstract class Lunar {
 object Lunar {
   def apply(host: String, port: Integer, developerID: String): Lunar =  new Lunar {
     val asJavaLunar = new core.Lunar(host, port, developerID)
-  } 
+  }
+  
+  def apply(args: Array[String]): Lunar = {
+	val DEVELOPER_ID = args(0);
+	// args(1) - plugin name
+    val HOST         = args(2)
+	val PORT         = Integer.parseInt(args(3))
+	// arg(4) - sourceID
+	new Lunar {
+	  val asJavaLunar = new core.Lunar(HOST, PORT, DEVELOPER_ID)
+	}
+  }
 }
 

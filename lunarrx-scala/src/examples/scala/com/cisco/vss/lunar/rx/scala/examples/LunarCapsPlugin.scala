@@ -7,24 +7,19 @@ import rx.lang.scala._
 
 class LunarCapsPlugin(lunar: Lunar) extends LunarTrackItemStreamTransformer[Subtitles, Caps] (lunar, classOf[Subtitles], classOf[Caps]){
 
-  def makeCaps(caps: Array[String]): Caps = new Caps(caps)
-  
   @Override
   def transformA(input: Observable[Subtitles]): Observable[Caps] = {
     input
-    .map(sub => sub.getText())
-    .map(text => text.split("[ .,?!']")) //TODO: regex
+    .map(sub   => sub.getText())
+    .map(text  => text.split("[ .,?!']")) //TODO: regex
     .map(words => words.filter(word => word.length() > 0 && Character.isUpperCase(word(0))))
-    .map(caps => makeCaps(caps))
+    .map(caps  => new Caps(caps))
   }
 }
 
 object LunarCapsPlugin {
   	def main(args: Array[String]): Unit = {
-	  	val HOST         = args(0)
-	    val PORT         = Integer.parseInt(args(1))
-	    val DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
-	    val lunar        = Lunar(HOST, PORT, DEVELOPER_ID)
+	    val lunar        = Lunar(args)
 	    val plugin       = new LunarCapsPlugin(lunar)
 	    
 	    plugin.run
