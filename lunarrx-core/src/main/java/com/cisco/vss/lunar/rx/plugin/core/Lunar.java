@@ -2,16 +2,13 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.getMQStream;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
-import static com.cisco.vss.lunar.rx.plugin.core.TrackStatus.*;
 
 public class Lunar {
 	private final static Logger LOGGER = LogManager.getLogger();
@@ -139,46 +136,4 @@ public class Lunar {
 	Observable<byte[]> getInputTrackStream(final LunarTrack sourceTrack) {
 		return getMQStream(Observable.from(sourceTrack.url));
 	}
-	
-	//So far new Application API
-	public Observable<TracksStatusUpdate> getTracksStatusUpdateStream() {
-		return getUpdatesUrl("tracks")
-				.flatMap(parseMQUrl)
-				.flatMap(connectToServer)
-				.flatMap(readStream)
-				.map(byte2String)
-				.flatMap(jsonString2Object(TracksStatusUpdate.class));		
-	}
-
-	public Observable<LunarTrack> getTrackInfoFromUpdate(final Integer sourceID, final String pluginName, final String trackName) {
-		return getTracksStatusUpdateStream()
-			   .filter(checkStatus(TRACK_IS_UP))
-			   .flatMap(getTracks)
-			   .filter(findTrack(new LunarTrack(sourceID,pluginName,trackName)));
-	}
-
-	public Observable<LunarTrack> getTrackInfoFromRest(final Integer sourceID, final String pluginName, final String trackName) {
-		final LunarTrack template = new LunarTrack(sourceID,pluginName,trackName);
-		final URL       url       = makeUrl(template.httpGetRequestPath());
-		return Observable.from(url)
-				.flatMap(synchHttpGet)
-				.flatMap(jsonString2Object(TrackInfoResponse.class))
-				.flatMap(getResultData);		
-	}
-	
-	public Observable<byte[]> getInputTrackStream(final Integer sourceID, final String pluginName, final String trackName) {
-//		return Observable.amb(getTrackInfoFromUpdate(sourceID,pluginName,trackName),
-				return getTrackInfoFromRest(sourceID,pluginName,trackName)
-				.map(getURL)
-				.flatMap(parseMQUrl)
-				.flatMap(connectToServer)
-				.flatMap(readStream);
-	}
-	
-	public <T> Observable<T> getInputTrackItemStream(final Class<T> clazz, final Integer sourceID, final String pluginName, final String trackName) {
-		return getInputTrackStream(sourceID, pluginName, trackName)
-		   .map(byte2String)
-		   .flatMap(jsonString2Object(clazz));
-	}
-	
 }
