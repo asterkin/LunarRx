@@ -15,6 +15,6 @@ object LunarCapsPlugin {
 	}
   
   	def main(args: Array[String]): Unit = {
-	    Lunar(args).transform(classOf[Subtitles], buildCaps, classOf[Caps])	    
+	    Lunar(args).transform(classOf[Subtitles], buildCaps _, classOf[Caps])	    
   	}
 }
