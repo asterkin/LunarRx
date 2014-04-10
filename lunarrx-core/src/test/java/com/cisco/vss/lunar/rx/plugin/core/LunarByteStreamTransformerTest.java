@@ -55,7 +55,7 @@ public class LunarByteStreamTransformerTest {
 		final LunarNotify<LunarTrack>             NOTIFY        = new LunarAdd<LunarTrack>(INPUT_TRACK);
 		final LunarByteStreamTransformer          transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, resultTrackTemplate) {
 			@Override
-			protected Observable<byte[]> transform(final Observable<byte[]> input) {
+			protected Observable<byte[]> transform(final Observable<byte[]> input, final LunarTrack track) {
 				return RESULT_STREAM;
 			}
 		};
@@ -96,7 +96,7 @@ public class LunarByteStreamTransformerTest {
 		final LunarNotify<LunarTrack>             NOTIFY_DOWN   = new LunarRemove<LunarTrack>(INPUT_TRACK);
 		final LunarByteStreamTransformer          transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, resultTrackTemplate) {
 			@Override
-			protected Observable<byte[]> transform(final Observable<byte[]> input) {
+			protected Observable<byte[]> transform(final Observable<byte[]> input, final LunarTrack track) {
 				return RESULT_STREAM;
 			}
 		};

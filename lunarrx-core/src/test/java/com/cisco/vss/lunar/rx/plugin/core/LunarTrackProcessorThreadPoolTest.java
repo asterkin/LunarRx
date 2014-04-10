@@ -9,7 +9,7 @@ import com.cisco.vss.rx.java.ObjectHolder;
 import static org.mockito.Mockito.*;
 import rx.Observable;
 import rx.functions.Action0;
-import rx.functions.Func1;
+import rx.functions.Func2;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LunarTrackProcessorThreadPoolTest {
@@ -19,9 +19,9 @@ public class LunarTrackProcessorThreadPoolTest {
 	private LunarMQWriter                                           writer;
 	private final byte[]                        RESULT        = "xyz".getBytes();
 	private final Observable<? extends byte[]>  RESULT_STREAM = Observable.from(new byte[][]{RESULT});
-	private Func1<Observable<byte[]>, Observable<? extends byte[]>> transform = new Func1<Observable<byte[]>, Observable<? extends byte[]>>() {
+	private Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
 		@Override
-		public Observable<? extends byte[]> call(Observable<byte[]> t1) {
+		public Observable<? extends byte[]> call(final Observable<byte[]> t1, final LunarTrack track) {
 			return RESULT_STREAM;
 		}
 		
