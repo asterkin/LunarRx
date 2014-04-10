@@ -53,7 +53,7 @@ public class LunarTrackTest {
 	    final String    DEVELOPER_ID = "6871c4b35301671668ebf26ae46b6441";
 
 		final String    path      = trackInfo.streamerRequestPath(DEVELOPER_ID);
-		final String    EXPECTED  = "/streamer?sourceID=1234&pluginName=plugin1&trackName=track1&mime=json&enablePostToCore=false&protocol=LunarMQ&developerID="+DEVELOPER_ID;
+		final String    EXPECTED  = "/streamer?sourceID=1234&pluginName=plugin1&trackName=track1&mimeType=json&enablePostToCore=false&protocol=LunarMQ&developerID="+DEVELOPER_ID;
 
 		assertEquals(EXPECTED, path);
 		
