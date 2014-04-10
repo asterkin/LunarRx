@@ -1,7 +1,7 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 import rx.Observable;
-import static com.cisco.vss.rx.java.Conversions.*;
+import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarTrackTemplateFactory.*;
 
 public abstract class LunarTrackItemStreamGenerator<R extends TrackItem> extends LunarByteStreamTransformer {
@@ -13,8 +13,9 @@ public abstract class LunarTrackItemStreamGenerator<R extends TrackItem> extends
 	}
 
 	@Override
-	protected Observable<byte[]> transform(final Observable<byte[]> input) {
+	protected Observable<byte[]> transform(final Observable<byte[]> input, final LunarTrack resultTrack) {
 		return generateR(input)
+			   .map(setTrackDetails(resultTrack, resultType))
 			   .map(object2JsonString(resultType))
 			   .map(string2Byte);
 	}

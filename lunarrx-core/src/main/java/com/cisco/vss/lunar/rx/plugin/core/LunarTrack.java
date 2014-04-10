@@ -18,7 +18,10 @@ public class LunarTrack implements LunarEntity {
 	
 	public class Response            extends LunarDataResponse<LunarTrack[]> {}
 	public class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarTrack> {}
-	
+/*
+ * {"status":"up","list":[{"sourceID":"1","pluginName":"capsrx","protocols":[{"protocol":"LunarMQ","url":"54.195.242.59:7021/capsrx:caps:1"}],"trackName":"caps","mimeType":"json"}],"messageType":"tracks"}
+ *
+ */	
 	//TODO: better encapsulation?
 	public LunarTrack(final String pluginName, final String trackName) {
 		this.pluginName = pluginName;
@@ -56,7 +59,7 @@ public class LunarTrack implements LunarEntity {
             +"sourceID=%d"
             +"&pluginName=%s"
             +"&trackName=%s"
-            +"&mime=%s"
+            +"&mimeType=%s"
             +"&enablePostToCore=%b"
             +"&protocol=%s" 
     		+"&developerID=%s";

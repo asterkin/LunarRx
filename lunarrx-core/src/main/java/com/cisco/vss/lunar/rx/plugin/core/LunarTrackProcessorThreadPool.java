@@ -7,21 +7,21 @@ import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
-import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 public class LunarTrackProcessorThreadPool {
 	private final static Logger                                           LOGGER = LogManager.getLogger();
 	private final Lunar                                                   lunar;
-	private final Func1<Observable<byte[]>, Observable<? extends byte[]>> transform;
+	private final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform;
 	
-	public LunarTrackProcessorThreadPool(final Lunar lunar, final Func1<Observable<byte[]>, Observable<? extends byte[]>> transform) {
+	public LunarTrackProcessorThreadPool(final Lunar lunar, final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform) {
 		this.lunar     = lunar;
 		this.transform = transform;
 	}
 	
 	public Subscription startTrack(final LunarTrack sourceTrack, final LunarTrack resultTrack, final Action0 finallyDo) {
-		final Observable<? extends byte[]> result = getTransformedStream(sourceTrack); 
+		final Observable<? extends byte[]> result = getTransformedStream(sourceTrack, resultTrack); 
 		final Observable<LunarMQWriter>    output = lunar.getOutputTrackStream(resultTrack);
 
 		lunar.starting(resultTrack);
@@ -42,8 +42,8 @@ public class LunarTrackProcessorThreadPool {
 		);	
 	}
 	
-	private Observable<? extends byte[]> getTransformedStream(final LunarTrack sourceTrack) {
-		return transform.call(lunar.getInputTrackStream(sourceTrack));
+	private Observable<? extends byte[]> getTransformedStream(final LunarTrack sourceTrack, final LunarTrack resultTrack) {
+		return transform.call(lunar.getInputTrackStream(sourceTrack), resultTrack);
 	}
 
 	public void stopTrack(final LunarTrack sourceTrack, final LunarTrack resultTrack) {

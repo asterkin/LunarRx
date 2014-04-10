@@ -87,9 +87,8 @@ public class Lunar {
 	}
 	
 	Observable<LunarMQWriter> getOutputTrackStream(final LunarTrack track) {
-		return httpRequest(track.streamerRequestPath(developerID), synchHttpGet, TrackInfoResponse.class)
-			   .flatMap(getResultData)
-			   .map(getURL)
+		return httpRequest(track.streamerRequestPath(developerID), synchHttpGet, LunarUrlData.Response.class)
+			   .flatMap(getUrlData)
 			   .flatMap(parseMQUrl)
 			   .flatMap(connectToServer)
 			   .map(createRawWriter);

@@ -121,6 +121,19 @@ public class LunarConversions extends LunarMQConversions {
 		};
 	}
  	
+	public static <R extends TrackItem> Func1<R, R> setTrackDetails(final LunarTrack resultTrack, final Class<R> resultType) {
+		return new Func1<R, R>() {
+			@Override
+			public R call(final R item) {
+				item.sourceID   = resultTrack.sourceID;
+				item.pluginName = resultTrack.pluginName;
+				item.trackName  = resultTrack.trackName;
+				return item;
+			}
+			
+		};
+	}
+	
  	//So far new App API
 	public static final Converter<TrackInfoResponse, LunarTrack> getResultData = new Converter<TrackInfoResponse, LunarTrack>("getResultData") {
 		@Override

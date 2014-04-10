@@ -5,15 +5,20 @@ import com.google.gson.annotations.SerializedName;
 
 public abstract class TrackItem
 {
-    private Date     time;
+    public Date     time; //TODO: setters?
     @SerializedName("source")
-    private int      sourceID;
+    public int      sourceID;
     @SerializedName("vendor")
-    private String   pluginName;
+    public String   pluginName;
     @SerializedName("track")
-    private String   trackName;
+    public String   trackName;
     @SerializedName("version")
-    private int      trackVersion;
+    public int      trackVersion;
+ 
+    public TrackItem() {
+    	this.time         = new Date();
+    	this.trackVersion = 1; //TODO
+    }
     
     public TrackItem(int sourceID, Date time, String pluginName, String trackName, int trackVersion)
     {

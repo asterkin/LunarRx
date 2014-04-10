@@ -10,14 +10,14 @@ public class LunarPluginStateReport {
 
 	final String  developerID;
 	final String  pluginName;
-	final Integer sourceID;
+	final String  sourceID;
 	final String  message;
 	final State   state;
 	
 	private LunarPluginStateReport(final String developerID, final String pluginName, final Integer sourceID, final String message, final State state) {
 		this.developerID = developerID;
 		this.pluginName  = pluginName;
-		this.sourceID    = sourceID;
+		this.sourceID    = sourceID.toString();
 		this.message     = message;
 		this.state       = state;
 	}

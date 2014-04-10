@@ -8,7 +8,7 @@ import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
-import rx.functions.Func1;
+import rx.functions.Func2;
 
 public abstract class LunarByteStreamTransformer {
 	protected final static Logger                 LOGGER = LogManager.getLogger();
@@ -21,10 +21,10 @@ public abstract class LunarByteStreamTransformer {
 	protected  LunarByteStreamTransformer(final Lunar lunar, final LunarTrack sourceTemplate, final LunarTrack resultTemplate) {
 		this.lunar          = lunar;
 		this.threadPool = new LunarTrackProcessorThreadPool(lunar, 
-			new Func1<Observable<byte[]>, Observable<? extends byte[]>>(){
+			new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>(){
 				@Override
-				public Observable<? extends byte[]> call(final Observable<byte[]> inputStream) {
-					return transform(inputStream);
+				public Observable<? extends byte[]> call(final Observable<byte[]> inputStream, final LunarTrack resultTrack) {
+					return transform(inputStream, resultTrack);
 				}
 			}
 		);
@@ -87,5 +87,5 @@ public abstract class LunarByteStreamTransformer {
 		}
 	}
 
-	protected abstract Observable<? extends byte[]> transform(final Observable<byte[]> input);
+	protected abstract Observable<? extends byte[]> transform(final Observable<byte[]> input, final LunarTrack resulTrack);
 }
