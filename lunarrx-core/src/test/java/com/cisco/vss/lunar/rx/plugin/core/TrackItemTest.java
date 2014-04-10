@@ -2,7 +2,6 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.rx.java.Conversions.jsonString2Object;
 import static org.junit.Assert.*;
-import java.util.Date;
 import org.junit.Test;
 import rx.functions.Action1;
 import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
@@ -10,10 +9,6 @@ import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
 public class TrackItemTest {
 
 	private class TestTrackItem extends TrackItem {
-		public TestTrackItem(int sourceID, Date time, String pluginName,
-				String trackName, int trackVersion) {
-			super(sourceID, time, pluginName, trackName, trackVersion);
-		}
 	}
 	
 	@Test
