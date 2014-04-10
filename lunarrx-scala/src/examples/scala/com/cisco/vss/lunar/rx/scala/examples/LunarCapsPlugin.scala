@@ -14,7 +14,7 @@ class LunarCapsPlugin(lunar: Lunar) extends LunarTrackItemStreamTransformer[Subt
     input
     .map(sub => sub.getText())
     .map(text => text.split("[ .,?!']")) //TODO: regex
-    .map(words => words.filter(word => Character.isUpperCase(word(0))))
+    .map(words => words.filter(word => word.length() > 0 && Character.isUpperCase(word(0))))
     .map(caps => makeCaps(caps))
   }
 }
