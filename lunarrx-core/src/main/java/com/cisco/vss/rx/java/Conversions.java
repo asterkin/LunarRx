@@ -1,6 +1,7 @@
 package com.cisco.vss.rx.java;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
@@ -131,6 +132,22 @@ public class Conversions {
 			
 		};
 	}
+
+	private static String readHttpResponse(final HttpURLConnection connection) throws IOException, Exception {
+		if (connection.getResponseCode() != 200)
+			throw new Exception("Got HTTP error code [" + connection.getResponseCode() + "]");
+		
+		BufferedReader in     = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		StringBuilder  result = new StringBuilder();
+		String         inputLine;
+
+		while ((inputLine = in.readLine()) != null)
+			result.append(inputLine);
+		
+		in.close();
+		connection.disconnect();				
+		return result.toString();
+	}
 	
 	public static final Converter<URL, String> synchHttpGet = new Converter<URL, String>("synchHttpGet") {
 		@Override
@@ -138,18 +155,9 @@ public class Conversions {
 			final HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.addRequestProperty("Accept", "application/json"); //TODO: support for more encodings
-			if (connection.getResponseCode() != 200)
-				throw new Exception("Got HTTP error code [" + connection.getResponseCode() + "]");
-			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String        inputLine;
-			StringBuilder result = new StringBuilder();
-
-			while ((inputLine = in.readLine()) != null)
-				result.append(inputLine);
-			in.close();
-			connection.disconnect();				
-			return result.toString();
+			return readHttpResponse(connection);
 		}
+
 	};
 	
 	public static Converter<URL, String> synchHttpPost(final String message) {
@@ -163,24 +171,12 @@ public class Conversions {
 				final OutputStream out = connection.getOutputStream();
 				out.write(message.getBytes());
 				out.flush();
-				//TODO: common with GET
-				if (connection.getResponseCode() != 200)
-					throw new Exception("Got HTTP error code [" + connection.getResponseCode() + "]");
-				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				String        inputLine;
-				StringBuilder result = new StringBuilder();
-
-				while ((inputLine = in.readLine()) != null)
-					result.append(inputLine);
-				in.close();
-				connection.disconnect();				
-				return result.toString();
+				return readHttpResponse(connection);
 			}
 			
 		};
 	}
 	
-	//TODO: why I cannot get it from RxJava?
  	public static final <R> Func1<R[], Observable<R>> flatten(Class<R> clazz) {
  		return new Func1<R[], Observable<R>>() {
 			@Override
