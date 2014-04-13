@@ -17,7 +17,7 @@ public abstract class TrackItem
  
     public TrackItem() {
     	this.time         = new Date();
-    	this.trackVersion = 1; //TODO
+    	this.trackVersion = 1; //TODO: Who, when and how defines track item versions?
     }
     
     public TrackItem(int sourceID, Date time, String pluginName, String trackName, int trackVersion)
