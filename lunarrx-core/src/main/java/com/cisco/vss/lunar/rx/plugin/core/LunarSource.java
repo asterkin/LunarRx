@@ -24,7 +24,7 @@ public class LunarSource implements LunarEntity {
 	public class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarSource> {}
 	
 	@Override
-	public Long getId() {
-		return new Long(sourceID);
+	public String getId() {
+		return String.format("%d", sourceID);
 	}
 }

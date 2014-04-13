@@ -75,12 +75,12 @@ public class LunarConversions extends LunarMQConversions {
  	
  	public static <T extends LunarEntity> Func1<LunarNotify<T>, Boolean> prematureRemove(final Class<T> clazz) {
 		return new Func1<LunarNotify<T>, Boolean>() {
-			private final Set<Long> added    = new HashSet<Long>();
-			private final Set<Long> deleting = new HashSet<Long>();
+			private final Set<String> added    = new HashSet<String>();
+			private final Set<String> deleting = new HashSet<String>();
 			private final Logger    LOGGER   = LogManager.getLogger(String.format("LunarConversions.prematureRemove<%s>", this.getClass().getName()));
 			@Override
 			public Boolean call(final LunarNotify<T> notify) {
-				final Long id = notify.getItem().getId();
+				final String id = notify.getItem().getId();
 				Boolean    rc = false;
 				if(notify instanceof LunarAdd<?>)
 					if(deleting.contains(id)) {

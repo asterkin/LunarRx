@@ -69,12 +69,8 @@ public class LunarTrack implements LunarEntity {
 	}
 
 	@Override
-	public Long getId() {
-		int hash = 7;
-		hash = 31*hash + pluginName.hashCode();
-		hash = 31+hash + trackName.hashCode();
-		long id = sourceID << 32 | hash; 
-		return id;
+	public String getId() {
+		return String.format("%d/%s/%s", sourceID, pluginName, trackName);
 	}
 
 	public LunarTrack attachToSource(final Integer sourceID) {
