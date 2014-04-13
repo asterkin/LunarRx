@@ -16,10 +16,15 @@ public class Lunar {
 	private final int    port;
 	private final String developerID;
 	
-	public Lunar(final String hostName, final int port, final String developerID) {
+	Lunar(final String hostName, final int port, final String developerID) {
 		this.hostName    = hostName;
 		this.port        = port;
 		this.developerID = developerID;
+	}
+	
+	public Lunar(final String[] args) {
+		    //HOST    PORT                       DEVELOPER_ID
+		this(args[2] ,Integer.parseInt(args[3]), args[0]);
 	}
 	
 	Observable<String> httpRequest(final String path, final Converter<URL, String> method) {
