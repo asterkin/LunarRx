@@ -1,8 +1,8 @@
 package com.cisco.vss.lunar.rx.plugin.schema.subtitletext;
 
-import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
+import com.cisco.vss.lunar.rx.plugin.core.LunarTrackItem;
 
-public class Subtitles extends TrackItem {
+public class Subtitles extends LunarTrackItem {
 
 	public class SubtitleLine {
 		public SubtitleLine(final String text) {

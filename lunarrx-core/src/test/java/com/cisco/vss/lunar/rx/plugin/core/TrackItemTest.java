@@ -4,11 +4,11 @@ import static com.cisco.vss.rx.java.Conversions.jsonString2Object;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import rx.functions.Action1;
-import com.cisco.vss.lunar.rx.plugin.core.TrackItem;
+import com.cisco.vss.lunar.rx.plugin.core.LunarTrackItem;
 
 public class TrackItemTest {
 
-	private class TestTrackItem extends TrackItem {
+	private class TestTrackItem extends LunarTrackItem {
 	}
 	
 	@Test

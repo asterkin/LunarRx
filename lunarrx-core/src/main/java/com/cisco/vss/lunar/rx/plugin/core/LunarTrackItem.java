@@ -3,7 +3,7 @@ package com.cisco.vss.lunar.rx.plugin.core;
 import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 
-public abstract class TrackItem
+public abstract class LunarTrackItem
 {
     public Date     time; //TODO: setters?
     @SerializedName("source")
@@ -15,12 +15,12 @@ public abstract class TrackItem
     @SerializedName("version")
     public int      trackVersion;
  
-    public TrackItem() {
+    public LunarTrackItem() {
     	this.time         = new Date();
     	this.trackVersion = 1; //TODO: Who, when and how defines track item versions?
     }
     
-    public TrackItem(int sourceID, Date time, String pluginName, String trackName, int trackVersion)
+    public LunarTrackItem(int sourceID, Date time, String pluginName, String trackName, int trackVersion)
     {
 	    this.time         = time;
 	    this.sourceID     = sourceID;

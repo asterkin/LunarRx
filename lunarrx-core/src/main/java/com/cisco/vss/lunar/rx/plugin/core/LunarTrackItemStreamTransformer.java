@@ -4,7 +4,7 @@ import rx.Observable;
 import static com.cisco.vss.rx.java.Conversions.*;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarTrackTemplateFactory.*;
 
-public abstract class LunarTrackItemStreamTransformer<T extends TrackItem, R extends TrackItem> extends LunarTrackItemStreamGenerator<R> {
+public abstract class LunarTrackItemStreamTransformer<T extends LunarTrackItem, R extends LunarTrackItem> extends LunarTrackItemStreamGenerator<R> {
 	private final Class<T> sourceType;
 	
 	protected LunarTrackItemStreamTransformer(final Lunar lunar, final Class<T> sourceType, final Class<R> resultType) {

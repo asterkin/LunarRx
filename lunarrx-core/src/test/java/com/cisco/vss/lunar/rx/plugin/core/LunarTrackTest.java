@@ -93,7 +93,7 @@ public class LunarTrackTest {
 		assertNull(error.value);	
 	}
 	
-	class SampleTrackItem extends TrackItem {
+	class SampleTrackItem extends LunarTrackItem {
 
 		public SampleTrackItem(int sourceID, Date time, String pluginName,
 				String trackName, int trackVersion) {

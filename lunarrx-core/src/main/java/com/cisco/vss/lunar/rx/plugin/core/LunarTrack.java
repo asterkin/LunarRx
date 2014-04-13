@@ -42,7 +42,7 @@ public class LunarTrack implements LunarEntity {
 		return getMQStream(Observable.from(url));
 	}
 	
-	public <T extends TrackItem> Observable<T> getItems(Class<T> clazz) {
+	public <T extends LunarTrackItem> Observable<T> getItems(Class<T> clazz) {
 		return getMQStream(Observable.from(url), clazz);
 	}
 	
