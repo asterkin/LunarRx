@@ -10,7 +10,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func2;
 
-public abstract class LunarByteStreamTransformer {
+public class LunarByteStreamTransformer {
 	protected final static Logger                 LOGGER = LogManager.getLogger();
 	protected final Lunar                         lunar;
 	private   final LunarTrack                    sourceTemplate;
@@ -18,17 +18,10 @@ public abstract class LunarByteStreamTransformer {
 	private   final LunarTrackProcessorThreadPool threadPool;
 	private   final Map<Integer, Subscription>    tracks;
 
-	protected  LunarByteStreamTransformer(final Lunar lunar, final LunarTrack sourceTemplate, final LunarTrack resultTemplate) {
+	protected  LunarByteStreamTransformer(final Lunar lunar, final LunarTrack sourceTemplate, final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform, final LunarTrack resultTemplate) {
 		this.lunar          = lunar;
-		this.threadPool = new LunarTrackProcessorThreadPool(lunar, 
-			new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>(){
-				@Override
-				public Observable<? extends byte[]> call(final Observable<byte[]> inputStream, final LunarTrack resultTrack) {
-					return transform(inputStream, resultTrack);
-				}
-			}
-		);
-		this.tracks = new HashMap<Integer, Subscription>();
+		this.threadPool     = new LunarTrackProcessorThreadPool(lunar, transform); 
+		this.tracks         = new HashMap<Integer, Subscription>();
 		this.sourceTemplate = sourceTemplate;
 		this.resultTemplate = resultTemplate;
 	}
@@ -86,6 +79,4 @@ public abstract class LunarByteStreamTransformer {
 			}
 		}
 	}
-
-	protected abstract Observable<? extends byte[]> transform(final Observable<byte[]> input, final LunarTrack resulTrack);
 }

@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.*;
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func2;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LunarByteStreamTransformerTest {
@@ -54,12 +55,13 @@ public class LunarByteStreamTransformerTest {
 		final LunarTrack                          INPUT_TRACK   = new LunarTrack(1, "pluginA", "trackB");
 		final LunarTrack                          RESULT_TRACK  = new LunarTrack(1, "pluginX", "trackY");
 		final LunarNotify<LunarTrack>             NOTIFY        = new LunarAdd<LunarTrack>(INPUT_TRACK);
-		final LunarByteStreamTransformer          transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, resultTrackTemplate) {
+		final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
 			@Override
-			protected Observable<byte[]> transform(final Observable<byte[]> input, final LunarTrack track) {
+			public Observable<? extends byte[]> call(final Observable<byte[]> source, final	LunarTrack tract) {
 				return RESULT_STREAM;
-			}
+			}			
 		};
+		final LunarByteStreamTransformer transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, transform, resultTrackTemplate);
 		final Observable<LunarNotify<LunarTrack>> NOTIFY_STREAM = Observable.create(new Observable.OnSubscribe<LunarNotify<LunarTrack>>() {
 			@Override
 			public void call(final Subscriber<? super LunarNotify<LunarTrack>> subscriber) {
@@ -95,12 +97,13 @@ public class LunarByteStreamTransformerTest {
 		final LunarTrack                          RESULT_TRACK  = new LunarTrack(1, "pluginX", "trackY");
 		final LunarNotify<LunarTrack>             NOTIFY_UP     = new LunarAdd<LunarTrack>(INPUT_TRACK);
 		final LunarNotify<LunarTrack>             NOTIFY_DOWN   = new LunarRemove<LunarTrack>(INPUT_TRACK);
-		final LunarByteStreamTransformer          transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, resultTrackTemplate) {
+		final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
 			@Override
-			protected Observable<byte[]> transform(final Observable<byte[]> input, final LunarTrack track) {
+			public Observable<? extends byte[]> call(final Observable<byte[]> source, final	LunarTrack tract) {
 				return RESULT_STREAM;
-			}
+			}			
 		};
+		final LunarByteStreamTransformer transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, transform, resultTrackTemplate);
 		final Observable<LunarNotify<LunarTrack>> NOTIFY_STREAM = Observable.create(new Observable.OnSubscribe<LunarNotify<LunarTrack>>() {
 			@Override
 			public void call(final Subscriber<? super LunarNotify<LunarTrack>> subscriber) {

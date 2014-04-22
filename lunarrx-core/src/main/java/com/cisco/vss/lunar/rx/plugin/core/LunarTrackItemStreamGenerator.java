@@ -2,24 +2,23 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import rx.Observable;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
-import static com.cisco.vss.lunar.rx.plugin.core.LunarTrackTemplateFactory.*;
+import rx.functions.Func2;
+import rx.functions.Func1;
 
-public abstract class LunarTrackItemStreamGenerator<R extends LunarTrackItem> extends LunarByteStreamTransformer {
-	protected final Class<R> resultType;
+public class LunarTrackItemStreamGenerator<R extends LunarTrackItem> implements Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> {
+	protected final Class<R>                                           resultType;
+	private   final Func1<Observable<byte[]>, Observable<? extends R>> transform;
 
-	protected LunarTrackItemStreamGenerator(final Lunar lunar, final LunarTrack sourceTemplate, Class<R> resultType) {
-		super(lunar, sourceTemplate, getTrackTemplate(resultType));
+	protected LunarTrackItemStreamGenerator(final Class<R> resultType, final Func1<Observable<byte[]>, Observable<? extends R>> transform) {
 		this.resultType = resultType;
+		this.transform  = transform;
 	}
 
 	@Override
-	protected Observable<byte[]> transform(final Observable<byte[]> input, final LunarTrack resultTrack) {
-		return generateR(input)
+	public Observable<byte[]> call(final Observable<byte[]> input, final LunarTrack resultTrack) {
+		return this.transform.call(input)
 			   .map(setTrackDetails(resultTrack, resultType))
 			   .map(object2JsonString(resultType))
 			   .map(string2Byte);
 	}
-	
-	protected abstract Observable<? extends R> generateR(final Observable<byte[]> input);
-
 }

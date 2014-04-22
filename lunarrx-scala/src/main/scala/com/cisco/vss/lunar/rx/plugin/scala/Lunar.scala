@@ -9,46 +9,41 @@ import com.cisco.vss.lunar.rx.plugin.core._
 abstract class Lunar {
 	private [scala] val asJavaLunar: core.Lunar
 
-	def transform(sourceTrackTemplate: LunarTrack, trans: (Observable[Array[Byte]], LunarTrack) => Observable[Array[Byte]], resultTrackTemplate: LunarTrack) : Unit = {
-	  val plugin: core.LunarByteStreamTransformer =  new core.LunarByteStreamTransformer(asJavaLunar, sourceTrackTemplate, resultTrackTemplate) {
+	def transform(sourceTrackTemplate: LunarTrack, trans: (Observable[Array[Byte]], LunarTrack) => Observable[_ <: Array[Byte]], resultTrackTemplate: LunarTrack) : Unit = {
+	  val javaTrans = new rx.functions.Func2[rx.Observable[Array[Byte]], LunarTrack, rx.Observable[_ <: Array[Byte]]]() {
 		@Override
-		def transform(input: rx.Observable[Array[Byte]], track: LunarTrack) : rx.Observable[_ <: Array[Byte]] = {
+		def call(input: rx.Observable[Array[Byte]], track: LunarTrack) : rx.Observable[_ <: Array[Byte]] = {
 			val result     = trans(toScalaObservable(input), track)
 			val javaResult = toJavaObservable(result) 
 			return javaResult
-		}      
-      } 
+		}
+	  }
 	  
-	  plugin.run
+	  asJavaLunar.transform(sourceTrackTemplate, javaTrans, resultTrackTemplate)  
 	}
 	
-	def transform[R <: LunarTrackItem](sourceTrackTemplate: LunarTrack, trans: (Observable[Array[Byte]]) => Observable[R] ,resultType: Class[R]): Unit = {
-		val plugin: core.LunarTrackItemStreamGenerator[R] = new core.LunarTrackItemStreamGenerator[R](
-		    asJavaLunar, 
-		    sourceTrackTemplate,
-		    resultType
-		){
-	      @Override
-	      def generateR(input: rx.Observable[Array[Byte]]) : rx.Observable[_ <: R] = {
-	        val result     = trans(toScalaObservable(input))
-	        val javaResult = toJavaObservable(result) 
-	        return javaResult
-	      }
+	def transform[R <: LunarTrackItem](sourceTrackTemplate: LunarTrack, trans: (Observable[Array[Byte]]) => Observable[_ <: R] ,resultType: Class[R]): Unit = {	  
+	  val javaTrans = new rx.functions.Func1[rx.Observable[Array[Byte]], rx.Observable[_ <: R]]() {
+		@Override
+		def call(input: rx.Observable[Array[Byte]]) : rx.Observable[_ <: R] = {
+			val result     = trans(toScalaObservable(input))
+			val javaResult = toJavaObservable(result) 
+			return javaResult
 		}
-		
-		plugin.run
+	  }
+	  asJavaLunar.transform[R](sourceTrackTemplate, javaTrans, resultType)
 	}
 	
 	def transform[T <: LunarTrackItem, R <: LunarTrackItem](sourceType: Class[T], trans: (Observable[T]) => Observable[R] ,resultType: Class[R]): Unit = {
-	   val plugin: core.LunarTrackItemStreamTransformer[T, R] = new core.LunarTrackItemStreamTransformer[T, R](asJavaLunar, sourceType, resultType) {
-	     @Override
-        def transformT(input: rx.Observable[T]) : rx.Observable[_ <: R] = {
-          val result     = trans(toScalaObservable(input))
-          val javaResult = toJavaObservable(result) 
-          return javaResult
-        }
-      }
-	   plugin.run()
+	  val javaTrans = new rx.functions.Func1[rx.Observable[T], rx.Observable[_ <: R]]() {
+		@Override
+		def call(input: rx.Observable[T]) : rx.Observable[_ <: R] = {
+			val result     = trans(toScalaObservable(input))
+			val javaResult = toJavaObservable(result) 
+			return javaResult
+		}
+	  }
+	  asJavaLunar.transform[T,R](sourceType, javaTrans, resultType)
 	}
 	
 	//TODO: add more useful converters (httpPost, etc.)

@@ -2,15 +2,80 @@ package com.cisco.vss.lunar.rx.plugin.core;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.getMQStream;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
+import static com.cisco.vss.lunar.rx.plugin.core.LunarTrackTemplateFactory.*;
 
 public class Lunar {
+	public Lunar(final String[] args) {
+	    //   HOST     PORT                       DEVELOPER_ID
+		this(args[2] ,Integer.parseInt(args[3]), args[0]);
+	}
+
+	public Observable<LunarNotify<LunarSource>> getSources() {
+		return getCombinedNotifyStream("sources", LunarSource.StatusUpdateMessage.class, LunarSource.Response.class, LunarSource.class);
+	}
+
+	public Observable<LunarNotify<LunarTrack>> getTracks() {
+		return getCombinedNotifyStream("tracks", LunarTrack.StatusUpdateMessage.class, LunarTrack.Response.class, LunarTrack.class);
+	}
+
+	public Observable<LunarNotify<LunarTrack>> getTracks(final LunarTrack template) {
+		return getTracks().filter(pluginTrack(template));
+	}
+	
+	public void transform(final LunarTrack sourceTemplate, final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> trans, final LunarTrack resultTemplate) {
+		final LunarByteStreamTransformer transformer = new LunarByteStreamTransformer(this, sourceTemplate, trans, resultTemplate);
+		transformer.run();
+	}
+
+	public <R extends LunarTrackItem> void transform(final LunarTrack sourceTemplate, final Func1<Observable<byte[]>, Observable<? extends R>> trans, final Class<R> resultType) {
+		final LunarTrack                       resultTemplate = getTrackTemplate(resultType);
+		final LunarTrackItemStreamGenerator<R> gen            = new LunarTrackItemStreamGenerator<R>(resultType, trans);
+		
+		this.transform(sourceTemplate,  gen, resultTemplate);
+	}
+
+	public <T extends LunarTrackItem, R extends LunarTrackItem> void transform(final Class<T> sourceType, final Func1<Observable<T>, Observable<? extends R>> trans, final Class<R> resultType) {
+		final LunarTrack                            sourceTemplate = getTrackTemplate(sourceType);
+		final LunarTrackItemStreamTransformer<T, R> transformer    = new LunarTrackItemStreamTransformer<T, R>(sourceType, trans);
+		
+		this.transform(sourceTemplate,  transformer, resultType);
+	}
+	
+	public void starting(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.starting(developerID, track));
+	}
+
+	public void running(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.running(developerID, track));
+	}
+
+	public void stopping(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopping(developerID, track));
+	}
+
+	public void stopping(final LunarTrack track, final Throwable err) {
+		sendReport(LunarPluginStateReport.stopping(developerID, track, err));
+	}
+	
+	public void stopped(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopped(developerID, track));
+	}
+
+	public void stopped(final LunarTrack track, final Throwable err) {
+		sendReport(LunarPluginStateReport.stopped(developerID, track, err));
+	}
+	
 	private final static Logger LOGGER = LogManager.getLogger();
 	private final String hostName;
 	private final int    port;
@@ -20,11 +85,6 @@ public class Lunar {
 		this.hostName    = hostName;
 		this.port        = port;
 		this.developerID = developerID;
-	}
-	
-	public Lunar(final String[] args) {
-		    //HOST    PORT                       DEVELOPER_ID
-		this(args[2] ,Integer.parseInt(args[3]), args[0]);
 	}
 	
 	Observable<String> httpRequest(final String path, final Converter<URL, String> method) {
@@ -76,18 +136,6 @@ public class Lunar {
 			   .filter(prematureRemove(dataType)); //filter OUT premature removes if happen
 	}
 	
-	public Observable<LunarNotify<LunarSource>> getSources() {
-		return getCombinedNotifyStream("sources", LunarSource.StatusUpdateMessage.class, LunarSource.Response.class, LunarSource.class);
-	}
-
-	public Observable<LunarNotify<LunarTrack>> getTracks() {
-		return getCombinedNotifyStream("tracks", LunarTrack.StatusUpdateMessage.class, LunarTrack.Response.class, LunarTrack.class);
-	}
-
-	public Observable<LunarNotify<LunarTrack>> getTracks(final LunarTrack template) {
-		return getTracks().filter(pluginTrack(template));
-	}
-	
 	Observable<LunarMQWriter> getOutputTrackStream(final LunarTrack track) {
 		return httpRequest(track.streamerRequestPath(developerID), synchHttpGet, LunarUrlData.Response.class)
 			   .flatMap(getUrlData)
@@ -112,30 +160,6 @@ public class Lunar {
 		.subscribeOn(Schedulers.newThread())//TODO: quazar or outside of Lunar?
 		.observeOn(Schedulers.trampoline())
 		.subscribe();
-	}
-
-	public void starting(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.starting(developerID, track));
-	}
-
-	public void running(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.running(developerID, track));
-	}
-
-	public void stopping(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.stopping(developerID, track));
-	}
-
-	public void stopping(final LunarTrack track, final Throwable err) {
-		sendReport(LunarPluginStateReport.stopping(developerID, track, err));
-	}
-	
-	public void stopped(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.stopped(developerID, track));
-	}
-
-	public void stopped(final LunarTrack track, final Throwable err) {
-		sendReport(LunarPluginStateReport.stopped(developerID, track, err));
 	}
 
 	Observable<byte[]> getInputTrackStream(final LunarTrack sourceTrack) {
