@@ -3,7 +3,7 @@ package com.cisco.vss.lunar.rx.mq;
 public class LunarHandshakeFailureException extends LunarMQException {
 
 	public LunarHandshakeFailureException(final String response) {
-		super(String.format("Handshake failure. Got [%s] error message", response), false);
+		super(String.format("Handshake failure. Got [%s] error message", response));
 	}
 
 	/**

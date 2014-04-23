@@ -7,8 +7,7 @@ public class LunarPrematureEndOfStreamException extends LunarMQException {
 		 "Premature end of Lunar MQ Stream at record# %d after %d bytes (%d expected)", 
 		 	sequenceNumber, 
 		 	offset, 
-		 	bodyLength)
-		 ,false);
+		 	bodyLength));
 	}
 
 	/**

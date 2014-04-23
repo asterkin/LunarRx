@@ -34,55 +34,50 @@ public class LunarMQException extends Exception
         LMQ_TOO_MANY_POSTS ("Too many posts per second"),
         LMQ_UNKNOWN ("Unknown");
 
-        private String m_message;
+        private String message;
 
         private StreamingError(String msg) {
-            m_message = msg;
+            message = msg;
         }
 
         public String GetMessage() {
-            return m_message;
+            return message;
         }
 
         public static StreamingError FromMessage(String msg) {
             for (StreamingError err : StreamingError.values())
-                if (err.m_message.equals(msg))
+                if (err.message.equals(msg))
                     return err;
             return null;
         }
     }
 
-    public boolean m_isRecoverable;
-    public StreamingError m_code;
+    private final boolean        isRecoverable;
+    private final StreamingError code;
 
-    public LunarMQException(boolean isRecoverable) {
-        this(StreamingError.LMQ_UNKNOWN.GetMessage(), isRecoverable, StreamingError.LMQ_UNKNOWN);
+    public LunarMQException(String message, boolean isRecoverable, StreamingError code)
+    {
+        super(message);
+        this.isRecoverable = isRecoverable;
+        this.code          = code;
     }
     
     public LunarMQException(boolean isRecoverable, StreamingError code) {
         this(code.GetMessage(), isRecoverable, code);
     }
 
-    public LunarMQException(String message, boolean isRecoverable, StreamingError code)
-    {
-        super(message);
-        m_isRecoverable = isRecoverable;
-        m_code = code;
-    }
 
-    public LunarMQException(String message, boolean isRecoverable)
+    public LunarMQException(String message)
     {
-        super(message);
-        m_isRecoverable = isRecoverable;
-        m_code = StreamingError.LMQ_UNKNOWN;
+    	this(message, false, StreamingError.LMQ_UNKNOWN);
     }
 
     public boolean isRecoverable()
     {
-        return m_isRecoverable;
+        return this.isRecoverable;
     }
 
     public StreamingError getCode() {
-        return m_code;
+        return code;
     }
 }
