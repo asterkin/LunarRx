@@ -17,14 +17,17 @@ public class LunarMQConversionsTest {
 
 	@Test
 	public void testUrlParser_OK() {
+		final ObjectHolder<Matcher> result = new ObjectHolder<Matcher>();
+		
 		parseMQUrl.call("localhost:1999/Hallo").subscribe(new Action1<Matcher>() {
 			@Override
-			public void call(Matcher matcher) {
-				assertEquals("localhost", matcher.group(1));
-				assertEquals("1999",      matcher.group(2));
-				assertEquals("Hallo",     matcher.group(3));
+			public void call(final Matcher matcher) {
+				result.value = matcher;
 			}
 		});
+		assertEquals("localhost", result.value.group(1));
+		assertEquals("1999",      result.value.group(2));
+		assertEquals("Hallo",     result.value.group(3));
 	}
 	
 	@Test

@@ -1,4 +1,4 @@
-package com.cisco.vss.rx.java;
+package com.cisco.vss.lunar.rx.mq;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
 
-import com.cisco.vss.rx.java.TcpServerStub;
-
 public class LunarMQServerStub extends TcpServerStub {
 	protected int outMsgSeq;
 	public LunarMQServerStub(byte[][] responses, boolean isReceiver) throws IOException {
