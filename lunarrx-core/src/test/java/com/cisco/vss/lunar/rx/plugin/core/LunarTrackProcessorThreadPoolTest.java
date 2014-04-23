@@ -5,7 +5,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.cisco.vss.lunar.rx.mq.LunarMQWriter;
 import com.cisco.vss.rx.java.ObjectHolder;
+
 import static org.mockito.Mockito.*;
 import rx.Observable;
 import rx.functions.Action0;

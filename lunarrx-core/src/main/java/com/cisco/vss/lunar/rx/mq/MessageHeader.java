@@ -4,16 +4,16 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class MessageHeader {
+class MessageHeader {
 	private final int bodyLength;
 	private final int sequenceNumber;
 	
-	public MessageHeader(final int bodyLength, final int sequenceNumber) {
+	MessageHeader(final int bodyLength, final int sequenceNumber) {
 		this.bodyLength     = bodyLength;
 		this.sequenceNumber = sequenceNumber;
 	}
 
-	public static MessageHeader read(final BufferedInputStream stream) throws IOException, LunarMQException {
+	static MessageHeader read(final BufferedInputStream stream) throws IOException, LunarMQException {
 		final int bodyLength     = readInt(stream, (int)' ');
 		final int sequenceNumber = readInt(stream, (int)'\n');
 		
@@ -40,25 +40,25 @@ public class MessageHeader {
 			throw new LunarInvalidInputHeaderFormatException(code);
 	}
 
-	public void write(final OutputStream stream) throws IOException {
+	void write(final OutputStream stream) throws IOException {
 		stream.write(String.format("%d %d\n", bodyLength, sequenceNumber).getBytes());
 	}
 	
-	public int getSequenceNumber() {
+	int getSequenceNumber() {
 		return sequenceNumber;
 	}
 	
-	public int getBodyLength() {
+	int getBodyLength() {
 		return bodyLength;
 	}
 
-	public int checkSequence(int prevSeq) throws LunarMessagesLostException {
+	int checkSequence(int prevSeq) throws LunarMessagesLostException {
 		if(sequenceNumber != (prevSeq +1))
 			throw new LunarMessagesLostException(sequenceNumber - prevSeq -1);
 		return sequenceNumber;
 	}
 
-	public byte[] readBody(final BufferedInputStream stream) throws IOException, LunarPrematureEndOfStreamException {
+	byte[] readBody(final BufferedInputStream stream) throws IOException, LunarPrematureEndOfStreamException {
 		final byte[] buf         = new byte[bodyLength];
 		int          bytesToRead = bodyLength;
 		int          offset      = 0;

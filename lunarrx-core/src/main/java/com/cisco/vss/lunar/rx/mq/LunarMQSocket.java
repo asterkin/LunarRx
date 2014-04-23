@@ -4,7 +4,7 @@ package com.cisco.vss.lunar.rx.mq;
 import java.io.*;
 import java.net.Socket;
 
-public class LunarMQSocket
+class LunarMQSocket
 {        
     private final Socket               socket;
     private final BufferedInputStream  inputStream;
@@ -12,7 +12,7 @@ public class LunarMQSocket
     private int                        incomingMessageNum;
     private int                        outgoingMessageNum;
     
-    public static LunarMQSocket createSocket(final String ip, int port, final String message) throws IOException, LunarMQException
+    static LunarMQSocket createSocket(final String ip, int port, final String message) throws IOException, LunarMQException
     {
         final LunarMQSocket lmqSocket = new LunarMQSocket(new Socket(ip, port));
         
@@ -20,6 +20,45 @@ public class LunarMQSocket
         return lmqSocket;
     }
 
+    //TODO: why not to use some more efficient binary protocol?
+    //TODO: there is no such a thing a bidirectional communication. This class still violates SRP
+    byte[] read() throws IOException, LunarMQException
+    {
+    	final MessageHeader header = MessageHeader.read(inputStream);
+    	
+    	incomingMessageNum = header.checkSequence(incomingMessageNum);
+    	return header.readBody(inputStream);
+    }     
+    
+    void write(final String message) throws IOException, LunarMQException
+    {   
+        write(message.getBytes());
+    }     
+    
+    void write(byte[] buffer) throws IOException, LunarMQException
+    {   
+        /* @todo async write can only be done with NIO - not for now */
+    	final MessageHeader header = new MessageHeader(buffer.length, outgoingMessageNum++);
+    	try {
+    		header.write(outputStream);
+    		outputStream.write(buffer);
+    	} catch (IOException exp) {
+    		final String responseMsg = readResponse();
+            LunarMQException.StreamingError lmqe = LunarMQException.StreamingError.FromMessage(responseMsg);
+            if (lmqe != null) 
+                throw new LunarMQException(false, lmqe);
+
+            // this so some unknown error, throw it...
+            throw exp;
+    	}
+    }       
+    
+    void close() throws IOException 
+    {       
+       inputStream.close();
+       outputStream.close();
+       socket.close();
+    }          
     
     private LunarMQSocket(final Socket s) throws IOException
     {        
@@ -53,44 +92,4 @@ public class LunarMQSocket
 	        }
         throw new LunarCannotReadHandshakeResponseException();
     }
-    
-    //TODO: why not to use some more efficient binary protocol?
-    //TODO: there is no such a thing a bidirectional communication. This class still violates SRP
-    public byte[] read() throws IOException, LunarMQException
-    {
-    	final MessageHeader header = MessageHeader.read(inputStream);
-    	
-    	incomingMessageNum = header.checkSequence(incomingMessageNum);
-    	return header.readBody(inputStream);
-    }     
-    
-    public void write(final String message) throws IOException, LunarMQException
-    {   
-        write(message.getBytes());
-    }     
-    
-    public void write(byte[] buffer) throws IOException, LunarMQException
-    {   
-        /* @todo async write can only be done with NIO - not for now */
-    	final MessageHeader header = new MessageHeader(buffer.length, outgoingMessageNum++);
-    	try {
-    		header.write(outputStream);
-    		outputStream.write(buffer);
-    	} catch (IOException exp) {
-    		final String responseMsg = readResponse();
-            LunarMQException.StreamingError lmqe = LunarMQException.StreamingError.FromMessage(responseMsg);
-            if (lmqe != null) 
-                throw new LunarMQException(false, lmqe);
-
-            // this so some unknown error, throw it...
-            throw exp;
-    	}
-    }       
-    
-    public void close() throws IOException 
-    {       
-       inputStream.close();
-       outputStream.close();
-       socket.close();
-    }          
 }

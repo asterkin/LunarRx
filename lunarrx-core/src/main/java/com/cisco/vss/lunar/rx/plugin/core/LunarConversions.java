@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import rx.Observable;
 import rx.functions.Func1;
 import com.cisco.vss.lunar.rx.mq.LunarMQConversions;
-import com.cisco.vss.lunar.rx.mq.LunarMQSocket;
 
 public class LunarConversions extends LunarMQConversions {
 
@@ -128,14 +127,4 @@ public class LunarConversions extends LunarMQConversions {
 			
 		};
 	}
-	
-	public static final Func1<LunarMQSocket, LunarMQWriter> createRawWriter = new Func1<LunarMQSocket, LunarMQWriter>() {
-
-		@Override
-		public LunarMQWriter call(final LunarMQSocket socket) {
-			return new LunarMQWriter(socket);
-		}
-		
-	};
-
 }

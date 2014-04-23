@@ -1,8 +1,8 @@
 package com.cisco.vss.lunar.rx.mq;
 
-public class LunarInvalidInputHeaderFormatException extends LunarMQException {
+class LunarInvalidInputHeaderFormatException extends LunarMQException {
 
-	public LunarInvalidInputHeaderFormatException(int code) {
+	LunarInvalidInputHeaderFormatException(int code) {
 		super(String.format("Invalid character code in Header: %d", code));
 	}
 

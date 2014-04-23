@@ -3,6 +3,8 @@ package com.cisco.vss.lunar.rx.plugin.core;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.cisco.vss.lunar.rx.mq.LunarMQWriter;
+
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action0;

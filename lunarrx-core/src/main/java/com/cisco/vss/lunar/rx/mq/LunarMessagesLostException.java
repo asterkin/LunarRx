@@ -2,9 +2,9 @@ package com.cisco.vss.lunar.rx.mq;
 
 import static com.cisco.vss.lunar.rx.mq.LunarMQException.StreamingError.*;
 
-public class LunarMessagesLostException extends LunarMQException {
+class LunarMessagesLostException extends LunarMQException {
 
-	public LunarMessagesLostException(final int lostCount) {
+	LunarMessagesLostException(final int lostCount) {
 		super(
 			String.format("%d LunarMQ messages were lost - are you working too slowly?", lostCount),
 			true,

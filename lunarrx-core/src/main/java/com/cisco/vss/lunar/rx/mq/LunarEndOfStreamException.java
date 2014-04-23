@@ -1,8 +1,8 @@
 package com.cisco.vss.lunar.rx.mq;
 
-public class LunarEndOfStreamException extends LunarMQException {
+class LunarEndOfStreamException extends LunarMQException {
 
-	public LunarEndOfStreamException() {
+	LunarEndOfStreamException() {
 		super(true, LunarMQException.StreamingError.LMQ_EOS);
 	}
 

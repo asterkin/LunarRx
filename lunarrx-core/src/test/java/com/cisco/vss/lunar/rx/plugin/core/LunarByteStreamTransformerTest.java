@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.ArgumentMatcher;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.cisco.vss.lunar.rx.mq.LunarMQWriter;
+
 import static org.mockito.Mockito.*;
 import rx.Observable;
 import rx.Subscriber;

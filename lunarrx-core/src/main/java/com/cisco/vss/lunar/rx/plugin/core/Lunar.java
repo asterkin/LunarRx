@@ -6,6 +6,8 @@ import java.net.URL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.cisco.vss.lunar.rx.mq.LunarMQWriter;
+
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;

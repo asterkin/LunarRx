@@ -5,7 +5,7 @@
 package com.cisco.vss.lunar.rx.mq;
 
 
-public class LunarMQException extends Exception
+class LunarMQException extends Exception
 {
 
     /**
@@ -13,7 +13,7 @@ public class LunarMQException extends Exception
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public enum StreamingError {
+	enum StreamingError {
         LMQ_RETRY ("Retry"),
         LMQ_OK ("OK"),
         LMQ_EOF ("End of file"),
@@ -40,11 +40,11 @@ public class LunarMQException extends Exception
             message = msg;
         }
 
-        public String GetMessage() {
+        String GetMessage() {
             return message;
         }
 
-        public static StreamingError FromMessage(String msg) {
+        static StreamingError FromMessage(String msg) {
             for (StreamingError err : StreamingError.values())
                 if (err.message.equals(msg))
                     return err;
@@ -55,29 +55,29 @@ public class LunarMQException extends Exception
     private final boolean        isRecoverable;
     private final StreamingError code;
 
-    public LunarMQException(String message, boolean isRecoverable, StreamingError code)
+    LunarMQException(String message, boolean isRecoverable, StreamingError code)
     {
         super(message);
         this.isRecoverable = isRecoverable;
         this.code          = code;
     }
     
-    public LunarMQException(boolean isRecoverable, StreamingError code) {
+    LunarMQException(boolean isRecoverable, StreamingError code) {
         this(code.GetMessage(), isRecoverable, code);
     }
 
 
-    public LunarMQException(String message)
+    LunarMQException(String message)
     {
     	this(message, false, StreamingError.LMQ_UNKNOWN);
     }
 
-    public boolean isRecoverable()
+    boolean isRecoverable()
     {
         return this.isRecoverable;
     }
 
-    public StreamingError getCode() {
+    StreamingError getCode() {
         return code;
     }
 }

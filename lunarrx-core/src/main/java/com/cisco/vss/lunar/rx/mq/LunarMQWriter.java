@@ -1,12 +1,12 @@
-package com.cisco.vss.lunar.rx.plugin.core;
+package com.cisco.vss.lunar.rx.mq;
 import java.io.IOException;
-import com.cisco.vss.lunar.rx.mq.LunarMQSocket;
+
 import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.*;
 
 public class LunarMQWriter extends Converter<byte[], byte[]>{
 	final private LunarMQSocket socket;
 	
-	public LunarMQWriter(final LunarMQSocket socket) {
+	LunarMQWriter(final LunarMQSocket socket) {
 		super("LunarMQWriter");
 		this.socket = socket;
 	}

@@ -47,4 +47,13 @@ public class LunarMQConversions extends com.cisco.vss.rx.java.Conversions {
 				.map(normalizeJson)
 				.flatMap(jsonString2Object(messageType));
 	}
+	
+	public static final Func1<LunarMQSocket, LunarMQWriter> createRawWriter = new Func1<LunarMQSocket, LunarMQWriter>() {
+
+		@Override
+		public LunarMQWriter call(final LunarMQSocket socket) {
+			return new LunarMQWriter(socket);
+		}
+		
+	};
 }

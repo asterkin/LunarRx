@@ -1,6 +1,5 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-import static com.cisco.vss.lunar.rx.mq.LunarMQException.StreamingError.LMQ_OK;
 import static com.cisco.vss.rx.java.Conversions.object2JsonString;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.*;
@@ -65,7 +64,7 @@ public class LunarTrackTest {
 		final String TRACK_NAME      = "stream";
 		final int    SOURCE_ID       = 1;
 		final byte[][] MQ_RESPONSES  = new byte[][]{
-				LMQ_OK.GetMessage().getBytes(),
+				"OK".getBytes(),
 				"ABCDEFG".getBytes()
 		};
 		final LunarMQServerStub mqServer = new LunarMQServerStub(MQ_RESPONSES);
@@ -118,7 +117,7 @@ public class LunarTrackTest {
 		};
 		final String itemJson = object2JsonString(SampleTrackItem.class).call(item);
 		final byte[][] MQ_RESPONSES  = new byte[][]{
-				LMQ_OK.GetMessage().getBytes(),
+				"OK".getBytes(),
 				itemJson.getBytes()
 		};
 		final LunarMQServerStub mqServer  = new LunarMQServerStub(MQ_RESPONSES);

@@ -1,8 +1,8 @@
 package com.cisco.vss.lunar.rx.mq;
 
-public class LunarCannotReadHandshakeResponseException extends LunarMQException {
+class LunarCannotReadHandshakeResponseException extends LunarMQException {
 
-	public LunarCannotReadHandshakeResponseException() {
+	LunarCannotReadHandshakeResponseException() {
 		super("Cannot read Lunar MQ handshake response");
 	}
 	/**

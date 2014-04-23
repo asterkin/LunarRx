@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.cisco.vss.lunar.rx.mq.LunarMQWriter;
+
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Action1;
