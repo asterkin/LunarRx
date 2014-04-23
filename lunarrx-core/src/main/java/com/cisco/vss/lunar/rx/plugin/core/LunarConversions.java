@@ -43,7 +43,7 @@ public class LunarConversions extends LunarMQConversions {
  		return new Func1<T, LunarNotify<T>>() {
 			@Override
 			public LunarNotify<T> call(T item) {
-				return new LunarAdd<T>(item);
+				return new LunarAddTrack<T>(item);
 			} 			
  		};
  	}
@@ -52,7 +52,7 @@ public class LunarConversions extends LunarMQConversions {
  		return new Func1<T, LunarNotify<T>>() {
 			@Override
 			public LunarNotify<T> call(T item) {
-				return new LunarRemove<T>(item);
+				return new LunarRemoveTrack<T>(item);
 			} 			
  		};
  	}
@@ -82,7 +82,7 @@ public class LunarConversions extends LunarMQConversions {
 			public Boolean call(final LunarNotify<T> notify) {
 				final String id = notify.getItem().getId();
 				Boolean    rc = false;
-				if(notify instanceof LunarAdd<?>)
+				if(notify instanceof LunarAddTrack<?>)
 					if(deleting.contains(id)) {
 						LOGGER.info("Premature remove resolved for id={}", id);
 						deleting.remove(id);
@@ -90,7 +90,7 @@ public class LunarConversions extends LunarMQConversions {
 						added.add(id);
 						rc = true;
 					}
-				else if(notify instanceof LunarRemove<?>) {
+				else if(notify instanceof LunarRemoveTrack<?>) {
 					if(added.contains(id)) {
 						added.remove(id);
 						rc = true;

@@ -59,7 +59,7 @@ public class LunarByteStreamTransformer {
 	private void reflectTrackStatus(final LunarNotify<LunarTrack> notify) {
 		final LunarTrack sourceTrack = notify.getItem();
 		final LunarTrack resultTrack = resultTemplate.attachToSource(sourceTrack.sourceID);
-		if(notify instanceof LunarAdd<?>) { 
+		if(notify instanceof LunarAddTrack<?>) { 
 			final Subscription subs = threadPool.startTrack(sourceTrack, resultTrack, 
 				new Action0() {
 					@Override
@@ -69,7 +69,7 @@ public class LunarByteStreamTransformer {
 				}
 			);
 			tracks.put(resultTrack.sourceID, subs);
-		} else if (notify instanceof LunarRemove<?>) {
+		} else if (notify instanceof LunarRemoveTrack<?>) {
 			final Subscription subs = tracks.get(resultTrack.sourceID);
 			if(null != subs) {
 				lunar.stopping(resultTrack);
