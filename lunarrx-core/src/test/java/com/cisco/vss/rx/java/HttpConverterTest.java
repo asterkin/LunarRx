@@ -1,14 +1,13 @@
 package com.cisco.vss.rx.java;
 
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.net.URL;
-
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.Rule;
 import rx.functions.Action1;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import static com.cisco.vss.rx.java.Conversions.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
@@ -23,8 +22,10 @@ public class HttpConverterTest {
 		}    			
 	};
 
+	@ClassRule
+    public static WireMockClassRule wireMockRule = new WireMockClassRule(3000);
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(3000);
+    public WireMockClassRule instanceRule = wireMockRule;
     
     @Test
     public void testSynchHttpGet() throws IOException, InterruptedException {
