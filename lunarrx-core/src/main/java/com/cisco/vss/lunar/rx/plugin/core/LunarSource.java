@@ -1,11 +1,11 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 public class LunarSource implements LunarEntity {
-	public LunarSource(int sourceID, String sourceName) {
+	LunarSource(int sourceID, String sourceName) {
 		this.sourceID = sourceID;
 		this.name     = sourceName;
 	}
-	public LunarSource() {}
+	LunarSource() {}
 	
 	//Primarily for testing purposes
 	@Override
@@ -20,8 +20,8 @@ public class LunarSource implements LunarEntity {
 	public int    sourceID;
 	public String name;
 	
-	public class Response            extends LunarDataResponse<LunarSource[]> {}
-	public class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarSource> {}
+	class Response            extends LunarDataResponse<LunarSource[]> {}
+	class StatusUpdateMessage extends LunarStatusUpdateMessage<LunarSource> {}
 	
 	@Override
 	public String getId() {

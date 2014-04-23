@@ -1,6 +1,6 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-public class LunarPluginStateReport {
+class LunarPluginStateReport {
 	enum State {
 		starting,
 		running,
@@ -34,7 +34,7 @@ public class LunarPluginStateReport {
 				&& (this.state.equals(that.state)));
 	}
 	
-	public static LunarPluginStateReport stopping(final String developerID, final LunarTrack track) {
+	static LunarPluginStateReport stopping(final String developerID, final LunarTrack track) {
 		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.stopping);
 	}
 
@@ -42,23 +42,23 @@ public class LunarPluginStateReport {
 		return String.format("%s - Error: %s", track.trackName, err.getMessage());
 	}
 	
-	public static LunarPluginStateReport stopping(final String developerID, final LunarTrack track, final Throwable err) {
+	static LunarPluginStateReport stopping(final String developerID, final LunarTrack track, final Throwable err) {
 		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, formatMessage(track, err), State.stopping);
 	}
 	
-	public static LunarPluginStateReport stopped(final String developerID, final LunarTrack track) {
+	static LunarPluginStateReport stopped(final String developerID, final LunarTrack track) {
 		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.stopped);
 	}
 
-	public static LunarPluginStateReport stopped(final String developerID, final LunarTrack track, final Throwable err) {
+	static LunarPluginStateReport stopped(final String developerID, final LunarTrack track, final Throwable err) {
 		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, formatMessage(track, err), State.stopped);
 	}
 	
-	public static LunarPluginStateReport starting(final String developerID, final LunarTrack track) {
+	static LunarPluginStateReport starting(final String developerID, final LunarTrack track) {
 		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.starting);
 	}
 
-	public static LunarPluginStateReport running(final String developerID, final LunarTrack track) {
+	static LunarPluginStateReport running(final String developerID, final LunarTrack track) {
 		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, track.trackName, State.running);
 	}		
 }

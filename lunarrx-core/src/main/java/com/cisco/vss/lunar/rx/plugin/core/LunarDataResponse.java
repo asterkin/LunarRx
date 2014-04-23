@@ -1,9 +1,9 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-public class LunarDataResponse<T> extends LunarResponse {
-	public LunarDataResponse() {
+class LunarDataResponse<T> extends LunarResponse {
+	LunarDataResponse() {
 		this.result = ResultType.OK;
 	}
 
-	public T          data;
+	T          data;
 }

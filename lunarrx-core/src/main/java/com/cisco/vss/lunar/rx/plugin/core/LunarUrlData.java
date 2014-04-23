@@ -1,7 +1,7 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-public class LunarUrlData {
-	public String url;
+class LunarUrlData {
+	String url;
 	
-	public class Response extends LunarDataResponse<LunarUrlData> {}
+	class Response extends LunarDataResponse<LunarUrlData> {}
 }

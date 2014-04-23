@@ -23,12 +23,12 @@ public class LunarTrack implements LunarEntity {
  *
  */	
 	//TODO: better encapsulation?
-	public LunarTrack(final String pluginName, final String trackName) {
+	LunarTrack(final String pluginName, final String trackName) {
 		this.pluginName = pluginName;
 		this.trackName  = trackName;
 	}
 
-	public LunarTrack(final Integer sourceID, final String pluginName, final String trackName) {
+	LunarTrack(final Integer sourceID, final String pluginName, final String trackName) {
 		this.sourceID   = sourceID;
 		this.pluginName = pluginName;
 		this.trackName  = trackName;
@@ -38,11 +38,11 @@ public class LunarTrack implements LunarEntity {
 		this.deployed   = false;   
 	}
 	
-	public Observable<byte[]> getBytestream() {
+	Observable<byte[]> getBytestream() {
 		return getMQStream(Observable.from(url));
 	}
 	
-	public <T extends LunarTrackItem> Observable<T> getItems(Class<T> clazz) {
+	<T extends LunarTrackItem> Observable<T> getItems(Class<T> clazz) {
 		return getMQStream(Observable.from(url), clazz);
 	}
 	
@@ -51,7 +51,7 @@ public class LunarTrack implements LunarEntity {
 		return object2JsonString(LunarTrack.class).call(this);
 	}
 	
-	public String httpGetRequestPath() {
+	String httpGetRequestPath() {
 		return String.format("/tracks?sourceID=%s&pluginName=%s&trackName=%s",sourceID,pluginName,trackName);
 	}
 
@@ -64,7 +64,7 @@ public class LunarTrack implements LunarEntity {
             +"&protocol=%s" 
     		+"&developerID=%s";
 	
-	public String streamerRequestPath(final String developerID) {
+	String streamerRequestPath(final String developerID) {
 		return String.format(streamerTemplate,sourceID,pluginName,trackName,mime,deployed,protocol,developerID);
 	}
 
@@ -73,7 +73,7 @@ public class LunarTrack implements LunarEntity {
 		return String.format("%d/%s/%s", sourceID, pluginName, trackName);
 	}
 
-	public LunarTrack attachToSource(final Integer sourceID) {
+	LunarTrack attachToSource(final Integer sourceID) {
 		return new LunarTrack(sourceID, this.pluginName, this.trackName);
 	}
 }

@@ -10,15 +10,15 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func2;
 
-public class LunarByteStreamTransformer {
-	protected final static Logger                 LOGGER = LogManager.getLogger();
-	protected final Lunar                         lunar;
-	private   final LunarTrack                    sourceTemplate;
-	private   final LunarTrack                    resultTemplate;
-	private   final LunarTrackProcessorThreadPool threadPool;
-	private   final Map<Integer, Subscription>    tracks;
+class LunarByteStreamTransformer {
+	private final static Logger                 LOGGER = LogManager.getLogger();
+	private final Lunar                         lunar;
+	private final LunarTrack                    sourceTemplate;
+	private final LunarTrack                    resultTemplate;
+	private final LunarTrackProcessorThreadPool threadPool;
+	private final Map<Integer, Subscription>    tracks;
 
-	protected  LunarByteStreamTransformer(final Lunar lunar, final LunarTrack sourceTemplate, final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform, final LunarTrack resultTemplate) {
+	LunarByteStreamTransformer(final Lunar lunar, final LunarTrack sourceTemplate, final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform, final LunarTrack resultTemplate) {
 		this.lunar          = lunar;
 		this.threadPool     = new LunarTrackProcessorThreadPool(lunar, transform); 
 		this.tracks         = new HashMap<Integer, Subscription>();
@@ -26,7 +26,7 @@ public class LunarByteStreamTransformer {
 		this.resultTemplate = resultTemplate;
 	}
 	
-	public void run() {
+	void run() {
 		//TODO: re-start
 		lunar.getTracks(this.sourceTemplate)
 		.subscribe(
@@ -52,7 +52,7 @@ public class LunarByteStreamTransformer {
 		);
 	}
 
-	public int getNumberOfActiveTracks() {
+	int getNumberOfActiveTracks() {
 		synchronized(tracks) { return tracks.size(); }
 	}
 	

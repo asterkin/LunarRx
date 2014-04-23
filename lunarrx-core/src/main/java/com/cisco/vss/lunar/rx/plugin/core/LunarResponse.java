@@ -1,17 +1,17 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-public class LunarResponse {
+class LunarResponse {
 
-	public enum ResultType {
+	enum ResultType {
 		OK,
 		NOT_OK
 	}
 
-	public LunarResponse() {
+	LunarResponse() {
 		result = ResultType.OK;
 	}
 	
-	public ResultType result;
-	public String     message;
+	ResultType result;
+	String     message;
 
 }

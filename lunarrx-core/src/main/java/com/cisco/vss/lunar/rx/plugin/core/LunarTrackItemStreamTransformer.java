@@ -4,11 +4,11 @@ import rx.Observable;
 import static com.cisco.vss.rx.java.Conversions.*;
 import rx.functions.Func1;
 
-public class LunarTrackItemStreamTransformer<T extends LunarTrackItem, R extends LunarTrackItem> implements Func1<Observable<byte[]>, Observable<? extends R>> {
+class LunarTrackItemStreamTransformer<T extends LunarTrackItem, R extends LunarTrackItem> implements Func1<Observable<byte[]>, Observable<? extends R>> {
 	private final Class<T>                                      sourceType;
 	private final Func1<Observable<T>, Observable<? extends R>> transform;
 	
-	protected LunarTrackItemStreamTransformer(final Class<T> sourceType, Func1<Observable<T>, Observable<? extends R>> transform) {
+	LunarTrackItemStreamTransformer(final Class<T> sourceType, Func1<Observable<T>, Observable<? extends R>> transform) {
 		this.sourceType = sourceType;
 		this.transform  = transform;
 	}

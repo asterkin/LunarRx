@@ -5,11 +5,11 @@ import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
 import rx.functions.Func2;
 import rx.functions.Func1;
 
-public class LunarTrackItemStreamGenerator<R extends LunarTrackItem> implements Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> {
-	protected final Class<R>                                           resultType;
-	private   final Func1<Observable<byte[]>, Observable<? extends R>> transform;
+class LunarTrackItemStreamGenerator<R extends LunarTrackItem> implements Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> {
+	private final Class<R>                                           resultType;
+	private final Func1<Observable<byte[]>, Observable<? extends R>> transform;
 
-	protected LunarTrackItemStreamGenerator(final Class<R> resultType, final Func1<Observable<byte[]>, Observable<? extends R>> transform) {
+	LunarTrackItemStreamGenerator(final Class<R> resultType, final Func1<Observable<byte[]>, Observable<? extends R>> transform) {
 		this.resultType = resultType;
 		this.transform  = transform;
 	}
