@@ -3,11 +3,11 @@
 	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
 	<classpathentry kind="src" path="src/test/resources"/>
-	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.4/41f016d526c050fb1c354d3f9de99f80d638fc97/rxjava-core-0.17.4-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.4/c525b8fc2c9c97f9ebc61f0628fc090ae9692766/rxjava-core-0.17.4.jar" exported="true">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/100df445982100351f68709c030dfea055d19457/rxjava-core-0.17.6-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/b35d55668bb9af8b78e39ea0fda9d313b3707e11/rxjava-core-0.17.6.jar" exported="true">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.4/a4b9e68b73c02c046e1ef7de127cedfcc8fe0d3a/rxjava-core-0.17.4-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/d6bbd0faa4d0f65ff6a2edfc32cb3252ec37bb00/rxjava-core-0.17.6-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a6dc5db8a12928e583bd3f23e72d3ab611ecd58f/gson-2.2.4-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar" exported="true">

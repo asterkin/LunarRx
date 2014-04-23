@@ -1,4 +1,4 @@
-package com.cisco.vss.rx.lunar.rx.groovy.examples
+package com.cisco.vss.lunar.rx.groovy.examples
 import com.cisco.vss.lunar.rx.groovy.mpeg.*
 import com.cisco.vss.lunar.rx.plugin.core.Lunar
 

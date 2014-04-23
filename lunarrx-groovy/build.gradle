@@ -16,11 +16,11 @@ sourceSets {
 //          srcDir 'src/main/groovy'
 //      }
 //  }
-//  test {
-//      groovy {
-//          srcDir 'src/test/groovy'
-//      }
-//  }
+  test {
+      groovy {
+          srcDir 'src/test/groovy'
+      }
+  }
   examples {
       groovy {
           srcDir 'src/examples/groovy'

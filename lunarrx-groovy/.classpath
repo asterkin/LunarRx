@@ -3,6 +3,7 @@
 	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/examples/groovy"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry kind="src" path="src/test/groovy"/>
 	<classpathentry kind="src" path="/lunarrx-core" exported="true"/>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/100df445982100351f68709c030dfea055d19457/rxjava-core-0.17.6-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/b35d55668bb9af8b78e39ea0fda9d313b3707e11/rxjava-core-0.17.6.jar" exported="true">
 		<attributes>
