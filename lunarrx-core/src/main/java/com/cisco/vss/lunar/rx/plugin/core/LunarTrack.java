@@ -1,8 +1,6 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.*;
-import rx.Observable;
-
 import com.google.gson.annotations.SerializedName;
 
 public class LunarTrack implements LunarEntity {
@@ -36,14 +34,6 @@ public class LunarTrack implements LunarEntity {
 		this.protocol   = "LunarMQ";
 		this.mime       = "json";
 		this.deployed   = false;   
-	}
-	
-	Observable<byte[]> getBytestream() {
-		return getMQStream(Observable.from(url));
-	}
-	
-	<T extends LunarTrackItem> Observable<T> getItems(Class<T> clazz) {
-		return getMQStream(Observable.from(url), clazz);
 	}
 	
 	@Override

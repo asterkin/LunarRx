@@ -218,4 +218,93 @@ public class LunarAppApiTest {
 		assertEquals(1, requests.size());
 		assertArrayEquals(new String[]{REPORT_JSON}, requests.values().toArray());		
 	}
+	
+	//TODO: move to lunar test	
+//	@Test
+//	public void testGetBytestream() throws IOException, InterruptedException {
+//		final String PLUGIN_NAME     = "source_stream";
+//		final String TRACK_NAME      = "stream";
+//		final int    SOURCE_ID       = 1;
+//		final byte[][] MQ_RESPONSES  = new byte[][]{
+//				"OK".getBytes(),
+//				"ABCDEFG".getBytes()
+//		};
+//		final LunarMQServerStub mqServer = new LunarMQServerStub(MQ_RESPONSES);
+//		final LunarTrack        track    = new LunarTrack(SOURCE_ID,PLUGIN_NAME,TRACK_NAME);
+//		track.url = String.format("localhost:%d/stream:2.2041.9211", mqServer.startServer());
+//		final ObjectHolder<Throwable> error = new ObjectHolder<Throwable>();
+//		
+//		track.getBytestream()
+//		.subscribe(
+//			new Action1<byte[]>() {
+//				@Override
+//				public void call(byte[] message) {
+//					assertArrayEquals("ABCDEFG".getBytes(), message);
+//				}
+//			},
+//			new Action1<Throwable>() {
+//				@Override
+//				public void call(Throwable err) {
+//					error.value = err;
+//				}
+//				
+//			}
+//		);
+//		mqServer.join();
+//		assertNull(error.value);	
+//	}
+//	
+//	class SampleTrackItem extends LunarTrackItem {
+//
+//		public SampleTrackItem(int sourceID, Date time, String pluginName,
+//				String trackName, int trackVersion) {
+//			super(sourceID, time, pluginName, trackName, trackVersion);
+//		}
+//		
+//		public String[] lines;
+//		public Long     pts;
+//	}
+//		
+//	@Test
+//	public void testGetItems() throws IOException, InterruptedException {
+//		final String PLUGIN_NAME   = "subtitletext";
+//		final String TRACK_NAME    = "subtitles";
+//		final int    SOURCE_ID     = 1;
+//		final SampleTrackItem item = new SampleTrackItem(1, new Date(), PLUGIN_NAME, TRACK_NAME, 1);
+//		item.pts = 297451166L;
+//		item.lines = new String[] {
+//			"First line",
+//			"",
+//			"Second line"
+//		};
+//		final String itemJson = object2JsonString(SampleTrackItem.class).call(item);
+//		final byte[][] MQ_RESPONSES  = new byte[][]{
+//				"OK".getBytes(),
+//				itemJson.getBytes()
+//		};
+//		final LunarMQServerStub mqServer  = new LunarMQServerStub(MQ_RESPONSES);
+//		final LunarTrack        track     = new LunarTrack(SOURCE_ID,PLUGIN_NAME,TRACK_NAME);
+//		track.url = String.format("localhost:%d/subtitletext:subtitles:1", mqServer.startServer());
+//		final ObjectHolder<Throwable> error = new ObjectHolder<Throwable>();
+//		
+//		track.getItems(SampleTrackItem.class).subscribe(
+//				new Action1<SampleTrackItem>() {
+//					@Override
+//					public void call(final SampleTrackItem it) {
+//						assertEquals(item.pts, it.pts);
+//						assertArrayEquals(item.lines, it.lines);
+//					}
+//				},
+//				new Action1<Throwable>() {
+//					@Override
+//					public void call(Throwable err) {
+//						error.value = err;
+//					}
+//
+//				}
+//				);
+//		mqServer.join();
+//		assertNull(error.value);		
+//	}
+	
 }

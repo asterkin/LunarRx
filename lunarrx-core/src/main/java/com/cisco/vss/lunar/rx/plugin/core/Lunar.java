@@ -53,29 +53,13 @@ public class Lunar {
 		
 		this.transform(sourceTemplate,  transformer, resultType);
 	}
-	
-	public void starting(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.starting(developerID, track));
+
+	public Observable<byte[]> getInputTrackStream(final LunarTrack sourceTrack) {
+		return getMQStream(Observable.from(sourceTrack.url));
 	}
 
-	public void running(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.running(developerID, track));
-	}
-
-	public void stopping(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.stopping(developerID, track));
-	}
-
-	public void stopping(final LunarTrack track, final Throwable err) {
-		sendReport(LunarPluginStateReport.stopping(developerID, track, err));
-	}
-	
-	public void stopped(final LunarTrack track) {
-		sendReport(LunarPluginStateReport.stopped(developerID, track));
-	}
-
-	public void stopped(final LunarTrack track, final Throwable err) {
-		sendReport(LunarPluginStateReport.stopped(developerID, track, err));
+	public <T extends LunarTrackItem> Observable<T> getInputTrackStream(final LunarTrack sourceTrack, final Class<T> clazz) {
+		return getMQStream(Observable.from(sourceTrack.url), clazz);
 	}
 	
 	private final static Logger LOGGER = LogManager.getLogger();
@@ -164,7 +148,27 @@ public class Lunar {
 		.subscribe();
 	}
 
-	Observable<byte[]> getInputTrackStream(final LunarTrack sourceTrack) {
-		return getMQStream(Observable.from(sourceTrack.url));
+	void starting(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.starting(developerID, track));
 	}
+
+	void running(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.running(developerID, track));
+	}
+
+	void stopping(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopping(developerID, track));
+	}
+
+	void stopping(final LunarTrack track, final Throwable err) {
+		sendReport(LunarPluginStateReport.stopping(developerID, track, err));
+	}
+	
+	void stopped(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopped(developerID, track));
+	}
+
+	void stopped(final LunarTrack track, final Throwable err) {
+		sendReport(LunarPluginStateReport.stopped(developerID, track, err));
+	}	
 }
