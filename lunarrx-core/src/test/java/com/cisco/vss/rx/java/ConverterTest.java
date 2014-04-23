@@ -1,16 +1,11 @@
 package com.cisco.vss.rx.java;
 
 import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
-
 import org.junit.Test;
-
 import rx.Observable;
 import rx.functions.Action1;
 import static com.cisco.vss.rx.java.Conversions.*;
@@ -147,26 +142,6 @@ public class ConverterTest {
             }
     	);
     	assertEquals(ERROR, result.value.getMessage());
-    }
-    
-    @Test
-    public void testSynchHttpGet() throws IOException, InterruptedException {
-    	final String         message   = "Hallo!!";
-		final byte[][]       responses = new byte[][]{message.getBytes()};
-		final HttpServerStub server    = new HttpServerStub(responses);
-    	final URL            url       = new URL(
-    			String.format("http://localhost:%d/hallo"
-    			,server.startServer()));
-    	
-    	synchHttpGet.call(url).subscribe(
-    		new Action1<String>() {
-				@Override
-				public void call(String t1) {
-					assertEquals(message, t1);
-				}    			
-    		}
-    	);
-    	server.join();
     }
     
     @Test

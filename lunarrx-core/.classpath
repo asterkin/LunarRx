@@ -5,9 +5,9 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
-	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/100df445982100351f68709c030dfea055d19457/rxjava-core-0.17.6-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/b35d55668bb9af8b78e39ea0fda9d313b3707e11/rxjava-core-0.17.6.jar" exported="true">
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.0/4fe142029e14cc5c2f509da394df21b5896c447f/rxjava-core-0.18.0-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.0/6113b8df257eb3c2d07c1f0939e7f8b7da43143d/rxjava-core-0.18.0.jar" exported="true">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/d6bbd0faa4d0f65ff6a2edfc32cb3252ec37bb00/rxjava-core-0.17.6-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.0/7d2db3370f3dc0ee9da799ca5ef970a7fab69ed/rxjava-core-0.18.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a6dc5db8a12928e583bd3f23e72d3ab611ecd58f/gson-2.2.4-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar" exported="true">
@@ -35,9 +35,102 @@
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-all/1.9.5/982f4a74cbff61f56c0868b2fdf71fe63b646794/mockito-all-1.9.5-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.github.tomakehurst/wiremock/1.46/96502f25d8972edc892894436a2340ad7d76c753/wiremock-1.46-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.github.tomakehurst/wiremock/1.46/25d5c09969efde4841a09fea473d216c64d7d2ce/wiremock-1.46.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.github.tomakehurst/wiremock/1.46/da18289f4fa95c214a88e3cf689b21048483cadb/wiremock-1.46-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" exported="true">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/ad09811315f1d4f5756986575b0ea16b99cd686f/hamcrest-core-1.3-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/4.3/bb8c8b57ff21fad814876acd4151e168ee17a1e4/jopt-simple-4.3-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/4.3/88ffca34311a6564a98f14820431e17b4382a069/jopt-simple-4.3.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/4.3/670cd29660c161ef2227c5143557516311751bc9/jopt-simple-4.3-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/xmlunit/xmlunit/1.5/fca719d9f09ccf77b2df232099067d202309ad2c/xmlunit-1.5-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/xmlunit/xmlunit/1.5/7789cef5caffdecab50fd6099535ad2bc2e98044/xmlunit-1.5.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/xmlunit/xmlunit/1.5/c6bae65a03ed2973c4d8db5a4620006c576c7e5/xmlunit-1.5-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.1.2/fa4a39f50e19339e3112708dacda01f611cdc1a2/jackson-core-2.1.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.1.2/3df73b1001916d861ea35f81a1da1f91513eccb4/jackson-core-2.1.2.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.1.2/a1d1584ea29a27d6b4983d25e9dfd5a4a1788865/jackson-core-2.1.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-util/6.1.26/ca704dfc9e26567bd69ee3f065a1337fa6d296f/jetty-util-6.1.26-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-util/6.1.26/e5642fe0399814e1687d55a3862aa5a3417226a9/jetty-util-6.1.26.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty-util/6.1.26/51f459ace98514d1c99580ed08706e24bc76138a/jetty-util-6.1.26-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api/2.5-20081211/b0b7c1931bcdbeb25c2aa4aec14d7b979b53dc51/servlet-api-2.5-20081211-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api/2.5-20081211/22bff70037e1e6fa7e6413149489552ee2064702/servlet-api-2.5-20081211.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/servlet-api/2.5-20081211/9e48eaf4299703934a3f2d22bb56131ee1027b9e/servlet-api-2.5-20081211-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty/6.1.26/9e275882f6d3400b05674c79e97014a255dfaf43/jetty-6.1.26-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty/6.1.26/2f546e289fddd5b1fab1d4199fbb6e9ef43ee4b0/jetty-6.1.26.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.mortbay.jetty/jetty/6.1.26/84d43ff435e7eac0edc6fb9b33aec7077bdead61/jetty-6.1.26-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.json/json/20090211/c183aa3a2a6250293808bba12262c8920ce5a51c/json-20090211.jar" exported="true"/>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.2.1/19f18e7a38901e9159801b3cc02fdfaa1ed5a9da/jsonassert-1.2.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.2.1/def60cc43a10979c25813d43a855cff2849ef8bd/jsonassert-1.2.1.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.2.1/7b05607533100ba0c6c826f9562cf3630b02bb40/jsonassert-1.2.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.16/bf945d1dc995be7fe64923625f842fbb6bf443be/log4j-1.2.16-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.16/7999a63bfccbc7c247a9aea10d83d4272bd492c6/log4j-1.2.16.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.16/78aa1cbf0fa3b259abdc7d87f9f6788d785aac2a/log4j-1.2.16-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/1.1.1/29bec1d88866042dcfd32c8247744bb6ef9bbf54/json-smart-1.1.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/1.1.1/24a2f903d25e004de30ac602c5b47f2d4e420a59/json-smart-1.1.1.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/1.1.1/e720d8bb25d18c94ef700eb52378750050a78be9/json-smart-1.1.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/67313d715fbf0ea4fd0bdb69217fb77f807a8ce5/commons-lang-2.6-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/ce1edb914c94ebc388f086c6827e8bdeec71ac2/commons-lang-2.6.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/2519e88918ab30dcdee1b1b66f0a1014b0e055ec/commons-lang-2.6-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/0.8.1/feb75e085b9416a4d817d4dd4d1e5c7ed17d9e1b/json-path-0.8.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/0.8.1/fbcad75a02160def33c4359b24015cca2d91ccce/json-path-0.8.1.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/0.8.1/6610aafa44610305ee7485b21ad9d878f8869128/json-path-0.8.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.2.2/f09ea7959e73a80f51429a0387dc9e66d9e27cd9/httpcore-4.2.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.2.2/b76bee23cd3f3ee9b98bc7c2c14670e821ddbbfd/httpcore-4.2.2.jar" exported="true"/>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.1/f3f156cbff0e0fb0d64bfce31a352cce4a33bc19/commons-logging-1.1.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.1/5043bfebc3db072ed80fbd362e7caf00e885d8ae/commons-logging-1.1.1.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.1/23a8a81d489a6aec1cfda5740cad27853263578c/commons-logging-1.1.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.6/61e9f9d11fe3e12ec62f633006e99d75fd7f19c8/commons-codec-1.6-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.6/b7f0fc8f61ecadeb3695f0b9464755eee44374d4/commons-codec-1.6.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.6/3c2c41ec5e3ca4131f83cf611f5fd837892220bd/commons-codec-1.6-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.2.3/3328e73c4c97cc62e1077ff754308c98ab1564a/httpclient-4.2.3-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.2.3/37ced84d839a02fb856255eca85f0a4be95aa634/httpclient-4.2.3.jar" exported="true"/>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.1.2/181d870c6d52046f33a57045a5ed39e0347c89b2/jackson-annotations-2.1.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.1.2/4b6ae44f2e251b51feee84f6a0c555e664b6efa8/jackson-annotations-2.1.2.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.1.2/dd2f726b3150dd4b0606a09aab1f86b3176fab04/jackson-annotations-2.1.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit-dep/4.10/2c7dad0a5eb1602c6fe6b43abec8ea35805b3ae4/junit-dep-4.10-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit-dep/4.10/64417b3bafdecd366afa514bd5beeae6c1f85ece/junit-dep-4.10.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit-dep/4.10/9197018b90dbd08125701a9efdf1f06b5965f9a2/junit-dep-4.10-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/13.0.1/ea42e17f75a65e72d12cd311b7d1e7d6356bbb3f/guava-13.0.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/13.0.1/d6f22b1e60a2f1ef99e22c9f5fde270b2088365/guava-13.0.1.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/13.0.1/adb5f5700edd5a7cba8f3121e9d58884cea8cd50/guava-13.0.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.1.2/100644aa63b096de42cc1a1a4b61c9193805ec49/jackson-databind-2.1.2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.1.2/e9c672d2d60c966772c6271d5a61614a4259274a/jackson-databind-2.1.2.jar" exported="true">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.1.2/f2a895786d118947af70b25251684b43e08b6337/jackson-databind-2.1.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 </classpath>
