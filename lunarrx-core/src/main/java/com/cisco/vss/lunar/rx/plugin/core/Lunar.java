@@ -116,6 +116,9 @@ public class Lunar {
 				.flatMap(statusUpdate2Notify(messageType,dataType));
 	}
 	
+	//
+	//No unit test due to setup and concurrency control complexity. M.b. an integrated test?
+	//
 	<R extends LunarEntity, T extends LunarStatusUpdateMessage<R>, S extends LunarDataResponse<R[]>> Observable<LunarNotify<R>> getCombinedNotifyStream(final String category, final Class<T> messageType, final Class<S> responseType, final Class<R> dataType) {
 		final Observable<LunarNotify<R>> updates = getStatusUpdatesStream(category, messageType, dataType);
 		final Observable<LunarNotify<R>> current = getNotifyArrayResponse(category, responseType, dataType);
