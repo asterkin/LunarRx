@@ -79,13 +79,15 @@ public class Lunar {
 		return Observable.from(url).flatMap(method);	
 	}
 
-	<R> Observable<R> httpRequest(final String path, final Converter<URL, String> method, final Class<R> responseType) {
-		return httpRequest(path, method).flatMap(jsonString2Object(responseType));
+	<R extends LunarResponse> Observable<R> httpRequest(final String path, final Converter<URL, String> method, final Class<R> responseType) {
+		return httpRequest(path, method)
+				.flatMap(jsonString2Object(responseType))
+				.flatMap(checkResult(responseType));
 	}
 	
 	<R, T extends LunarDataResponse<R[]>> Observable<R> getArrayResponse(final String path, final Class<T> responseType, final Class<R> dataType) {
 		return httpRequest(path, synchHttpGet, responseType)
-				.flatMap(getArrayData(dataType))
+				.map(getArrayData(dataType))
 				.flatMap(flatten(dataType));
 	}
 
@@ -106,7 +108,7 @@ public class Lunar {
 	
 	Observable<String> getUpdatesUrl(final String category) {
 		return httpRequest(String.format("/updates/%s", category), synchHttpGet, LunarUrlData.Response.class)
-				.flatMap(getUrlData);
+				.map(getUrlData);
 	}
 
 	<R, T extends LunarStatusUpdateMessage<R>> Observable<LunarNotify<R>> getStatusUpdatesStream(final String category, final Class<T> messageType, final Class<R> dataType) {
@@ -124,7 +126,7 @@ public class Lunar {
 	
 	Observable<LunarMQWriter> getOutputTrackStream(final LunarTrack track) {
 		return httpRequest(track.streamerRequestPath(developerID), synchHttpGet, LunarUrlData.Response.class)
-			   .flatMap(getUrlData)
+			   .map(getUrlData)
 			   .flatMap(parseMQUrl)
 			   .flatMap(connectToServer)
 			   .map(createRawWriter);
@@ -134,7 +136,6 @@ public class Lunar {
 		//TODO: observable from report: use another version with fixed URL or zip?
 		final String json = object2JsonString(LunarPluginStateReport.class).call(report);
 		httpRequest("/state/plugins", synchHttpPost(json), LunarResponse.class)
-			.flatMap(checkResult(LunarResponse.class))
 			.doOnError(
 				new Action1<Throwable>() {
 					@Override

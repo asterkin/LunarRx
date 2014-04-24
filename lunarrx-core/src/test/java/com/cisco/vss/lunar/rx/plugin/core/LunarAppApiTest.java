@@ -101,9 +101,9 @@ public class LunarAppApiTest {
 					@Override
 					public void call(final LunarNotify<LunarSource> notify) {
 						final LunarSource source = notify.getItem();
-						if(notify instanceof LunarAddTrack<?>) 
+						if(notify instanceof LunarAdd<?>) 
 							map.put(source.sourceID, source);
-						else if(notify instanceof LunarRemoveTrack<?>)
+						else if(notify instanceof LunarRemove<?>)
 							map.remove(source.sourceID);
 					}
 				},
@@ -176,9 +176,9 @@ public class LunarAppApiTest {
 					@Override
 					public void call(final LunarNotify<LunarSource> notify) {
 						final LunarSource source = notify.getItem();
-						if(notify instanceof LunarAddTrack<?>) 
+						if(notify instanceof LunarAdd<?>) 
 							map.put(source.sourceID, source);
-						else if(notify instanceof LunarRemoveTrack<?>)
+						else if(notify instanceof LunarRemove<?>)
 							map.remove(source.sourceID);
 					}
 				},

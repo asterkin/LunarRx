@@ -56,7 +56,7 @@ public class LunarByteStreamTransformerTest {
 		final Observable<byte[]>                  RESULT_STREAM = Observable.from(RESULT);
 		final LunarTrack                          INPUT_TRACK   = new LunarTrack(1, "pluginA", "trackB");
 		final LunarTrack                          RESULT_TRACK  = new LunarTrack(1, "pluginX", "trackY");
-		final LunarNotify<LunarTrack>             NOTIFY        = new LunarAddTrack<LunarTrack>(INPUT_TRACK);
+		final LunarNotify<LunarTrack>             NOTIFY        = new LunarAdd<LunarTrack>(INPUT_TRACK);
 		final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
 			@Override
 			public Observable<? extends byte[]> call(final Observable<byte[]> source, final	LunarTrack tract) {
@@ -97,8 +97,8 @@ public class LunarByteStreamTransformerTest {
 		final Observable<byte[]>                  RESULT_STREAM = Observable.from(RESULT);
 		final LunarTrack                          INPUT_TRACK   = new LunarTrack(1, "pluginA", "trackB");
 		final LunarTrack                          RESULT_TRACK  = new LunarTrack(1, "pluginX", "trackY");
-		final LunarNotify<LunarTrack>             NOTIFY_UP     = new LunarAddTrack<LunarTrack>(INPUT_TRACK);
-		final LunarNotify<LunarTrack>             NOTIFY_DOWN   = new LunarRemoveTrack<LunarTrack>(INPUT_TRACK);
+		final LunarNotify<LunarTrack>             NOTIFY_UP     = new LunarAdd<LunarTrack>(INPUT_TRACK);
+		final LunarNotify<LunarTrack>             NOTIFY_DOWN   = new LunarRemove<LunarTrack>(INPUT_TRACK);
 		final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
 			@Override
 			public Observable<? extends byte[]> call(final Observable<byte[]> source, final	LunarTrack tract) {
