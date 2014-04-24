@@ -16,92 +16,74 @@ import rx.functions.Func2;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LunarTrackProcessorThreadPoolTest {
-	@Mock
-	private Lunar                                                   lunar;
-	@Mock
-	private LunarMQWriter                                           writer;
-	private final byte[]                        RESULT        = "xyz".getBytes();
-	private final Observable<? extends byte[]>  RESULT_STREAM = Observable.from(new byte[][]{RESULT});
-	private Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
+	private static final byte[]                        INPUT         = "abced".getBytes();
+	private static final Observable<byte[]>            INPUT_STREAM  = Observable.from(new byte[][]{INPUT});
+	private static final byte[]                        RESULT        = "xyz".getBytes();
+	private static final Observable<? extends byte[]>  RESULT_STREAM = Observable.from(new byte[][]{RESULT});
+	private static final LunarTrack                    SOURCE_TRACK  = new LunarTrack(1, "pluginA", "trackB");
+	private static final LunarTrack                    RESULT_TRACK  = new LunarTrack(1, "pluginX", "trackY");	
+	private static final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> TRANSFORM = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
 		@Override
 		public Observable<? extends byte[]> call(final Observable<byte[]> t1, final LunarTrack track) {
 			return RESULT_STREAM;
 		}
 		
 	};
-	private LunarTrack                                              sourceTrack;
-	private LunarTrack                                              resultTrack;
+	private static final ObjectHolder<Object>          LOCK          = new ObjectHolder<Object>();
+	private static final Action0                       FINALLY_DO    = new Action0(){
+		@Override
+		public void call() {
+			synchronized(LOCK) { LOCK.value = null; }
+		}
+	};
 
+	private @Mock Lunar                   lunar;
+	private @Mock LunarMQWriter           writer;
+	private LunarTrackProcessorThreadPool pool;
+	
 	@Before
 	public void setUp() {
-		sourceTrack   = new LunarTrack(1, "pluginA", "trackB");
-		resultTrack   = new LunarTrack(1, "pluginX", "trackY");
+		LOCK.value = new Object();
+		pool       = new LunarTrackProcessorThreadPool(lunar, TRANSFORM);
 	}
 	
 	@Test
 	public void testStartTrack_OK() {
-		final ObjectHolder<Object>          lock          = new ObjectHolder<Object>(new Object());
-		final Action0                       finallyDo     = new Action0(){
-			@Override
-			public void call() {
-				synchronized(lock) { lock.value = null; }
-			}
-		};
-		final byte[]                        INPUT         = "abced".getBytes();
-		final Observable<byte[]>            INPUT_STREAM  = Observable.from(new byte[][]{INPUT});
-		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform);
-		
-		when(lunar.getInputTrackStream(sourceTrack)).thenReturn(INPUT_STREAM); 
-		when(lunar.getOutputTrackStream(resultTrack)).thenReturn(Observable.from(writer));
+		when(lunar.getInputTrackStream(SOURCE_TRACK)).thenReturn(INPUT_STREAM); 
+		when(lunar.getOutputTrackStream(RESULT_TRACK)).thenReturn(Observable.from(writer));
 		when(writer.call(RESULT)).thenReturn(Observable.from(RESULT));
 		
-		pool.startTrack(sourceTrack, resultTrack, finallyDo);
+		pool.startTrack(SOURCE_TRACK, RESULT_TRACK, FINALLY_DO);				
+		waitToComplete();
 		
-		
-		while (null != lock.value)
+		verify(lunar).starting(RESULT_TRACK);
+		verify(lunar).running(RESULT_TRACK);
+		verify(lunar).stopped(RESULT_TRACK);
+	}
+
+	private void waitToComplete() {
+		while (null != LOCK.value)
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		
-		verify(lunar).starting(resultTrack);
-		verify(lunar).running(resultTrack);
-		verify(lunar).stopped(resultTrack);
 	}
 
 	@Test
 	public void testStartTrack_ERROR() {
-		final ObjectHolder<Object>          lock          = new ObjectHolder<Object>(new Object());
-		final Action0                       finallyDo     = new Action0(){
-			@Override
-			public void call() {
-				synchronized(lock) { lock.value = null; }
-			}
-		};
-		final byte[]                        INPUT         = "abced".getBytes();
-		final Observable<byte[]>            INPUT_STREAM  = Observable.from(new byte[][]{INPUT});
 		final Throwable                     ERROR         = new Exception("Error to acquire Writer");
 		final Observable<LunarMQWriter>     ERROR_OBS     = Observable.error(ERROR);
-		final LunarTrackProcessorThreadPool pool          = new LunarTrackProcessorThreadPool(lunar, transform);
 		
-		when(lunar.getInputTrackStream(sourceTrack)).thenReturn(INPUT_STREAM); 
-		when(lunar.getOutputTrackStream(resultTrack)).thenReturn(ERROR_OBS);
+		when(lunar.getInputTrackStream(SOURCE_TRACK)).thenReturn(INPUT_STREAM); 
+		when(lunar.getOutputTrackStream(RESULT_TRACK)).thenReturn(ERROR_OBS);
 		
-		pool.startTrack(sourceTrack, resultTrack, finallyDo);
+		pool.startTrack(SOURCE_TRACK, RESULT_TRACK, FINALLY_DO);
+		waitToComplete();
 		
-		
-		while (null != lock.value)
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		
-		verify(lunar).starting(resultTrack);
-		verify(lunar).stopped(resultTrack, ERROR);
-		verify(lunar, never()).stopped(resultTrack);
+		verify(lunar).starting(RESULT_TRACK);
+		verify(lunar).stopped(RESULT_TRACK, ERROR);
+		verify(lunar, never()).stopped(RESULT_TRACK);
 		verify(writer, never()).call((byte [])anyObject());
-	}
-	
+	}	
 }
