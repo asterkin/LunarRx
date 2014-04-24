@@ -17,18 +17,30 @@ import rx.functions.Func2;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LunarByteStreamTransformerTest {
-	@Mock
-	private Lunar         lunar;
-	@Mock
-	private LunarMQWriter writer;
-	private LunarTrack    sourceTrackTemplate;
-	private LunarTrack    resultTrackTemplate;
+	private static final LunarTrack              SOURCE_TRACK_TEMPLATE = new LunarTrack(null, "pluginA", "trackB");
+	private static final LunarTrack              RESULT_TRACK_TEMPLATE = new LunarTrack(null, "pluginX", "trackY");
+	private static final byte[]                  INPUT                 = "abced".getBytes();
+	private static final byte[]                  RESULT                = "xyz".getBytes();
+	private static final Observable<byte[]>      INPUT_STREAM          = Observable.from(INPUT);
+	private static final Observable<byte[]>      RESULT_STREAM         = Observable.from(RESULT);
+	private static final LunarTrack              INPUT_TRACK           = new LunarTrack(1, "pluginA", "trackB");
+	private static final LunarTrack              RESULT_TRACK          = new LunarTrack(1, "pluginX", "trackY");
+	private static final LunarNotify<LunarTrack> NOTIFY                = new LunarAdd<LunarTrack>(INPUT_TRACK);
+	private static final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> TRANSFORM = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
+		@Override
+		public Observable<? extends byte[]> call(final Observable<byte[]> source, final	LunarTrack tract) {
+			return RESULT_STREAM;
+		}			
+	};
 
+	@Mock private Lunar                lunar;
+	@Mock private LunarMQWriter        writer;
+	private LunarByteStreamTransformer transformer;
+	
 	//TODO: re-factor this mess!!
 	@Before
 	public void setUp() {
-		sourceTrackTemplate = new LunarTrack(null, "pluginA", "trackB");
-		resultTrackTemplate = new LunarTrack(null, "pluginX", "trackY");
+		transformer = new LunarByteStreamTransformer(lunar, SOURCE_TRACK_TEMPLATE, TRANSFORM, RESULT_TRACK_TEMPLATE);
 	}
 	
 	private class TrackMatcher extends ArgumentMatcher<LunarTrack> {
@@ -50,20 +62,6 @@ public class LunarByteStreamTransformerTest {
 	
 	@Test
 	public void testStartTrack() {
-		final byte[]                              INPUT         = "abced".getBytes();
-		final byte[]                              RESULT        = "xyz".getBytes();
-		final Observable<byte[]>                  INPUT_STREAM  = Observable.from(INPUT);
-		final Observable<byte[]>                  RESULT_STREAM = Observable.from(RESULT);
-		final LunarTrack                          INPUT_TRACK   = new LunarTrack(1, "pluginA", "trackB");
-		final LunarTrack                          RESULT_TRACK  = new LunarTrack(1, "pluginX", "trackY");
-		final LunarNotify<LunarTrack>             NOTIFY        = new LunarAdd<LunarTrack>(INPUT_TRACK);
-		final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
-			@Override
-			public Observable<? extends byte[]> call(final Observable<byte[]> source, final	LunarTrack tract) {
-				return RESULT_STREAM;
-			}			
-		};
-		final LunarByteStreamTransformer transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, transform, resultTrackTemplate);
 		final Observable<LunarNotify<LunarTrack>> NOTIFY_STREAM = Observable.create(new Observable.OnSubscribe<LunarNotify<LunarTrack>>() {
 			@Override
 			public void call(final Subscriber<? super LunarNotify<LunarTrack>> subscriber) {
@@ -76,7 +74,7 @@ public class LunarByteStreamTransformerTest {
 					}				
 			}});
 		
-		when(lunar.getTracks(sourceTrackTemplate)).thenReturn(NOTIFY_STREAM);
+		when(lunar.getTracks(SOURCE_TRACK_TEMPLATE)).thenReturn(NOTIFY_STREAM);
 		when(lunar.getInputTrackStream(INPUT_TRACK)).thenReturn(INPUT_STREAM); 
 		when(lunar.getOutputTrackStream(argThat(new TrackMatcher(RESULT_TRACK)))).thenReturn(Observable.from(writer));
 		when(writer.call(RESULT)).thenReturn(Observable.from(RESULT));
@@ -91,21 +89,8 @@ public class LunarByteStreamTransformerTest {
 	@Ignore //stop does not work properly yet
 	@Test
 	public void testStopTrack() {
-		final byte[]                              INPUT         = "abced".getBytes();
-		final byte[]                              RESULT        = "xyz".getBytes();
-		final Observable<byte[]>                  INPUT_STREAM  = Observable.from(INPUT);
-		final Observable<byte[]>                  RESULT_STREAM = Observable.from(RESULT);
-		final LunarTrack                          INPUT_TRACK   = new LunarTrack(1, "pluginA", "trackB");
-		final LunarTrack                          RESULT_TRACK  = new LunarTrack(1, "pluginX", "trackY");
 		final LunarNotify<LunarTrack>             NOTIFY_UP     = new LunarAdd<LunarTrack>(INPUT_TRACK);
 		final LunarNotify<LunarTrack>             NOTIFY_DOWN   = new LunarRemove<LunarTrack>(INPUT_TRACK);
-		final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> transform = new Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>>() {
-			@Override
-			public Observable<? extends byte[]> call(final Observable<byte[]> source, final	LunarTrack tract) {
-				return RESULT_STREAM;
-			}			
-		};
-		final LunarByteStreamTransformer transformer   = new LunarByteStreamTransformer(lunar, sourceTrackTemplate, transform, resultTrackTemplate);
 		final Observable<LunarNotify<LunarTrack>> NOTIFY_STREAM = Observable.create(new Observable.OnSubscribe<LunarNotify<LunarTrack>>() {
 			@Override
 			public void call(final Subscriber<? super LunarNotify<LunarTrack>> subscriber) {
@@ -124,7 +109,7 @@ public class LunarByteStreamTransformerTest {
 					}				
 			}});
 		
-		when(lunar.getTracks(sourceTrackTemplate)).thenReturn(NOTIFY_STREAM);
+		when(lunar.getTracks(SOURCE_TRACK_TEMPLATE)).thenReturn(NOTIFY_STREAM);
 		when(lunar.getInputTrackStream(INPUT_TRACK)).thenReturn(INPUT_STREAM); 
 		when(lunar.getOutputTrackStream(argThat(new TrackMatcher(RESULT_TRACK)))).thenReturn(Observable.from(writer));
 		when(writer.call(RESULT)).thenReturn(Observable.from(RESULT));

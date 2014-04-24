@@ -1,15 +1,10 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
 import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
 import com.cisco.vss.rx.java.ObjectHolder;
-
-import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import static com.cisco.vss.lunar.rx.plugin.core.LunarConversions.*;
