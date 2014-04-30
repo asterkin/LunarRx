@@ -1,21 +1,15 @@
-apply plugin: 'java'
-
 version = '0.1.0'
 
 dependencies {
-  runtime     'com.netflix.rxjava:rxjava-core:0.+'
+  compile     'com.netflix.rxjava:rxjava-core:0.+'
   testCompile 'junit:junit:4.+'
-  runtime project(':lunarrx-core')
+  compile     project(':lunarrx-core')
 }
 
 sourceSets {
   test {
       java {
           srcDir 'src/test/java'
-      }
-  }
-  examples {
-      java {
           srcDir 'src/examples/java'
       }
   }

@@ -1,13 +1,11 @@
-  apply plugin: 'java'
-
   version = '0.1.0'
 
   dependencies {
     testCompile 'junit:junit:4.+', 'org.mockito:mockito-all:1.9+', 'com.github.tomakehurst:wiremock:1.+'
-    runtime     'com.netflix.rxjava:rxjava-core:0.+', 
-				'com.google.code.gson:gson:2.+', 
-				'org.apache.logging.log4j:log4j-api:2.+', 
-				'org.apache.logging.log4j:log4j-core:2.+' 
+    compile     'com.netflix.rxjava:rxjava-core:0.+', 
+		'com.google.code.gson:gson:2.+', 
+		'org.apache.logging.log4j:log4j-api:2.+', 
+		'org.apache.logging.log4j:log4j-core:2.+' 
   }
 
 

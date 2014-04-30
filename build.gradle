@@ -1,5 +1,7 @@
 subprojects {
   apply plugin: 'eclipse'
+  apply plugin: 'java'
+
   group = 'com.cisco.vss.lunar'
 
   eclipse.classpath.downloadJavadoc = true // defaults to 'false'
