@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="output" path="bin"/>
-	<classpathentry kind="src" path="src/examples/groovy"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/examples/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
-	<classpathentry kind="src" path="src/test/groovy"/>
 	<classpathentry kind="src" path="/lunarrx-core" exported="true"/>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.1/75f95f2a2b399c916da52bfcbfbcb9be54f8f09a/rxjava-core-0.18.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.1/a76f8f1a55aaf04f76d9a3922720ad6cc0d10fe7/rxjava-core-0.18.1.jar" exported="true">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.1/5f4ade71065be903104db65524c71d16330d1162/rxjava-core-0.18.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.18.1/d10d42e8a1f6cf5ba4dd1e0147f102818a750e1d/rxjava-groovy-0.18.1-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.18.1/a8ec37f0d1151819e366e1406264f1c1e2cb270c/rxjava-groovy-0.18.1.jar" exported="true">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-groovy/0.18.1/8a8c2fee02278b4db8e020ec4dd568d300f583db/rxjava-groovy-0.18.1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar" exported="true">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/f3289e8097c0013b711d058b563064c3bded4423/junit-4.11-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.3.0-rc-2/5deb8ce36345d4c7057469fc27ab74b892fda451/groovy-all-2.3.0-rc-2-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.3.0-rc-2/ee2429bbb3de278d806bcf80d01471b4378c48cf/groovy-all-2.3.0-rc-2.jar" exported="true">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-all/2.3.0-rc-2/defabb8276f454bd869d7a0c06ffdd898f32060/groovy-all-2.3.0-rc-2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" exported="true">
