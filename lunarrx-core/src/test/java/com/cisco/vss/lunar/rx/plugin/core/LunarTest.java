@@ -155,6 +155,8 @@ public class LunarTest {
                     .withBody(HTTP_RESPONSE)));
 		
 		lunar.running(TRACK);
+                
+        Thread.sleep(500); //TODO: find better way to test asynch reporting
 		
         verify(postRequestedFor(urlMatching("/state/plugins"))
                 .withRequestBody(equalTo(REPORT_JSON))
