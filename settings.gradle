@@ -1,3 +1,3 @@
-include "lunarrx-core", "lunarrx-scala", "lunarrx-groovy"
+include "lunarrx-core", "lunarrx-groovy", "lunarrx-java8"
 
 
