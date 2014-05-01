@@ -4,15 +4,16 @@
 	<classpathentry kind="src" path="src/test/scala"/>
 	<classpathentry kind="src" path="src/examples/scala"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry exported="true" kind="src" path="/lunarrx-core"/>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/b35d55668bb9af8b78e39ea0fda9d313b3707e11/rxjava-core-0.17.6.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/100df445982100351f68709c030dfea055d19457/rxjava-core-0.17.6-sources.jar">
+	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.1/a76f8f1a55aaf04f76d9a3922720ad6cc0d10fe7/rxjava-core-0.18.1.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.1/75f95f2a2b399c916da52bfcbfbcb9be54f8f09a/rxjava-core-0.18.1-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.17.6/d6bbd0faa4d0f65ff6a2edfc32cb3252ec37bb00/rxjava-core-0.17.6-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-core/0.18.1/5f4ade71065be903104db65524c71d16330d1162/rxjava-core-0.18.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-scala/0.17.6/65997953c1893e8b4a75fcfb1f51c095eb9c5032/rxjava-scala-0.17.6.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-scala/0.17.6/4fb1c8525caee907876c8ae51c4fe0c6f4b631f1/rxjava-scala-0.17.6-sources.jar">
+	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-scala/0.18.1/b295de67fe8dd75e5e379baff3891acf34d23942/rxjava-scala-0.18.1.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-scala/0.18.1/bb5dcf13eb6dc59af72055723b47be20ec74200a/rxjava-scala-0.18.1-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-scala/0.17.6/ed22f36abffc085324a758cd36dd7f09c5d61015/rxjava-scala-0.17.6-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/com.netflix.rxjava/rxjava-scala/0.18.1/c0813bdf1e9e8a679e18b6c03e54e42671e3ad8/rxjava-scala-0.18.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar">
@@ -23,11 +24,6 @@
 	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.scalatest/scalatest_2.10/1.9.1/db92310541d9b5646dd10648af3002abe7dffea2/scalatest_2.10-1.9.1.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.scalatest/scalatest_2.10/1.9.1/e43ec73a7760c6e7749c6a887696e37925d87ffc/scalatest_2.10-1.9.1-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.scalatest/scalatest_2.10/1.9.1/fc975966350a6027e94ebd6bdf0ed4e1bd360f83/scalatest_2.10-1.9.1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.10.4/9aae4cb1802537d604e03688cab744ff47b31a7d/scala-library-2.10.4.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.10.4/59908ab93978c1f546d3db5e05b42994b63ad515/scala-library-2.10.4-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/asterkin/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.10.4/65ea516350ef372223140c25636ccb5de24c0b87/scala-library-2.10.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" sourcepath="/home/asterkin/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar">
