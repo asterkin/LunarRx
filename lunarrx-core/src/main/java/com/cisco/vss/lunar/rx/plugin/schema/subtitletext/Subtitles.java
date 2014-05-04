@@ -25,8 +25,11 @@ public class Subtitles extends LunarTrackItem {
 
 	public String getText() {
 		final StringBuilder text =new StringBuilder();
-		for(Subtitles.SubtitleLine l : data.lines)
+		for(Subtitles.SubtitleLine l : data.lines) {
+			if((text.length() > 0) && !l.text.matches("\\r?\\n"))
+				text.append(' ');
 			text.append(l.text);
+		}
 		return text.toString();
 	}
 
