@@ -24,10 +24,10 @@ public class Subtitles extends LunarTrackItem {
 	}
 
 	public String getText() {
-		String text = "";
+		final StringBuilder text =new StringBuilder();
 		for(Subtitles.SubtitleLine l : data.lines)
-			text += l.text;
-		return text;
+			text.append(l.text);
+		return text.toString();
 	}
 
 }
