@@ -4,9 +4,8 @@ import org.scalatest.junit.JUnitSuite
 import org.junit.Test
 import org.junit.Assert._
 import rx.lang.scala._
-import com.cisco.vss.lunar.rx.plugin.scala.ObservableEx._
 
-class ObservableExTest extends JUnitSuite {
+class ObservableOpsTest extends JUnitSuite {
 	@Test def testReduceUntil() {
 	  val input = Observable.from(Array("aa","bbb","ccc\n","dd\n"))
 	  
