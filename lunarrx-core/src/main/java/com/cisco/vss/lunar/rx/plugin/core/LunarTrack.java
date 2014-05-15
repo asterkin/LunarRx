@@ -21,12 +21,12 @@ public class LunarTrack implements LunarEntity {
  *
  */	
 	//TODO: better encapsulation?
-	LunarTrack(final String pluginName, final String trackName) {
+	public LunarTrack(final String pluginName, final String trackName) {
 		this.pluginName = pluginName;
 		this.trackName  = trackName;
 	}
 
-	LunarTrack(final Integer sourceID, final String pluginName, final String trackName) {
+	public LunarTrack(final Integer sourceID, final String pluginName, final String trackName) {
 		this.sourceID   = sourceID;
 		this.pluginName = pluginName;
 		this.trackName  = trackName;
