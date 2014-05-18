@@ -19,5 +19,19 @@ package object scala {
 	    	)
 	    })
 	  }
+	  
+	  def slidingBuffer(): Observable[Tuple2[T1, T1]] = {
+	    Observable[Tuple2[T1, T1]](observer => {
+	      var prev: Option[T1] = None
+	      obs.subscribe(
+	         (v: T1) => { 
+	           if (prev.nonEmpty) observer.onNext((prev.get, v))
+	           prev = Some(v)
+	         },
+    	     (e: Throwable) => observer.onError(e),
+	    	 ()             => observer.onCompleted
+	      )
+	    })
+	  }
 	}
 }
