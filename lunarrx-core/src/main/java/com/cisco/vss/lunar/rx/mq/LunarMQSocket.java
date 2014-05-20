@@ -3,20 +3,28 @@ package com.cisco.vss.lunar.rx.mq;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 class LunarMQSocket
-{        
-    private final Socket               socket;
-    private final BufferedInputStream  inputStream;
-    private final OutputStream         outputStream;
+{   
+	private final static Logger        LOGGER = LogManager.getLogger();
+	private final String               ip;
+	private final int                  port;
+	private final String               message;
+    private       Socket               socket;
+    private       BufferedInputStream  inputStream;
+    private       OutputStream         outputStream;
     private int                        incomingMessageNum;
     private int                        outgoingMessageNum;
     
     static LunarMQSocket createSocket(final String ip, int port, final String message) throws IOException, LunarMQException
     {
-        final LunarMQSocket lmqSocket = new LunarMQSocket(new Socket(ip, port));
+        final LunarMQSocket lmqSocket = new LunarMQSocket(ip, port, message);
         
-        lmqSocket.handShake(message);
         return lmqSocket;
     }
 
@@ -39,18 +47,30 @@ class LunarMQSocket
     {   
         /* @todo async write can only be done with NIO - not for now */
     	final MessageHeader header = new MessageHeader(buffer.length, outgoingMessageNum++);
-    	try {
-    		header.write(outputStream);
-    		outputStream.write(buffer);
-    	} catch (IOException exp) {
-    		final String responseMsg = readResponse();
-            LunarMQException.StreamingError lmqe = LunarMQException.StreamingError.FromMessage(responseMsg);
-            if (lmqe != null) 
-                throw new LunarMQException(false, lmqe);
-
-            // this so some unknown error, throw it...
-            throw exp;
-    	}
+    	for(int retries=0; retries < 3; retries++)
+	    	try {
+	    		header.write(outputStream);
+	    		outputStream.write(buffer);
+	    		return; //how ugly!!!
+	    	} catch(SocketException exp) {
+	    		if("Broken pipe".equals(exp.getMessage())) {
+	    			try {
+	    				LOGGER.warn("Got Broken pipe exception. Retry no {1}", retries+1);
+	    				close();
+	    				open();
+	    			} catch(Throwable exp1) {
+	    				throw exp1;
+	    			}
+	    		} else throw exp;
+	    	} catch (IOException exp) {
+	    		final String responseMsg = readResponse();
+	            LunarMQException.StreamingError lmqe = LunarMQException.StreamingError.FromMessage(responseMsg);
+	            if (lmqe != null) 
+	                throw new LunarMQException(false, lmqe);
+	
+	            // this so some unknown error, throw it...
+	            throw exp;
+	    	}
     }       
     
     void close() throws IOException 
@@ -60,18 +80,32 @@ class LunarMQSocket
        socket.close();
     }          
     
-    private LunarMQSocket(final Socket s) throws IOException
-    {        
-        socket             = s;
+    private LunarMQSocket(final String ip, final int port, final String message) throws IOException, LunarMQException
+    {   
+    	this.ip            = ip;
+    	this.port          = port;
+    	this.message       = message;
+    	open();
+    }
+    
+    private void open() throws IOException, LunarMQException {
+    	init();
+    	handShake(message);    	
+    }
+    
+    private void init() throws UnknownHostException, IOException {
+        socket             = new Socket(ip, port);
         inputStream        = new BufferedInputStream(socket.getInputStream());
         outputStream       = socket.getOutputStream();
         outgoingMessageNum = 0;
-        incomingMessageNum = -1;
+        incomingMessageNum = -1;    	
     }
     
     private void handShake(final String message) throws IOException, LunarMQException {
         write(message);
         final String response = readResponse();
+        if(null==response)
+        	throw new LunarCannotReadHandshakeResponseException();
         if (!LunarMQException.StreamingError.LMQ_OK.GetMessage().equals(response))
         	throw new LunarHandshakeFailureException(response);
     }
@@ -90,6 +124,6 @@ class LunarMQSocket
 				} catch (InterruptedException e) {
 				}
 	        }
-        throw new LunarCannotReadHandshakeResponseException();
+        return null;
     }
 }

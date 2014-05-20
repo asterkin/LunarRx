@@ -1,6 +1,5 @@
 package com.cisco.vss.lunar.rx.plugin.core;
 
-import static com.cisco.vss.lunar.rx.mq.LunarMQConversions.*;
 import com.google.gson.annotations.SerializedName;
 
 public class LunarTrack implements LunarEntity {
@@ -38,7 +37,7 @@ public class LunarTrack implements LunarEntity {
 	
 	@Override
 	public String toString() {
-		return object2JsonString(LunarTrack.class).call(this);
+		return String.format("sourceID=%d, pluginName=%s, trackName=%s", sourceID, pluginName, trackName);
 	}
 	
 	String httpGetRequestPath() {

@@ -107,9 +107,14 @@ public class Conversions {
 
 	public static <T> Func1<T, String> object2JsonString(final Class<T> clazz) {
 		return new Func1<T, String>() {
+			final String name   = String.format("%s(object2JsonString)", this.getClass().getName());
+			final Logger LOGGER = LogManager.getLogger(name);
 			@Override
 			public String call(T src) {
-				return gson.toJson(src);
+				final String result = gson.toJson(src);
+				
+				LOGGER.debug("Converted: {} to: {}", src, result);
+				return result;
 			}
 		};
 	}
