@@ -55,7 +55,7 @@ class LunarMQSocket
 	    	} catch(SocketException exp) {
 	    		if("Broken pipe".equals(exp.getMessage())) {
 	    			try {
-	    				LOGGER.warn("Got Broken pipe exception. Retry no {1}", retries+1);
+	    				LOGGER.warn("Got Broken pipe exception. Retries count: {}", retries+1);
 	    				close();
 	    				open();
 	    			} catch(Throwable exp1) {
@@ -111,14 +111,13 @@ class LunarMQSocket
     }
     
     private String readResponse() throws IOException, LunarMQException {
-    	int retries = 3;
-    	while(retries > 0)
+    	for(int retries = 0; retries < 3; retries++)
 	        try
 	        {
 	            return new String(read());
 	        } catch (LunarEndOfStreamException ex)
 	        {
-	        	retries--;
+				LOGGER.warn("Got an error {} while reading MQ response. Retries count: {}", ex.toString(), retries+1);
 	        	try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
