@@ -1,10 +1,10 @@
 package com.cisco.vss.lunar.rx.plugin.scala
-import com.cisco.vss.lunar.rx.plugin._
+import com.cisco.vss.lunar.rx.plugin.core
+import com.cisco.vss.lunar.rx.plugin.core.{LunarTrack, LunarTrackItem}
 import rx.lang.scala.JavaConversions._
 import rx.lang.scala._
 import java.net.URL
 import com.cisco.vss.rx.java._
-import com.cisco.vss.lunar.rx.plugin.core._
 
 abstract class Lunar {
 	private [scala] val asJavaLunar: core.Lunar
