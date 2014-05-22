@@ -5,6 +5,7 @@ import rx.lang.scala.JavaConversions._
 import rx.lang.scala._
 import java.net.URL
 import com.cisco.vss.rx.java._
+import scala.reflect._
 
 abstract class Lunar {
 	private [scala] val asJavaLunar: core.Lunar
@@ -22,7 +23,8 @@ abstract class Lunar {
 	  asJavaLunar.transform(sourceTrackTemplate, javaTrans, resultTrackTemplate)  
 	}
 	
-	def transform[R <: LunarTrackItem](sourceTrackTemplate: LunarTrack, trans: (Observable[Array[Byte]]) => Observable[_ <: R] ,resultType: Class[R]): Unit = {	  
+	def transform[R <: LunarTrackItem : ClassTag](sourceTrackTemplate: LunarTrack, trans: (Observable[Array[Byte]]) => Observable[_ <: R]): Unit = {
+	  val resultType: Class[R] = classTag[R].runtimeClass match {case t : (Class[R] @unchecked) => t} //TODO
 	  val javaTrans = new rx.functions.Func1[rx.Observable[Array[Byte]], rx.Observable[_ <: R]]() {
 		@Override
 		def call(input: rx.Observable[Array[Byte]]) : rx.Observable[_ <: R] = {
@@ -34,7 +36,9 @@ abstract class Lunar {
 	  asJavaLunar.transform[R](sourceTrackTemplate, javaTrans, resultType)
 	}
 	
-	def transform[T <: LunarTrackItem, R <: LunarTrackItem](sourceType: Class[T], trans: (Observable[T]) => Observable[R] ,resultType: Class[R]): Unit = {
+	def transform[T <: LunarTrackItem : ClassTag, R <: LunarTrackItem : ClassTag](trans: (Observable[T]) => Observable[R]): Unit = {
+	  val sourceType: Class[T] = classTag[T].runtimeClass match {case t : (Class[T] @unchecked) => t} //TODO
+	  val resultType: Class[R] = classTag[R].runtimeClass match {case t : (Class[R] @unchecked) => t} //TODO
 	  val javaTrans = new rx.functions.Func1[rx.Observable[T], rx.Observable[_ <: R]]() {
 		@Override
 		def call(input: rx.Observable[T]) : rx.Observable[_ <: R] = {
@@ -45,6 +49,7 @@ abstract class Lunar {
 	  }
 	  asJavaLunar.transform[T,R](sourceType, javaTrans, resultType)
 	}
+
 	
 	//TODO: add more useful converters (httpPost, etc.)
 	def synchHttpGet(url: URL): Observable[String] = {
