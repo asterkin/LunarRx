@@ -18,6 +18,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 public class LunarPlugin {
 	public LunarPlugin(final String[] args) {
@@ -25,39 +26,50 @@ public class LunarPlugin {
 		this(args[2] ,Integer.parseInt(args[3]), args[0],      Integer.parseInt(args[4]));
 	}
 
-	public void transform(final LunarTrack sourceTemplate, final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> trans, final LunarTrack resultTemplate) {
-		sourceTemplate.sourceID = sourceID;
-		resultTemplate.sourceID = sourceID;
-		final Observable<? extends byte[]> result = getTransformedStream(sourceTemplate, trans, resultTemplate); 
-		final Observable<LunarMQWriter>    output = getOutputTrackStream(resultTemplate);
-
-		output.subscribe(
+	public void transform(final LunarTrack sourceTrack, final Func2<Observable<byte[]>, LunarTrack, Observable<? extends byte[]>> trans, final LunarTrack resultTrack) {
+		sourceTrack.sourceID = sourceID;
+		resultTrack.sourceID = sourceID;
+		final Observable<? extends byte[]> resultObs = getTransformedStream(sourceTrack, trans, resultTrack); 
+		final Observable<LunarMQWriter>    outputObs = getOutputTrackStream(resultTrack);
+		
+		starting(resultTrack);
+		outputObs.subscribe(
 			new Action1<LunarMQWriter>() {
 				@Override
 				public void call(final LunarMQWriter writer) {
-					result
+					running(resultTrack);
+					resultObs
 					.flatMap(writer)
 					.subscribe(
 						new Action1<byte[]>() {
 							@Override
 							public void call(final byte[] buffer) {
-								LOGGER.debug("Sent {} to {}", buffer, resultTemplate);
+								LOGGER.debug("Sent {} to {}", buffer, resultTrack);
 							}
 						},
 						new Action1<Throwable>() {
 							@Override
 							public void call(final Throwable err) {
-								LOGGER.error("Got an error while generating {}", resultTemplate, err.fillInStackTrace());
-								closeSocket(resultTemplate, writer);
+								LOGGER.error("Got an error while generating {}", resultTrack, err.fillInStackTrace());
+								error(resultTrack, err);
+								closeSocket(resultTrack, writer);
 							}
 						},
 						new Action0() {
 							@Override
 							public void call() {
-								closeSocket(resultTemplate, writer);
+								closeSocket(resultTrack, writer);
 							}					
 						}						
 					);
+				}				
+			},
+			new Action1<Throwable>() {
+				@Override
+				public void call(final Throwable err) {
+					LOGGER.error("Got an error while acquiring an ouput stream for {}", resultTrack, err.fillInStackTrace());
+					error(resultTrack, err);
+					stopped(resultTrack);
 				}				
 			}
 		);
@@ -65,7 +77,9 @@ public class LunarPlugin {
 
 	private void closeSocket(final LunarTrack resultTrack, final LunarMQWriter writer) {
 		try {
+			stopping(resultTrack);
 			writer.close();
+			stopped(resultTrack);
 		} catch (final IOException err) {
 			LOGGER.error("Got an error while closing MQ socket for {}", resultTrack, err.fillInStackTrace());
 		}		
@@ -144,5 +158,43 @@ public class LunarPlugin {
 		return httpRequest(path, synchHttpGet, responseType)
 				.map(getArrayData(dataType))
 				.flatMap(flatten(dataType));
-	}	
+	}
+	
+	void sendReport(final LunarPluginStateReport report) {
+		//TODO: observable from report: use another version with fixed URL or zip?
+		final String json = object2JsonString(LunarPluginStateReport.class).call(report);
+		httpRequest("/state/plugins", synchHttpPost(json), LunarResponse.class)
+			.doOnError(
+				new Action1<Throwable>() {
+					@Override
+					public void call(final Throwable err) {
+						LOGGER.error("Got an error {} while reporting status {}", err, json);
+					}				
+				}
+		)
+		.subscribeOn(Schedulers.newThread())//TODO: quazar or outside of Lunar?
+		.observeOn(Schedulers.trampoline())
+		.subscribe();
+	}
+
+	void starting(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.starting(developerID, track));
+	}
+
+	void running(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.running(developerID, track));
+	}
+
+	void stopping(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopping(developerID, track));
+	}
+
+	void stopped(final LunarTrack track) {
+		sendReport(LunarPluginStateReport.stopped(developerID, track));
+	}
+
+	void error(final LunarTrack track, final Throwable err) {
+		sendReport(LunarPluginStateReport.error(developerID, track, err));
+	}
+	
 }

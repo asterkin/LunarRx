@@ -5,7 +5,8 @@ class LunarPluginStateReport {
 		starting,
 		running,
 		stopping,
-		stopped
+		stopped,
+		error
 	}
 
 	final String  developerID;
@@ -40,6 +41,10 @@ class LunarPluginStateReport {
 
 	private static String formatMessage(final LunarTrack track, final Throwable err) {
 		return String.format("%s - Error: %s", track.trackName, err.getMessage());
+	}
+	
+	static LunarPluginStateReport error(final String developerID, final LunarTrack track, final Throwable err) {
+		return new LunarPluginStateReport(developerID, track.pluginName, track.sourceID, formatMessage(track, err), State.error);		
 	}
 	
 	static LunarPluginStateReport stopping(final String developerID, final LunarTrack track, final Throwable err) {
