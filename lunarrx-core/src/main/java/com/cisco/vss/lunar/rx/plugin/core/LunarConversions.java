@@ -35,6 +35,13 @@ class LunarConversions extends LunarMQConversions {
 			return response.data.url;
 		}
  	};
+
+ 	static final Func1<LunarTrack, String> getUrl = new Func1<LunarTrack, String>() {
+		@Override
+		public String call(final LunarTrack track) {
+			return track.url;
+		}
+ 	};
  	
  	static final <T> Func1<T, LunarNotify<T>> notifyAdd(final Class<T> clazz) {
  		return new Func1<T, LunarNotify<T>>() {
