@@ -75,7 +75,7 @@ public class Conversions {
 	    
 	};
 
-	static private final JsonSerializer<Date> ser = new JsonSerializer<Date>() {
+	static private final JsonSerializer<Date> dateSer = new JsonSerializer<Date>() {
 
 		@Override
 		public JsonElement serialize(Date src, Type typeOfSrc,
@@ -84,7 +84,7 @@ public class Conversions {
 		}
 	};
 	
-	static private final JsonDeserializer<Date> deser = new JsonDeserializer<Date>() {
+	static private final JsonDeserializer<Date> dateDeser = new JsonDeserializer<Date>() {
 
 		@Override
 		public Date deserialize(JsonElement json, Type typeOfT,
@@ -93,9 +93,41 @@ public class Conversions {
 			return json == null ? null : new Date(json.getAsLong());			}
 	};
 
+	private static final String HEXES = "0123456789ABCDEF";
+	
+	static private final JsonSerializer<byte[]> byteSer = new JsonSerializer<byte[]>() {
+		@Override
+		public JsonElement serialize(byte[] src, Type typeOfSrc, JsonSerializationContext context) {
+	        if (src == null) return null;
+	        final StringBuilder hex = new StringBuilder(2 * src.length);
+	        for (final byte b : src)
+	        {
+	            hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
+	        }
+	        return new JsonPrimitive(hex.toString());		
+	    }
+	};
+	
+	static private final JsonDeserializer<byte[]> byteDeser = new JsonDeserializer<byte[]>() {
+		@Override
+		public byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			final String s = json.getAsString();
+		    int len = s.length();
+		    byte[] data = new byte[len / 2];
+		    for (int i = 0; i < len; i += 2)
+		    {
+		       data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+		                               + Character.digit(s.charAt(i+1), 16));
+		    }
+		    return data;		
+		}
+	};
+	
 	static private final Gson gson = new GsonBuilder()
-	   .registerTypeAdapter(Date.class, ser)
-	   .registerTypeAdapter(Date.class, deser).create();
+	   .registerTypeAdapter(Date.class, dateSer)
+	   .registerTypeAdapter(Date.class, dateDeser)
+	   .registerTypeAdapter(byte[].class, byteSer)
+	   .registerTypeAdapter(byte[].class, byteDeser).create();
 	
 	public static <R> Converter<String,R> jsonString2Object(final Class<R> clazz) {
 		return new Converter<String, R>("jsonString2Object") {

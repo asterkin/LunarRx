@@ -69,10 +69,13 @@ public class ConverterTest {
     	private Date    d;
     	private Integer x;
     	private String  y;
-    	public TestData(final Integer x, final String y) {
-    		this.d = new Date();
-    		this.x = x;
-    		this.y = y;
+    	private byte[]  buf;
+    	
+    	public TestData(final Integer x, final String y, final byte[] buf) {
+    		this.d   = new Date();
+    		this.x   = x;
+    		this.y   = y;
+    		this.buf = buf;
     	}
     	public Integer getX() {
     		return this.x;
@@ -83,10 +86,14 @@ public class ConverterTest {
     	public Date getD() {
     		return d;
     	}
+    	public byte[] getBuf() {
+    		return buf;
+    	}
     }
     @Test
     public void testJsonConversion() {
-    	final TestData data   = new TestData(123,"abcdefg");
+    	final byte[]   buf    = new byte[]{ (byte)0xFF, (byte)0xFE, (byte)0xFD };
+    	final TestData data   = new TestData(123,"abcdefg", buf);
     	final String   json   = object2JsonString(TestData.class).call(data);
     	jsonString2Object(TestData.class).call(json).subscribe(
     		new Action1<TestData>(){
@@ -95,6 +102,7 @@ public class ConverterTest {
     				assertEquals(new Integer(123), t1.getX());
     				assertEquals("abcdefg", t1.getY());
     				assertTrue(new Date().after(t1.getD()));
+    				assertArrayEquals(buf, data.getBuf());
     			}	
     		}
     	);   
