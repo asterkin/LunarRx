@@ -1,4 +1,5 @@
-package com.cisco.vss.lunar.rx.plugin.scala
+package com.cisco.vss.lunar.rx.scala.plugin
+
 import com.cisco.vss.lunar.rx.plugin.core
 import com.cisco.vss.lunar.rx.plugin.core.{LunarTrack, LunarTrackItem}
 import rx.lang.scala.JavaConversions._
@@ -7,8 +8,8 @@ import java.net.URL
 import com.cisco.vss.rx.java._
 import scala.reflect._
 
-abstract class Lunar {
-	private [scala] val asJavaLunar: core.Lunar
+abstract class LunarPlugin {
+	private [scala] val asJavaLunar: core.LunarPlugin
 
 	def transform(sourceTrackTemplate: LunarTrack, trans: (Observable[Array[Byte]], LunarTrack) => Observable[_ <: Array[Byte]], resultTrackTemplate: LunarTrack) : Unit = {
 	  val javaTrans = new rx.functions.Func2[rx.Observable[Array[Byte]], LunarTrack, rx.Observable[_ <: Array[Byte]]]() {
@@ -55,13 +56,10 @@ abstract class Lunar {
 	def synchHttpGet(url: URL): Observable[String] = {
 		toScalaObservable(Conversions.synchHttpGet.call(url))
 	}
-	
-	//TODO: api for applications
 }
 
-object Lunar {
-  def apply(args: Array[String]): Lunar = new Lunar {
-	  val asJavaLunar = new core.Lunar(args)
+object LunarPlugin {
+  def apply(args: Array[String]): LunarPlugin = new LunarPlugin {
+	  val asJavaLunar = new core.LunarPlugin(args)
   }
 }
-

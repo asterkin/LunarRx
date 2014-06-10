@@ -1,6 +1,6 @@
 package com.cisco.vss.lunar.rx.scala.examples
 
-import com.cisco.vss.lunar.rx.plugin.scala._
+import com.cisco.vss.lunar.rx.scala.plugin._
 import rx.lang.scala.JavaConversions._
 import scala.collection.immutable.HashMap
 import scala.util.control.Breaks._

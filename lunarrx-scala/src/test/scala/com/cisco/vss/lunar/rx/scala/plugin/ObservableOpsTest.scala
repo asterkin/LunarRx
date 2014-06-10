@@ -1,4 +1,4 @@
-package com.cisco.vss.lunar.rx.plugin.scala
+package com.cisco.vss.lunar.rx.scala.plugin
 
 import org.scalatest.junit.JUnitSuite
 import org.junit.Test

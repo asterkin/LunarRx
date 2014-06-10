@@ -1,6 +1,6 @@
 package com.cisco.vss.lunar.rx.scala.examples
 
-import com.cisco.vss.lunar.rx.plugin.scala.Lunar
+import com.cisco.vss.lunar.rx.scala.plugin.Lunar
 import com.cisco.vss.lunar.rx.plugin.schema.subtitletext.Subtitles
 import rx.lang.scala.Observable
 import java.net.URL
